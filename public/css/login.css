@@ -1,0 +1,58 @@
+body {
+  background: #f5f7fa;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.login-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.1);
+  padding: 32px 28px;
+  position: relative;
+}
+
+.login-logo {
+  width: 110px;
+  display: block;
+  margin: 0 auto 18px;
+}
+
+.login-title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #0d47a1;
+}
+
+.login-sub {
+  text-align: center;
+  font-size: 13px;
+  color: #6c757d;
+  margin-bottom: 24px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 36px;
+  cursor: pointer;
+  color: #6c757d;
+}
+
+.footer-copy-simple {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 13px;
+  color: #888;
+}

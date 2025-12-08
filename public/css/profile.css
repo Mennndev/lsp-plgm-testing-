@@ -1,0 +1,558 @@
+/*
+|--------------------------------------------------------------------------
+| CSS Halaman Profil User
+| File  : public/css/profile.css
+| Tujuan: Styling khusus untuk halaman "Profil Saya"
+| Warna : Biru (#233C7E) & Emas (#D69F3A) tanpa gradasi
+|--------------------------------------------------------------------------
+*/
+
+/* Warna utama sebagai variabel CSS */
+:root {
+    --lsp-blue: #233C7E;
+    --lsp-gold: #D69F3A;
+    --bg-soft: #f5f7fa;
+}
+
+/* BODY DASAR */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background-color: var(--bg-soft);
+    color: #333;
+}
+
+/* HEADER ATAS */
+.profile-header {
+    background-color: #ffffff;
+    border-bottom: 3px solid var(--lsp-gold);
+    padding: 16px 0;
+    margin-bottom: 24px;
+}
+
+.profile-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--lsp-blue);
+}
+
+.profile-subtitle {
+    font-size: 13px;
+    color: #6b7280;
+}
+
+/* TOMBOL UTAMA EMAS */
+.btn-gold {
+    background-color: var(--lsp-gold);
+    border-color: var(--lsp-gold);
+    color: #1f2933;
+    font-weight: 600;
+}
+
+.btn-gold:hover {
+    background-color: #b8822f;
+    border-color: #b8822f;
+    color: #111827;
+}
+
+/* TOMBOL OUTLINE EMAS (UNTUK LINK KEMBALI) */
+.btn-outline-gold {
+    background-color: transparent;
+    border: 1px solid var(--lsp-gold);
+    color: var(--lsp-gold);
+    font-weight: 500;
+}
+
+.btn-outline-gold:hover {
+    background-color: var(--lsp-gold);
+    color: #1f2933;
+}
+
+/* AREA KONTEN UTAMA */
+.profile-main {
+    padding-bottom: 40px;
+}
+
+/* KARTU PROFIL KIRI */
+.profile-card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+}
+
+/* Avatar bulat dengan warna biru */
+.profile-avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 999px;
+    margin: 0 auto 12px;
+    background-color: var(--lsp-blue);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.profile-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--lsp-blue);
+    margin-bottom: 4px;
+}
+
+.profile-role {
+    font-size: 13px;
+    color: #6b7280;
+}
+
+/* ITEM KONTAK DI KARTU PROFIL */
+.profile-contact {
+    margin-top: 10px;
+}
+
+.profile-contact-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.profile-contact-item .icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 999px;
+    background-color: #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--lsp-blue);
+    font-size: 14px;
+}
+
+.profile-contact-item .text small {
+    display: block;
+    font-size: 11px;
+    color: #9ca3af;
+}
+
+.profile-contact-item .text div {
+    font-size: 13px;
+    color: #374151;
+}
+
+/* KARTU KANAN */
+.card-header-blue {
+    background-color: var(--lsp-blue);
+    color: #ffffff;
+    padding: 10px 16px;
+    border-bottom: none;
+}
+
+.card-header-blue .card-title {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* LABEL DAN NILAI FIELD */
+.field-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: #6b7280;
+    margin-bottom: 2px;
+}
+
+.field-value {
+    font-size: 14px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+}
+
+/* RESPONSIVE */
+@media (max-width: 767.98px) {
+    .profile-header {
+        text-align: center;
+    }
+
+    .header-actions {
+        margin-top: 10px;
+    }
+}
+
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+
+/* WRAPPER & SIDEBAR */
+#wrapper {
+    padding-left: 0;
+    transition: all 0.3s ease;
+}
+
+#wrapper.toggled {
+    padding-left: 260px;
+}
+
+#sidebar-wrapper {
+    z-index: 1000;
+    position: fixed;
+    left: 0;
+    width: 260px;
+    height: 100%;
+    margin-left: -260px;
+    overflow-y: auto;
+    background: #ffffff;
+    border-right: 1px solid #e3e6f0;
+    transition: all 0.3s ease;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    margin-left: 0;
+}
+
+.sidebar-brand {
+    padding: 20px;
+    background: #ffffff;
+    border-bottom: 1px solid #e3e6f0;
+    text-align: center;
+}
+
+.sidebar-brand img {
+    max-width: 160px;
+    height: auto;
+}
+
+.sidebar-nav {
+    list-style: none;
+    padding: 20px 0;
+    margin: 0;
+}
+
+.sidebar-nav li {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.sidebar-nav li a {
+    display: block;
+    padding: 15px 25px;
+    color: #5a5c69;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.sidebar-nav li a i {
+    margin-right: 12px;
+    font-size: 16px;
+    width: 20px;
+    text-align: center;
+}
+
+.sidebar-nav li a:hover,
+.sidebar-nav li a.active {
+    background: #4e73df;
+    color: #ffffff;
+    border-left: 4px solid #2653d4;
+}
+
+/* PAGE CONTENT */
+#page-content-wrapper {
+    width: 100%;
+    position: relative;
+    padding: 0;
+}
+
+#wrapper.toggled #page-content-wrapper {
+    margin-right: -260px;
+}
+
+/* TOP NAVBAR */
+.navbar-custom {
+    background: #ffffff;
+    border: none;
+    border-bottom: 1px solid #e3e6f0;
+    margin-bottom: 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+}
+
+.navbar-custom .navbar-nav > li > a {
+    color: #5a5c69;
+    padding: 20px 15px;
+    font-size: 14px;
+}
+
+.navbar-custom .navbar-nav > li > a:hover {
+    background: #f8f9fc;
+}
+
+.menu-toggle {
+    padding: 20px 20px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #5a5c69;
+    cursor: pointer;
+}
+
+.menu-toggle:hover {
+    color: #4e73df;
+}
+
+/* NOTIFICATION BADGE */
+.notification-badge {
+    position: relative;
+}
+
+.notification-badge .badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #e74a3b;
+    color: white;
+    font-size: 10px;
+    padding: 3px 6px;
+    border-radius: 10px;
+}
+
+/* USER DROPDOWN */
+.user-dropdown img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 8px;
+    border: 2px solid #e3e6f0;
+}
+
+/* MAIN CONTENT */
+.main-content {
+    padding: 30px;
+    min-height: calc(100vh - 60px);
+    margin-top: 60px;
+}
+
+/* PAGE HEADER */
+.page-header {
+    margin-bottom: 30px;
+    padding: 25px 30px;
+    border: none;
+    border-radius: 0;
+    color: #ffffff;
+}
+
+.page-header h1 {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.page-header p {
+    margin: 5px 0 0 0;
+    font-size: 14px;
+}
+
+/* VARIAN GRADIENT HEADER */
+.page-header-beranda {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.page-header-pengajuan {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.page-header-riwayat {
+    background: linear-gradient(135deg, #5a8dc7 0%, #4a7bb0 100%);
+}
+
+/* BUTTON DI HEADER */
+.btn-page-header {
+    background: rgba(255,255,255,0.25);
+    border: 1px solid rgba(255,255,255,0.4);
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 5px;
+    font-weight: 500;
+}
+
+/* FILTER ROW */
+.filter-row {
+    margin-bottom: 20px;
+}
+
+/* TABLE CUSTOM */
+.table-custom {
+    background: #ffffff;
+    border: 1px solid #e3e6f0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.table-custom thead {
+    background: #f8f9fc;
+}
+
+.table-custom thead th {
+    border-bottom: 2px solid #e3e6f0;
+    color: #5a5c69;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    padding: 15px;
+}
+
+.table-custom tbody td {
+    padding: 15px;
+    vertical-align: middle;
+    color: #5a5c69;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.table-custom tbody tr:hover {
+    background: #f8f9fc;
+}
+
+/* STATUS BADGE */
+.status-badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status-badge.pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-badge.approved {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-badge.rejected {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* BUTTON CUSTOM */
+.btn-custom {
+    border-radius: 5px;
+    font-weight: 500;
+    padding: 6px 14px;
+    font-size: 13px;
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    background: #4e73df;
+    border-color: #4e73df;
+}
+
+.btn-primary:hover {
+    background: #2653d4;
+    border-color: #2653d4;
+}
+
+.btn-success {
+    background: #1cc88a;
+    border-color: #1cc88a;
+}
+
+.btn-success:hover {
+    background: #17a673;
+    border-color: #17a673;
+}
+
+/* CONTENT SECTION SWITCH */
+.content-section {
+    display: none;
+}
+
+.content-section.active {
+    display: block;
+}
+
+/* EMPTY TABLE STATE */
+.empty-table {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.empty-icon {
+    font-size: 64px;
+    color: #d1d5db;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.empty-table p {
+    color: #9ca3af;
+    font-size: 16px;
+    margin: 0;
+}
+
+/* FAKE SCROLLBAR */
+.fake-scrollbar-wrapper {
+    margin-top: 15px;
+    overflow-x: auto;
+}
+
+.fake-scrollbar {
+    height: 8px;
+    background: #e2e8f0;
+    border-radius: 10px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    #wrapper.toggled {
+        padding-left: 0;
+    }
+
+    #sidebar-wrapper {
+        margin-left: -260px;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: 0;
+    }
+
+    .main-content {
+        padding: 20px 15px;
+    }
+
+    .table-responsive {
+        border: none;
+    }
+}
+
+@media (min-width: 768px) {
+    #wrapper {
+        padding-left: 260px;
+    }
+
+    #sidebar-wrapper {
+        margin-left: 0;
+    }
+
+    #wrapper.toggled {
+        padding-left: 0;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: -260px;
+    }
+}
+

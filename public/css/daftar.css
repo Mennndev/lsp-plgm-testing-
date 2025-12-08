@@ -1,0 +1,320 @@
+:root {
+  --lsp-blue: #233C7E;
+  --lsp-gold: #D69F3A;
+  --soft-bg: #f4f6fb;
+}
+
+/* BODY DASAR */
+body {
+  font-family: 'Ubuntu', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--soft-bg);
+  color: #333;
+}
+
+/* HEADER DAFTAR */
+.daftar-header-modern {
+  position: relative;
+  width: 100%;
+  padding: 90px 0 70px;
+  background: #ffffff;
+  text-align: center;
+  overflow: hidden;
+}
+
+.text-muted{
+    position: relative;
+  z-index: 2;
+}
+
+.daftar-title {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--lsp-blue);
+  text-transform: capitalize;
+  letter-spacing: 1px;
+}
+
+.daftar-underline {
+  width: 80px;
+  height: 6px;
+  background: var(--lsp-gold);
+  margin: 12px auto 0;
+  border-radius: 10px;
+  animation: underlineGrow 1.2s ease;
+}
+
+@keyframes underlineGrow {
+  from { width: 0; opacity: 0; }
+  to   { width: 80px; opacity: 1; }
+}
+
+.daftar-deco {
+  position: absolute;
+  right: -80px;
+  top: 0;
+  z-index: 1;
+  height: 120%;
+  width: 45%;
+  background: #E9F6FF;
+  border-top-left-radius: 300px;
+  border-bottom-left-radius: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.about-logo-modern {
+  width: 140px;
+  opacity: 0.95;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.1));
+}
+
+/* FORM WRAPPER */
+.daftar-wrapper {
+  background: var(--soft-bg);
+}
+
+.form-container {
+  max-width: 1100px;
+}
+
+/* badge kecil di atas form */
+.daftar-badge-info {
+  background:#e8f0ff;
+  color:#233C7E;
+  font-size:13px;
+}
+
+/* Judul form */
+.daftar-form-title {
+  color:#233C7E;
+}
+
+/* Step indicator */
+.step-badge {
+  background:#e8f0ff;
+  color:#233C7E;
+  font-size:12px;
+}
+
+.step-badge-active {
+  background:#233C7E;
+  color:#fff;
+}
+
+/* Lingkaran A, B, C, D, E */
+.section-circle {
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  background:#233C7E;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:14px;
+  font-weight:600;
+}
+
+/* Label & input form */
+#daftarForm .form-label {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+#daftarForm .form-control,
+#daftarForm .form-select {
+  font-size: 14px;
+}
+
+/* Tombol submit */
+#daftarForm button.btn-primary.btn-lg {
+  padding: 10px 40px;
+  border-radius: 999px;
+  background-color: #233C7E;
+  border-color: #233C7E;
+}
+
+#daftarForm button.btn-primary.btn-lg:hover {
+  background-color: #1a2e5c;
+  border-color: #1a2e5c;
+}
+
+/* Tooltip error password */
+.error-tooltip {
+  display: none;
+  position: absolute;
+  left: 0;              /* mulai dari kiri input */
+  top: 100%;            /* tepat di bawah input group */
+  margin-top: 4px;      /* beri jarak sedikit */
+  background: #dc3545;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  white-space: nowrap;
+  z-index: 5;
+}
+
+.error-tooltip::after {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 12px;           /* segitiga kecil di bawah input */
+  border-width: 0 5px 5px 5px;
+  border-style: solid;
+  border-color: transparent transparent #dc3545 transparent;
+}
+
+
+/* Pesan error tanda tangan */
+.signature-error {
+  font-size: 13px;
+  color: #dc3545;
+  display: none;
+}
+
+/* Modal backdrop tanda tangan */
+.signature-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(2px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* Kotak modal tanda tangan */
+.signature-modal {
+  width: 90%;
+  max-width: 520px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.3);
+  overflow: hidden;
+}
+
+.signature-modal-header {
+  padding: 12px 18px;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.signature-modal-header button {
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  color: #64748b;
+}
+
+.signature-modal-body {
+  padding: 16px 18px;
+}
+
+.signature-pad {
+  background: #ffffff;
+  border-radius: 6px;
+  border: 1px solid #cfd8e3;
+  overflow: hidden;
+}
+
+#signature-canvas {
+  width: 100%;
+  max-width: 100%;
+  height: 200px;
+  display: block;
+  cursor: crosshair;
+}
+
+.signature-modal-footer {
+  padding: 10px 18px 14px;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.signature-modal-footer .btn {
+  min-width: 90px;
+}
+
+#signature-preview-img {
+  max-height: 120px;
+}
+
+/* PRELOADER */
+#preloader {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: #292929;
+  z-index: 11000;
+  position: fixed;
+  display: block;
+}
+
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80px;
+  height: 80px;
+  transform: translate(-50%, -50%) rotate(45deg) translate3d(0, 0, 0);
+  animation: loader 1.2s infinite ease-in-out;
+}
+
+.loader span {
+  position: absolute;
+  display: block;
+  width: 40px;
+  height: 40px;
+  background-color: #233C7E;
+  animation: loaderBlock 1.2s infinite ease-in-out both;
+}
+
+.loader span:nth-child(1) { top: 0; left: 0; }
+.loader span:nth-child(2) { top: 0; right: 0; animation: loaderBlockInverse 1.2s infinite ease-in-out both; }
+.loader span:nth-child(3) { bottom: 0; left: 0; animation: loaderBlockInverse 1.2s infinite ease-in-out both; }
+.loader span:nth-child(4) { bottom: 0; right: 0; }
+
+@keyframes loader {
+  0%, 10%, 100% { width: 80px; height: 80px; }
+  65% { width: 150px; height: 150px; }
+}
+
+@keyframes loaderBlock {
+  0%, 30% { transform: rotate(0); }
+  55% { background-color: var(--lsp-gold); }
+  100% { transform: rotate(90deg); }
+}
+
+@keyframes loaderBlockInverse {
+  0%, 20% { transform: rotate(0); }
+  55% { background-color: var(--lsp-gold); }
+  100% { transform: rotate(-90deg); }
+}
+
+/* RESPONSIVE */
+@media (max-width: 991.98px) {
+  .daftar-header-modern {
+    padding: 70px 0 50px;
+  }
+  .daftar-title {
+    font-size: 26px;
+  }
+  .daftar-deco {
+    display: none; /* dekor kanan disembunyikan di HP biar gak aneh */
+  }
+}
