@@ -15,6 +15,8 @@ use App\Http\Controllers\KebijakanMutucontroller;
 use App\Http\Controllers\StrukturOrganisasicontroller;
 use App\Http\Controllers\Skemacontroller;
 use App\Http\Controllers\admin\ProgramPelatihanController;
+use App\Http\Controllers\admin\AdminBeritaController;
+use App\Http\Controllers\Auth\PasswordResetController;
 
 
 // Pendaftaran Routes
@@ -47,14 +49,25 @@ Route::get('/tempat-sertifikasi', function () {
     return view('tempat-sertifikasi');
 });
 
+// password reset routes
+Route::get('/password/forgot', [PasswordResetController::class, 'request'])
+    ->name('password.request');
 
+Route::post('/password/forgot', [PasswordResetController::class, 'email'])
+    ->name('password.email');
+
+Route::get('/password/reset/{token}', [PasswordResetController::class, 'resetForm'])
+    ->name('password.reset');
+
+Route::post('/password/reset', [PasswordResetController::class, 'reset'])
+    ->name('password.update');
 
 // Home Route
 Route::get('/', [Homecontroller::class, 'index'])->name('home');
 
 // Artikel Routes
-Route::get('/berita', [BeritaController::class, 'index'])->name('artikel.index');
-Route::get('/berita/{slug}', [BeritaController::class, 'show'])->name('artikel.show');
+Route::get('/berita', [BeritaController::class, 'index'])->name('berita.index');
+Route::get('/berita/{slug}', [BeritaController::class, 'show'])->name('berita.show');
 
 Route::middleware(['auth'])->group(function () {
 
@@ -97,4 +110,5 @@ Route::prefix('admin')
         Route::resource('program-pelatihan', ProgramPelatihanController::class);
         // CRUD Asesi
         Route::resource('asesi', AsesiController::class);
+        Route::resource('berita' , AdminBeritaController::class);
     });

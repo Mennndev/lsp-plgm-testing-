@@ -72,6 +72,12 @@
                 @enderror
             </div>
 
+            <div class="d-flex justify-content-end mb-4">
+                 <a href="{{ route('password.request') }}" style="font-size: 13px;">
+                    Lupa password?
+                 </a>
+            </div>
+
             {{-- Tombol Login --}}
             <button type="submit" class="btn btn-primary btn-block btn-lg w-100">
                 Masuk

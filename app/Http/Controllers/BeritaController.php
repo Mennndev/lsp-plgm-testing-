@@ -30,8 +30,15 @@ class BeritaController extends Controller
     public function show($slug)
     {
         $beritas = Berita::where('slug', $slug)->firstOrFail();
-        $beritas->increment('views');
 
-        return view('artikel.show', compact('beritas'));
+          // BERITA LAINNYA
+        $beritaLain = Berita::where('is_published', true)
+        ->where('id', '!=', $beritas->id)
+        ->orderByDesc('tanggal_terbit')
+        ->orderByDesc('created_at')
+        ->limit(5)
+        ->get();
+
+        return view('berita.show', compact('beritas', 'beritaLain'));
     }
 }

@@ -179,17 +179,17 @@
               </button>
               <button type="button"
                       class="btn btn-sm btn-outline-primary mr-2 skema-filter"
-                      data-filter="informasi">
+                      data-filter="Informasi Dan Komunikasi">
                 Informasi &amp; Komunikasi
               </button>
               <button type="button"
                       class="btn btn-sm btn-outline-primary mr-2 skema-filter"
-                      data-filter="perkantoran">
+                      data-filter="Perkantoran Digital">
                 Administrasi Profesional
               </button>
               <button type="button"
                       class="btn btn-sm btn-outline-primary mr-2 skema-filter"
-                      data-filter="marketing">
+                      data-filter="Digital Marketing">
                 Pemasaran
               </button>
             </div>

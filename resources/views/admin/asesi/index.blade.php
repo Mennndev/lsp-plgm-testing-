@@ -57,7 +57,7 @@
             </li>
 
             <li class="{{ request()->is('admin/pengguna*') ? 'active' : '' }}">
-                <a href="{{ url('admin/artikel') }}">
+                <a href="{{ url('admin/berita') }}">
                     <i class="bi bi-newspaper"></i> Berita
                 </a>
             </li>

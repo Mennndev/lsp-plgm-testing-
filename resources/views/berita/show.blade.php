@@ -11,7 +11,7 @@
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
   <!-- Site Metas -->
-  <title>{{ $berita->judul }} - Berita LSP PLGM</title>
+  <title>{{ $beritas->judul }} - Berita LSP PLGM</title>
   <meta name="keywords" content="">
   <meta name="description" content="">
   <meta name="author" content="">
@@ -134,15 +134,15 @@
               <li class="breadcrumb-item"><a href="{{ url('/') }}">Beranda</a></li>
               <li class="breadcrumb-item"><a href="{{ url('berita') }}">Berita</a></li>
               <li class="breadcrumb-item active" aria-current="page">
-                {{ \Illuminate\Support\Str::limit($berita->judul, 60) }}
+                {{ \Illuminate\Support\Str::limit($beritas->judul, 60) }}
               </li>
             </ol>
           </nav>
 
-          <h2 class="mb-1">{{ $berita->judul }}</h2>
+          <h2 class="mb-1">{{ $beritas->judul }}</h2>
           <p class="text-muted mb-0">
             <i class="bi bi-calendar-event"></i>
-            {{ \Carbon\Carbon::parse($berita->tanggal_terbit ?? $berita->created_at)->translatedFormat('d F Y') }}
+            {{ \Carbon\Carbon::parse($beritas->tanggal_terbit ?? $beritas->created_at)->translatedFormat('d F Y') }}
           </p>
         </div>
       </div>
@@ -151,23 +151,23 @@
         <!-- KONTEN UTAMA -->
         <div class="col-lg-8">
           <div class="card shadow-sm border-0 mb-4">
-            @if($berita->gambar)
-              <img src="{{ asset('storage/'.$berita->gambar) }}"
+            @if($beritas->gambar)
+              <img src="{{ asset('storage/'.$beritas->gambar) }}"
                    class="card-img-top"
-                   alt="{{ $berita->judul }}"
+                   alt="{{ $beritas->judul }}"
                    style="max-height:380px;object-fit:cover;">
             @endif
 
             <div class="card-body">
-              @if($berita->ringkasan)
+              @if($beritas->ringkasan)
                 <p class="text-muted" style="font-size:0.95rem;">
-                  {!! $berita->ringkasan !!}
+                  {!! $beritas->ringkasan !!}
                 </p>
                 <hr>
               @endif
 
               <div class="berita-konten" style="font-size:0.98rem;line-height:1.7;">
-                {!! $berita->konten !!}
+                {!! $beritas->konten !!}
               </div>
             </div>
           </div>
