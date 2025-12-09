@@ -95,6 +95,18 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/dashboard-user/profile/signature', [ProfileController::class, 'updateSignature'])
         ->name('ProfileUser.signature.update');
 
+    // Pengajuan Skema Routes
+    Route::get('/skema/{program}/daftar', [\App\Http\Controllers\PengajuanSkemaController::class, 'create'])
+        ->name('pengajuan.create');
+    Route::post('/pengajuan/store', [\App\Http\Controllers\PengajuanSkemaController::class, 'store'])
+        ->name('pengajuan.store');
+    Route::get('/pengajuan/{id}', [\App\Http\Controllers\PengajuanSkemaController::class, 'show'])
+        ->name('pengajuan.show');
+    Route::post('/pengajuan/draft', [\App\Http\Controllers\PengajuanSkemaController::class, 'draft'])
+        ->name('pengajuan.draft');
+    Route::delete('/pengajuan/{id}', [\App\Http\Controllers\PengajuanSkemaController::class, 'destroy'])
+        ->name('pengajuan.destroy');
+
 });
 
 //Admin Routes
@@ -111,4 +123,16 @@ Route::prefix('admin')
         // CRUD Asesi
         Route::resource('asesi', AsesiController::class);
         Route::resource('berita' , AdminBeritaController::class);
+
+        // Pengajuan Management (Admin Only)
+        Route::middleware('admin')->group(function () {
+            Route::get('/pengajuan', [\App\Http\Controllers\Admin\PengajuanController::class, 'index'])
+                ->name('pengajuan.index');
+            Route::get('/pengajuan/{id}', [\App\Http\Controllers\Admin\PengajuanController::class, 'show'])
+                ->name('pengajuan.show');
+            Route::post('/pengajuan/{id}/approve', [\App\Http\Controllers\Admin\PengajuanController::class, 'approve'])
+                ->name('pengajuan.approve');
+            Route::post('/pengajuan/{id}/reject', [\App\Http\Controllers\Admin\PengajuanController::class, 'reject'])
+                ->name('pengajuan.reject');
+        });
     });
