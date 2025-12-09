@@ -185,7 +185,7 @@
                                 <td>{{ $dok->nama_file }}</td>
                                 <td>{{ $dok->formatted_size }}</td>
                                 <td>
-                                    <a href="{{ Storage::url($dok->path) }}" class="btn btn-sm btn-primary" target="_blank">
+                                    <a href="{{ asset('storage/' . $dok->path) }}" class="btn btn-sm btn-primary" target="_blank">
                                         <i class="bi bi-download"></i> Download
                                     </a>
                                 </td>

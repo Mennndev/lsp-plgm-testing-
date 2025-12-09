@@ -112,9 +112,6 @@ class PengajuanSkemaController extends Controller
 
             DB::commit();
 
-            // TODO: Send notification to admin
-            // Notification::send(User::where('role', 'admin')->get(), new PengajuanSubmitted($pengajuan));
-
             return redirect()->route('dashboard.user')
                 ->with('success', 'Pengajuan skema berhasil dikirim. Mohon menunggu konfirmasi admin.');
 

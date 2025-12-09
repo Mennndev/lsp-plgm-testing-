@@ -355,7 +355,10 @@
         localStorage.setItem('pengajuan_draft', JSON.stringify(data));
 
         // Also save to server via AJAX
-        fetch('/pengajuan/draft', {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]');
+        const draftUrl = csrfToken ? csrfToken.getAttribute('content-draft-url') : '/pengajuan/draft';
+        
+        fetch(draftUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

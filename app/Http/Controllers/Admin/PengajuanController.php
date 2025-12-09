@@ -74,9 +74,6 @@ class PengajuanController extends Controller
             'approved_by' => auth()->id(),
         ]);
 
-        // TODO: Send notification to user
-        // $pengajuan->user->notify(new PengajuanApproved($pengajuan));
-
         return redirect()->route('admin.pengajuan.show', $id)
             ->with('success', 'Pengajuan berhasil disetujui.');
     }
@@ -96,9 +93,6 @@ class PengajuanController extends Controller
             'catatan_admin' => $request->catatan_admin,
             'approved_by' => auth()->id(),
         ]);
-
-        // TODO: Send notification to user
-        // $pengajuan->user->notify(new PengajuanRejected($pengajuan));
 
         return redirect()->route('admin.pengajuan.show', $id)
             ->with('success', 'Pengajuan berhasil ditolak.');
