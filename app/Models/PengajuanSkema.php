@@ -100,4 +100,10 @@ class PengajuanSkema extends Model
             default => ucfirst($this->status),
         };
     }
+    // Di app/Models/PengajuanSkema.php
+
+    public function portfolio()
+    {
+        return $this->hasMany(PengajuanPortfolio:: class);
+    }
 }

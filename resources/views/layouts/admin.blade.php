@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Admin – LSP PLGM')</title>
 
     <!-- Bootstrap -->
@@ -48,9 +49,9 @@
                 </a>
             </li>
 
-             <li class="{{ request()->is('admin/pengguna*') ? 'active' : '' }}">
-                <a href="{{ url('admin/pengguna') }}">
-                    <i class="bi bi-person-gear"></i> Pengguna & Role
+            <li class="{{ request() ->is('admin/pengajuan*') ? 'active' : '' }}">
+                <a href="{{ url('admin/pengajuan') }}">
+                    <i class="bi bi-file-earmark-text"></i> Pengajuan Sertifikasi
                 </a>
             </li>
              <li class="{{ request()->is('admin/pengguna*') ? 'active' : '' }}">
@@ -117,5 +118,8 @@
 </script>
 
 @stack('scripts')
+
+
+
 </body>
 </html>

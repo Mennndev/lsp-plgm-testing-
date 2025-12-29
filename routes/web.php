@@ -17,6 +17,9 @@ use App\Http\Controllers\Skemacontroller;
 use App\Http\Controllers\admin\ProgramPelatihanController;
 use App\Http\Controllers\admin\AdminBeritaController;
 use App\Http\Controllers\Auth\PasswordResetController;
+use App\Http\Controllers\PengajuanSkemaController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 
 // Pendaftaran Routes
@@ -95,16 +98,23 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/dashboard-user/profile/signature', [ProfileController::class, 'updateSignature'])
         ->name('ProfileUser.signature.update');
 
-    // Pengajuan Skema Routes
-    Route::get('/skema/{program}/daftar', [\App\Http\Controllers\PengajuanSkemaController::class, 'create'])
+     Route::get('/pengajuan/pilih-skema', [PengajuanSkemaController::class, 'pilihSkema'])
+        ->name('pengajuan.pilih-skema');
+
+    // Route untuk create pengajuan (setelah pilih skema)
+    Route::get('/pengajuan/create/{program}', [PengajuanSkemaController::class, 'create'])
         ->name('pengajuan.create');
-    Route::post('/pengajuan/store', [\App\Http\Controllers\PengajuanSkemaController::class, 'store'])
+
+    Route::post('/pengajuan/store', [PengajuanSkemaController::class, 'store'])
         ->name('pengajuan.store');
-    Route::get('/pengajuan/{id}', [\App\Http\Controllers\PengajuanSkemaController::class, 'show'])
+
+    Route::get('/pengajuan/{id}', [PengajuanSkemaController::class, 'show'])
         ->name('pengajuan.show');
-    Route::post('/pengajuan/draft', [\App\Http\Controllers\PengajuanSkemaController::class, 'draft'])
+
+    Route::post('/pengajuan/draft', [PengajuanSkemaController::class, 'draft'])
         ->name('pengajuan.draft');
-    Route::delete('/pengajuan/{id}', [\App\Http\Controllers\PengajuanSkemaController::class, 'destroy'])
+
+    Route::delete('/pengajuan/{id}', [PengajuanSkemaController::class, 'destroy'])
         ->name('pengajuan.destroy');
 
 });
@@ -136,3 +146,7 @@ Route::prefix('admin')
                 ->name('pengajuan.reject');
         });
     });
+
+
+
+

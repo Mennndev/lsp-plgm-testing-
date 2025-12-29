@@ -1,64 +1,39 @@
-/* Pengajuan Wizard Styles */
-
+/* Wizard Progress */
 .wizard-progress {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: relative;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-.wizard-progress::before {
-    content: '';
-    position: absolute;
-    top: 20px;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: #e0e0e0;
-    z-index: 0;
+    margin-bottom: 40px;
+    padding: 25px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
 .wizard-progress .step {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    z-index: 1;
     flex: 1;
+    text-align: center;
+    position: relative;
 }
 
 .wizard-progress .step-number {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
     border-radius: 50%;
-    background: #e0e0e0;
-    color: #999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background: #dee2e6;
+    color:  #6c757d;
+    margin: 0 auto 10px;
     font-weight: bold;
-    margin-bottom: 8px;
-    transition: all 0.3s ease;
-}
-
-.wizard-progress .step-label {
-    font-size: 13px;
-    color: #999;
-    text-align: center;
+    font-size: 18px;
     transition: all 0.3s ease;
 }
 
 .wizard-progress .step.active .step-number {
     background: #0d6efd;
     color: white;
-}
-
-.wizard-progress .step.active .step-label {
-    color: #0d6efd;
-    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+    transform: scale(1.1);
 }
 
 .wizard-progress .step.completed .step-number {
@@ -66,24 +41,51 @@
     color: white;
 }
 
+.wizard-progress .step.completed .step-number::after {
+    content: '✓';
+}
+
+.wizard-progress .step-label {
+    font-size: 13px;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.wizard-progress .step.active .step-label {
+    color: #0d6efd;
+    font-weight: 600;
+}
+
 .wizard-progress .step.completed .step-label {
     color: #198754;
 }
 
-/* Wizard Steps */
-.wizard-step {
-    display: none;
+.wizard-progress .step-divider {
+    flex: 0. 5;
+    height: 2px;
+    background: #dee2e6;
+    margin:  0 15px;
+    margin-top: -35px;
 }
 
-.wizard-step.active {
+.wizard-progress .step.completed + .step-divider {
+    background: #198754;
+}
+
+/* Wizard Steps Content */
+.step-content {
+    display: none;
+    animation: fadeIn 0.4s ease-in;
+}
+
+.step-content.active {
     display: block;
-    animation: fadeIn 0.3s ease;
 }
 
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(10px);
+        transform: translateY(15px);
     }
     to {
         opacity: 1;
@@ -91,79 +93,75 @@
     }
 }
 
-/* Unit Assessment Styling */
-.unit-assessment {
-    border: 1px solid #e0e0e0;
+/* Cards */
+.card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.card-header {
+    border-bottom: none;
+    padding: 20px 25px;
+}
+
+.card-body {
+    padding: 30px 25px;
+}
+
+/* Form Elements */
+.form-label {
+    font-weight: 500;
+    color: #495057;
+    margin-bottom:  8px;
+}
+
+.form-control,
+.form-select {
     border-radius: 8px;
+    border: 1px solid #ced4da;
+    padding:  10px 15px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+}
+
+.form-control.is-invalid {
+    border-color: #dc3545;
+}
+
+/* Review Summary */
+.review-section {
     padding: 20px;
     background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 20px;
 }
 
-/* Status Badges */
-.status-badge {
+.review-section h6 {
+    margin-bottom: 15px;
+    color: #0d6efd;
+}
+
+.summary-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.summary-item:last-child {
+    border-bottom: none;
+}
+
+.summary-item strong {
     display: inline-block;
-    padding: 6px 12px;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
+    min-width: 150px;
+    color: #495057;
 }
 
-.status-badge.draft,
-.status-badge.secondary {
-    background: #6c757d;
-    color: white;
-}
-
-.status-badge.pending,
-.status-badge.warning {
-    background: #ffc107;
-    color: #000;
-}
-
-.status-badge.approved,
-.status-badge.success {
-    background: #198754;
-    color: white;
-}
-
-.status-badge.rejected,
-.status-badge.danger {
-    background: #dc3545;
-    color: white;
-}
-
-/* Auto-save Indicator */
-.auto-save-indicator {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #198754;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 50px;
-    font-size: 14px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-    display: none;
-    animation: slideInRight 0.3s ease;
-}
-
-.auto-save-indicator.show {
-    display: block;
-}
-
-@keyframes slideInRight {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-/* Signature Modal (reuse from daftar.css) */
+/* Signature Modal */
 .signature-modal-backdrop {
     display: none;
     position: fixed;
@@ -171,10 +169,10 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.6);
     z-index: 9999;
-    align-items: center;
     justify-content: center;
+    align-items: center;
 }
 
 .signature-modal-backdrop.show {
@@ -183,15 +181,18 @@
 
 .signature-modal {
     background: white;
-    border-radius: 8px;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
     max-width: 700px;
     width: 90%;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    max-height: 90vh;
+    overflow:  hidden;
 }
 
 .signature-modal-header {
-    padding: 15px 20px;
-    border-bottom: 1px solid #e0e0e0;
+    padding: 20px 25px;
+    background: #0d6efd;
+    color: white;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -205,103 +206,199 @@
 .close-signature-modal {
     background: none;
     border: none;
-    font-size: 24px;
+    color: white;
+    font-size: 28px;
     cursor: pointer;
-    color: #999;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    line-height: 1;
 }
 
 .signature-modal-body {
-    padding: 20px;
+    padding: 25px;
 }
 
 .signature-pad {
-    border: 2px solid #0d6efd;
-    border-radius: 4px;
-    background: white;
+    border: 2px dashed #ced4da;
+    border-radius: 8px;
+    background: #f8f9fa;
+    overflow: hidden;
+}
+
+.signature-pad canvas {
+    display: block;
     cursor: crosshair;
+    width: 100%;
 }
 
 .signature-modal-footer {
-    padding: 15px 20px;
-    border-top: 1px solid #e0e0e0;
+    padding: 20px 25px;
+    background: #f8f9fa;
     display: flex;
     justify-content: flex-end;
     gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* Signature Preview */
+#signature-preview {
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+#signature-preview img {
+    max-width: 100%;
+    height: auto;
+    border:  1px solid #dee2e6;
+    border-radius: 4px;
+}
+
+/* Auto-save Indicator */
+.auto-save-indicator {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background: #198754;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-size:  14px;
+    font-weight: 500;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    opacity: 0;
+    transform:  translateY(30px);
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    z-index: 9998;
+}
+
+.auto-save-indicator.show {
+    opacity: 1;
+    transform:  translateY(0);
+}
+
+/* Document Upload */
+.dokumen-item {
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom:  10px;
+}
+
+.dokumen-item:last-child {
+    margin-bottom: 0;
+}
+
+/* Unit Assessment Table */
+.unit-assessment {
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.table-sm td,
+.table-sm th {
+    padding: 10px;
+    vertical-align: middle;
+}
+
+/* Buttons */
+.btn {
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-lg {
+    padding: 14px 32px;
+    font-size: 16px;
+}
+
+.btn-primary:hover {
+    background: #0b5ed7;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+}
+
+.btn-success:hover {
+    background: #157347;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(25, 135, 84, 0.3);
 }
 
 /* Responsive */
 @media (max-width: 768px) {
     .wizard-progress {
-        padding: 0 10px;
+        flex-direction: column;
+        padding: 20px;
     }
 
-    .wizard-progress .step-label {
-        font-size: 11px;
+    .wizard-progress .step {
+        margin-bottom: 15px;
     }
 
-    .wizard-progress .step-number {
-        width: 32px;
-        height: 32px;
-        font-size: 14px;
+    .wizard-progress .step-divider {
+        display: none;
+    }
+
+    .card-body {
+        padding: 20px 15px;
+    }
+
+    .signature-modal {
+        width: 95%;
+    }
+
+    .signature-modal-footer {
+        justify-content: center;
     }
 }
 
-/* Review Summary */
-#review-summary {
-    background: #f8f9fa;
-    border-radius: 8px;
+/* Unit Assessment Card */
+.unit-assessment-card {
+    background:  #f8f9fa;
+    border-radius: 12px;
+    padding: 25px;
+    border: 1px solid #e9ecef;
+}
+
+.unit-header {
+    border-bottom: 2px solid #0d6efd;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.assessment-table {
+    background: white;
+}
+
+.assessment-table td,
+.assessment-table th {
+    vertical-align: middle;
+}
+
+/* Portfolio Upload Section */
+.portfolio-upload-section {
+    background: white;
     padding: 20px;
+    border-radius: 8px;
+    border: 2px dashed #dee2e6;
 }
 
-#review-summary h6 {
-    color: #0d6efd;
-    margin-top: 15px;
-    margin-bottom: 10px;
-}
-
-#review-summary .summary-item {
-    margin-bottom: 8px;
-}
-
-#review-summary .summary-item strong {
-    display: inline-block;
-    min-width: 200px;
-}
-
-/* Dokumen Item */
-.dokumen-item {
+.portfolio-item {
+    padding: 15px;
     background: #f8f9fa;
-    padding: 10px;
-    border-radius: 4px;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+}
+
+.portfolio-item: not(:last-child) {
     margin-bottom: 10px;
 }
 
-/* Form Improvements */
-.form-label {
-    font-weight: 500;
-    margin-bottom: 6px;
-}
-
-.text-danger {
-    color: #dc3545;
-}
-
-/* Card Header Colors */
-.card-header.bg-primary {
-    background-color: #0d6efd !important;
-}
-
-/* Loading Spinner */
-.loading-spinner {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    border-top-color: white;
-    animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
+.btn-add-portfolio {
+    margin-top: 10px;
 }

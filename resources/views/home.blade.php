@@ -120,7 +120,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link js-scroll-trigger" href="{{ url('Berita') }}">Berita</a>
+                        <a class="nav-link js-scroll-trigger" href="{{ url('berita') }}">Berita</a>
                     <li class="nav-item">
                         <a class="nav-link js-scroll-trigger" href="{{ url('pendaftaran') }}">Daftar</a>
                     </li>
@@ -234,14 +234,14 @@
     <div class="kategori-strip">
         <div class="container d-flex justify-content-between align-items-center px-4">
             <div class="d-flex align-items-center justify-content-center flex-grow-1 kategori-list">
-                <button type="button" class="kategori-link active" data-filter="informasi">
-                    Informasi Dan Komunikasi
+               <button type="button" class="kategori-link active" data-filter="informasi-dan-komunikasi">
+                Informasi Dan Komunikasi
                 </button>
-                <button type="button" class="kategori-link" data-filter="perkantoran">
-                    Administrasi Profesional
+                <button type="button" class="kategori-link" data-filter="perkantoran-digital">
+                Administrasi Profesional
                 </button>
-                <button type="button" class="kategori-link" data-filter="marketing">
-                    Pemasaran
+                <button type="button" class="kategori-link" data-filter="digital-marketing">
+                Pemasaran
                 </button>
                 <a href="{{ url('Skema.index') }}" class="kategori-seeall">Lihat Semua →</a>
             </div>
@@ -259,9 +259,8 @@
                         <div class="card skema-card h-100 shadow-sm border-0">
                             {{-- asumsikan $program->gambar menyimpan path relatif storage,
                                  misal "programs/operator-komputer.png" --}}
-                            <img src="{{ asset('storage/'.$program->gambar) }}"
-                                 class="card-img-top"
-                                 alt="{{ $program->nama }}">
+                           <img src="{{ Storage::url($program->gambar) }}" class="card-img-top" alt="{{ $program->nama }}">
+
                             <div class="card-body d-flex flex-column">
                                 <h5 class="card-title mb-1">{{ $program->nama }}</h5>
                                 <p class="card-text text-muted small mb-3">
@@ -291,17 +290,21 @@
             </div>
 
             <div class="row">
-                @foreach ($articles as $article)
+                @foreach ($beritas as $berita)
                     <div class="col-md-4 col-sm-6 mb-4">
-                        <a href="{{ route('artikel.show', $article->slug) }}" class="blog-card d-block">
+                        <a href="{{ route('berita.show', $berita->slug) }}" class="blog-card d-block">
                             <figure class="mb-0">
                                 {{-- asumsikan $article->thumbnail menyimpan path storage --}}
-                                <img src="{{ asset('storage/'.$article->thumbnail) }}"
-                                     alt="{{ $article->judul }}" class="img-fluid">
+                                <img
+                                    src="{{ Storage::url($berita->gambar) }}"
+                                    alt="{{ $berita->judul }}"
+                                    class="img-fluid"
+                                />
+
                                 <figcaption>
-                                    <h3 class="blog-title">{{ $article->judul }}</h3>
+                                    <h3 class="blog-title">{{ $berita->judul }}</h3>
                                     <p class="blog-excerpt">
-                                        {{ $article->excerpt }}
+                                        {{ $berita->ringkasan }}
                                     </p>
                                 </figcaption>
                             </figure>
@@ -380,6 +383,7 @@
     const navToggle = document.querySelector('.mobile-nav-toggle');
     const navMenu = document.querySelector('#navbar ul');
 
+
     if (navToggle && navMenu) {
         navToggle.addEventListener('click', () => {
             navMenu.classList.toggle('show');
@@ -435,25 +439,24 @@
         const links = document.querySelectorAll('.kategori-link');
         const items = document.querySelectorAll('.kategori-item');
 
-        function filterKategori(filter) {
-            links.forEach(link => {
-                link.classList.toggle('active', link.dataset.filter === filter);
-            });
+       function filterKategori(filter) {
+    links.forEach(link => {
+        link.classList.toggle('active', link.dataset.filter === filter);
+    });
 
-            items.forEach(item => {
-                if (filter === 'all') {
-                    item.classList.remove('d-none');
-                    return;
-                }
-                const katArray = (item.dataset.kategori || '').split(' ');
-                const match = katArray.includes(filter);
-                if (match) {
-                    item.classList.remove('d-none');
-                } else {
-                    item.classList.add('d-none');
-                }
-            });
+    items.forEach(item => {
+        if (filter === 'all') {
+            item.classList.remove('d-none');
+            return;
         }
+
+        const kat = (item.dataset.kategori || '').trim();
+        const match = (kat === filter);
+
+        item.classList.toggle('d-none', !match);
+    });
+}
+
 
         links.forEach(link => {
             link.addEventListener('click', function () {
@@ -469,6 +472,8 @@
         const pre = document.getElementById("preloader");
         if (pre) pre.style.display = "none";
     });
+
+
 </script>
 </body>
 </html>

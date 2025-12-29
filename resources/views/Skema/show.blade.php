@@ -146,17 +146,13 @@
                     </div>
                 </div>
 
-                <div class="col-lg-4 text-lg-right mt-3 mt-lg-0 skema-actions">
-                    <a href="{{ url('daftar') }}" class="btn btn-skema-primary mb-2">
-                        <i class="bi bi-check2-circle mr-1"></i> Daftar Uji Kompetensi
-                    </a>
 
                     @auth
-                        <a href="{{ route('pengajuan.create', $program->id) }}" class="btn btn-success mb-2">
+                        <a href="{{ route('pengajuan.pilih-skema', $program->id) }}" class="btn btn-success mb-2">
                             <i class="bi bi-file-earmark-plus mr-1"></i> Daftar Skema Ini
                         </a>
                     @else
-                        <a href="{{ route('login', ['intended' => route('pengajuan.create', $program->id)]) }}" class="btn btn-success mb-2">
+                        <a href="{{ route('login', ['intended' => route('pengajuan.pilih-skema', $program->id)]) }}" class="btn btn-success mb-2">
                             <i class="bi bi-file-earmark-plus mr-1"></i> Daftar Skema Ini
                         </a>
                     @endauth

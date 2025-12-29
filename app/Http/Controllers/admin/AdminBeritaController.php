@@ -26,27 +26,28 @@ class AdminBeritaController extends Controller
         return view('admin.Berita.create', compact('berita'));
     }
 
-    public function store(Request $request)
-    {
-        $data = $this->validateData($request);
+  public function store(Request $request)
+{
+    $data = $this->validateData($request);
 
-        // slug otomatis dari judul
-        $data['slug'] = Str::slug($data['judul']);
+    $data['slug'] = Str::slug($data['judul']);
+    $data['is_published'] = $request->boolean('is_published', false);
 
-        // upload gambar kalau ada
-        if ($request->hasFile('gambar')) {
-            $data['gambar'] = $request->file('gambar')->store('berita', 'public');
-        }
+    // HAPUS nilai gambar dari validate kalau ada (biar gak false/0)
+    unset($data['gambar']);
 
-        // checkbox publish
-        $data['is_published'] = $request->boolean('is_published', false);
-
-        Berita::create($data);
-
-        return redirect()
-            ->route('admin.berita.index')
-            ->with('success', 'Berita berhasil ditambahkan.');
+    // ambil path dari file upload langsung (ini yang benar)
+    if ($request->file('gambar')) {
+        $data['gambar'] = $request->file('gambar')->store('berita', 'public');
+    } else {
+        $data['gambar'] = null;
     }
+
+    Berita::create($data);
+
+    return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil ditambahkan.');
+}
+
 
     public function edit(Berita $beritum)
     {
@@ -57,27 +58,34 @@ class AdminBeritaController extends Controller
     }
 
     public function update(Request $request, Berita $beritum)
-    {
-        $berita = $beritum;
-        $data   = $this->validateData($request, $berita->id);
+{
+    $berita = $beritum;
+    $data   = $this->validateData($request, $berita->id);
 
-        $data['slug'] = Str::slug($data['judul']);
-        $data['is_published'] = $request->boolean('is_published', false);
+    $data['slug'] = Str::slug($data['judul']);
+    $data['is_published'] = $request->boolean('is_published', false);
 
-        // ganti gambar jika upload baru
-        if ($request->hasFile('gambar')) {
-            if ($berita->gambar && Storage::disk('public')->exists($berita->gambar)) {
-                Storage::disk('public')->delete($berita->gambar);
-            }
-            $data['gambar'] = $request->file('gambar')->store('berita', 'public');
+    // ✅ penting: jangan update gambar dari hasil validate (bisa false/0)
+    unset($data['gambar']);
+
+
+    // ✅ ganti gambar jika upload baru
+    if ($request->file('gambar')) {
+        if ($berita->gambar && $berita->gambar !== '0' && Storage::disk('public')->exists($berita->gambar)) {
+            Storage::disk('public')->delete($berita->gambar);
         }
-
-        $berita->update($data);
-
-        return redirect()
-            ->route('admin.berita.index')
-            ->with('success', 'Berita berhasil diperbarui.');
+        $data['gambar'] = $request->file('gambar')->store('berita', 'public');
     }
+
+
+
+    $berita->update($data);
+
+    return redirect()
+        ->route('admin.berita.index')
+        ->with('success', 'Berita berhasil diperbarui.');
+}
+
 
     public function destroy(Berita $beritum)
     {

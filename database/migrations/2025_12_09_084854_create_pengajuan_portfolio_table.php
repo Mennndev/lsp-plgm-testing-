@@ -8,28 +8,26 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('pengajuan_dokumen', function (Blueprint $table) {
+        Schema:: create('pengajuan_portfolio', function (Blueprint $table) {
             $table->id();
 
-            // pengajuan_skema.id = bigint
             $table->unsignedBigInteger('pengajuan_skema_id');
             $table->foreign('pengajuan_skema_id')
                   ->references('id')
                   ->on('pengajuan_skema')
                   ->onDelete('cascade');
 
-            $table->enum('jenis_dokumen', [
-                'portfolio',
-                'sertifikat',
-                'cv',
-                'ktp',
-                'ijazah',
-                'foto',
-                'lainnya'
-            ]);
+            $table->unsignedBigInteger('unit_kompetensi_id');
+            $table->foreign('unit_kompetensi_id')
+                  ->references('id')
+                  ->on('unit_kompetensis')
+                  ->onDelete('cascade');
+
             $table->string('nama_file');
             $table->string('path');
-            $table->unsignedBigInteger('ukuran')->comment('Size in bytes');
+            $table->unsignedBigInteger('ukuran'); // dalam bytes
+            $table->string('tipe_file'); // pdf, jpg, png, docx
+            $table->text('deskripsi')->nullable();
 
             $table->timestamps();
         });
@@ -37,6 +35,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema:: dropIfExists('pengajuan_dokumen');
+        Schema::dropIfExists('pengajuan_portfolio');
     }
 };

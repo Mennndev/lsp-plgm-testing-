@@ -23,6 +23,7 @@ class PengajuanApl01 extends Model
         'telepon_kantor',
         'email',
         'kualifikasi_pendidikan',
+        'pekerjaan',
         'nama_institusi',
         'jabatan',
         'alamat_kantor',

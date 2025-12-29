@@ -33,11 +33,9 @@
 
 <div class="mb-3">
     <label class="form-label">Gambar Utama</label>
-    @if(!empty($berita->gambar))
-        <div class="mb-2">
-            <img src="{{ asset('storage/'.$berita->gambar) }}" alt="Gambar" style="max-height: 150px;">
-        </div>
-    @endif
+   @if(!empty($berita->gambar) && $berita->gambar !== '0')
+  <img src="{{ Storage::url($berita->gambar) }}" style="max-height:150px;">
+@endif
     <input type="file" name="gambar"
            class="form-control @error('gambar') is-invalid @enderror">
     <div class="form-text">Format: JPG/PNG, maks 2 MB.</div>

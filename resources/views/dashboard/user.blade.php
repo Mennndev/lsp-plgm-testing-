@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Dashboard LSP - Pengguna</title>
 
     {{-- Bootstrap & FontAwesome (boleh diganti ke asset lokal kalau mau) --}}
@@ -185,11 +186,11 @@
                         <h1><i class="fa fa-file-text-o"></i> Pengajuan Skema</h1>
                         <p>Daftar skema sertifikasi yang diajukan.</p>
                     </div>
-                    <div class="pull-right">
-                        <a href="{{ route('Skema.index') }}" class="btn btn-page-header">
-                            <i class="fa fa-plus"></i> Ajukan Skema Baru
-                        </a>
-                    </div>
+                <div class="pull-right">
+                    <a href="{{ route('pengajuan.pilih-skema') }}" class="btn btn-page-header">
+                        <i class="fa fa-plus"></i> Ajukan Skema Baru
+                    </a>
+                </div>
                     <div class="clearfix"></div>
                 </div>
 
@@ -224,7 +225,7 @@
                                 <td colspan="5" class="text-center empty-table">
                                     <i class="fa fa-inbox empty-icon"></i>
                                     <p>Belum ada pengajuan skema</p>
-                                    <a href="{{ route('Skema.index') }}" class="btn btn-primary btn-sm">Ajukan Skema Sekarang</a>
+                                    <a href="{{ route('pengajuan.pilih-skema') }}" class="btn btn-primary btn-sm">Ajukan Skema Sekarang</a>
                                 </td>
                             </tr>
                         @endforelse
@@ -344,5 +345,7 @@
         });
     });
 </script>
+
+
 </body>
 </html>

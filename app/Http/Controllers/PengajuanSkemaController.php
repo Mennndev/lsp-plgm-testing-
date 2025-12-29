@@ -8,33 +8,45 @@ use App\Models\ProgramPelatihan;
 use App\Models\PengajuanApl01;
 use App\Models\PengajuanApl02;
 use App\Models\PengajuanDokumen;
+use App\Models\User;
+use App\Models\PengajuanPortfolio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class PengajuanSkemaController extends Controller
 {
-    public function create($programId)
-    {
-        // Check if user is authenticated
-        if (!auth()->check()) {
-            return redirect()->route('login')
-                ->with('intended', route('pengajuan.create', $programId))
-                ->with('error', 'Silakan login terlebih dahulu untuk mendaftar.');
-        }
 
-        // Check if program exists
+    public function pilihSkema()
+    {
+        // Ambil semua skema yang published
+        $programs = ProgramPelatihan:: where('is_published', 1)
+            ->orderBy('nama', 'asc')
+            ->get();
+
+        // Ambil skema yang sudah pernah diajukan user ini
+        $pengajuanUser = PengajuanSkema::where('user_id', Auth::id())
+            ->pluck('program_pelatihan_id')
+            ->toArray();
+
+        return view('pengajuan.pilih-skema', compact('programs', 'pengajuanUser'));
+    }
+
+     public function create($programId)
+    {
+        // Cari program
         $program = ProgramPelatihan::with('units')->findOrFail($programId);
 
-        // Check if user already has pending submission for this program
-        $existingPending = PengajuanSkema::where('user_id', auth()->id())
+        // Cek apakah user sudah pernah mengajukan skema ini (status pending/approved)
+        $existingPengajuan = PengajuanSkema::where('user_id', Auth::id())
             ->where('program_pelatihan_id', $programId)
-            ->whereIn('status', ['pending', 'draft'])
+            ->whereIn('status', ['pending', 'approved'])
             ->first();
 
-        if ($existingPending) {
-            return redirect()->route('dashboard.user')
-                ->with('warning', 'Anda sudah memiliki pengajuan yang sedang diproses untuk program ini.');
+        if ($existingPengajuan) {
+            return redirect()->route('dashboard')
+                ->with('error', 'Anda sudah mengajukan skema ini dan sedang dalam proses review.');
         }
 
         return view('pengajuan.create', compact('program'));
@@ -42,15 +54,16 @@ class PengajuanSkemaController extends Controller
 
     public function store(StorePengajuanRequest $request)
     {
+
         DB::beginTransaction();
-        
+
         try {
             // Create pengajuan_skema
             $pengajuan = PengajuanSkema::create([
                 'user_id' => auth()->id(),
                 'program_pelatihan_id' => $request->program_pelatihan_id,
                 'status' => 'pending',
-                'tanggal_pengajuan' => now(),
+                'tanggal_pengajuan' => now('Asia/Jakarta'),
             ]);
 
             // Create pengajuan_apl01
@@ -68,10 +81,11 @@ class PengajuanSkemaController extends Controller
                 'telepon_kantor' => $request->telepon_kantor,
                 'email' => $request->email,
                 'kualifikasi_pendidikan' => $request->kualifikasi_pendidikan,
+                'pekerjaan' => $request->pekerjaan,
                 'nama_institusi' => $request->nama_institusi,
                 'jabatan' => $request->jabatan,
                 'alamat_kantor' => $request->alamat_kantor,
-                'telepon_kantor_pekerjaan' => $request->telepon_kantor_pekerjaan,
+                'telepon_kantor' => $request->telepon_kantor_pekerjaan,
                 'fax' => $request->fax,
                 'email_kantor' => $request->email_kantor,
                 'nama_sertifikat' => $request->nama_sertifikat,
@@ -92,6 +106,32 @@ class PengajuanSkemaController extends Controller
                     ]);
                 }
             }
+
+            if ($request->hasFile('portfolio')) {
+    foreach ($request->file('portfolio') as $unitId => $files) {
+        foreach ($files as $index => $file) {
+            if ($file && $file->isValid()) {
+                $path = $file->store('pengajuan_portfolio', 'public');
+
+                // Get deskripsi jika ada
+                $deskripsi = null;
+                if (isset($request->portfolio_deskripsi[$unitId][$index])) {
+                    $deskripsi = $request->portfolio_deskripsi[$unitId][$index];
+                }
+
+                PengajuanPortfolio:: create([
+                    'pengajuan_skema_id' => $pengajuan->id,
+                    'unit_kompetensi_id' => $unitId,
+                    'nama_file' => $file->getClientOriginalName(),
+                    'path' => $path,
+                    'ukuran' => $file->getSize(),
+                    'tipe_file' => $file->getClientOriginalExtension(),
+                    'deskripsi' => $deskripsi,
+                ]);
+            }
+        }
+    }
+}
 
             // Handle file uploads
             if ($request->hasFile('dokumen')) {
@@ -139,7 +179,7 @@ class PengajuanSkemaController extends Controller
     {
         // Save draft data to session
         $request->session()->put('pengajuan_draft', $request->all());
-        
+
         return response()->json([
             'success' => true,
             'message' => 'Draft berhasil disimpan.'

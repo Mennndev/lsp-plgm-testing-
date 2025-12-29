@@ -14,9 +14,9 @@ class Homecontroller extends Controller
     public function index()
 {
     $programs = ProgramPelatihan::all();
-    $articles = Berita::latest()->take(3)->get();
+    $beritas = Berita::latest()->take(3)->get();
 
-    return view('home', compact('programs', 'articles'));
+    return view('home', compact('programs', 'beritas'));
 }
 
 
