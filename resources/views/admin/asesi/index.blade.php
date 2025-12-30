@@ -51,9 +51,9 @@
                 </a>
             </li>
 
-            <li class="{{ request()->is('admin/pengguna*') ? 'active' : '' }}">
-                <a href="{{ url('admin/pengguna') }}">
-                    <i class="bi bi-person-gear"></i> Pengguna & Role
+            <li class="{{ request() ->is('admin/pengajuan*') ? 'active' : '' }}">
+                <a href="{{ url('admin/pengajuan') }}">
+                    <i class="bi bi-file-earmark-text"></i> Pengajuan Sertifikasi
                 </a>
             </li>
 

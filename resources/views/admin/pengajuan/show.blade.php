@@ -42,7 +42,7 @@
                 </div>
                 <div class="col-md-6">
                     <p>
-                        <strong>Status:</strong> 
+                        <strong>Status:</strong>
                         <span class="badge bg-{{ $pengajuan->status_badge_color }} fs-6">
                             {{ $pengajuan->status_label }}
                         </span>
@@ -139,7 +139,7 @@
             <div class="mb-4">
                 <h6 class="font-weight-bold">{{ $index + 1 }}. {{ $apl02->unitKompetensi->judul_unit }}</h6>
                 <p class="small text-muted">Kode Unit: {{ $apl02->unitKompetensi->kode_unit }}</p>
-                
+
                 @if($apl02->self_assessment)
                 <div class="table-responsive">
                     <table class="table table-bordered table-sm">
@@ -265,3 +265,7 @@
     </div>
 </div>
 @endsection
+<!-- JS -->
+<script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
+<script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>  ← TAMBAHKAN INI
+<script src="{{ asset('js/all.js') }}"></script>

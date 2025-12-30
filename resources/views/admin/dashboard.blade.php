@@ -9,8 +9,7 @@
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ asset('css/fontawesome.min.css') }}">
 
     <link rel="stylesheet" href="{{ asset('css/admin-dashboard.css') }}">
 </head>
@@ -45,11 +44,12 @@
                 </a>
             </li>
 
-            <li class="{{ request()->is('admin/pengguna*') ? 'active' : '' }}">
-                <a href="{{ url('admin/pengguna') }}">
-                    <i class="bi bi-person-gear"></i> Pengguna & Role
+             <li class="{{ request() ->is('admin/pengajuan*') ? 'active' : '' }}">
+                <a href="{{ url('admin/pengajuan') }}">
+                    <i class="bi bi-file-earmark-text"></i> Pengajuan Sertifikasi
                 </a>
             </li>
+
              <li class="{{ request()->is('admin/pengguna*') ? 'active' : '' }}">
                 <a href="{{ url('admin/berita') }}">
                     <i class="bi bi-newspaper"></i> Berita
