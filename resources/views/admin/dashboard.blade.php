@@ -213,16 +213,7 @@
                                 <td>{{ $pengajuan->user->name ?? $pengajuan->user->nama ?? '-' }}</td>
                                 <td>{{ Str::limit($pengajuan->program->nama ?? '-', 20) }}</td>
                                 <td>
-                                    @php
-                                        $statusClass = match($pengajuan->status) {
-                                            'pending' => 'bg-warning text-dark',
-                                            'approved' => 'bg-success',
-                                            'rejected' => 'bg-danger',
-                                            'review' => 'bg-info',
-                                            default => 'bg-secondary'
-                                        };
-                                    @endphp
-                                    <span class="badge {{ $statusClass }}">
+                                    <span class="badge bg-{{ $pengajuan->status_badge_color }} {{ $pengajuan->status_badge_color === 'warning' ? 'text-dark' : '' }}">
                                         {{ ucfirst($pengajuan->status ?? 'pending') }}
                                     </span>
                                 </td>
