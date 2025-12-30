@@ -23,11 +23,11 @@ The application was experiencing conflicts between Bootstrap 4 and Bootstrap 5:
 
 **After:**
 ```blade
-<!-- Bootstrap 5 CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap 5 CSS with SRI hash -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
-<!-- Font Awesome 6.5.0 -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<!-- Font Awesome 6.5.0 with SRI hash -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer">
 ```
 
 #### JavaScript Changes
@@ -39,11 +39,11 @@ The application was experiencing conflicts between Bootstrap 4 and Bootstrap 5:
 
 **After:**
 ```blade
-<!-- jQuery (optional, for legacy code) -->
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<!-- jQuery with SRI hash -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
-<!-- Bootstrap 5 Bundle (includes Popper) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap 5 Bundle with SRI hash (includes Popper) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 ```
 
 #### HTML Attribute Changes
@@ -158,3 +158,4 @@ If issues occur, revert by:
 - jQuery is still loaded for legacy code compatibility
 - Font Awesome upgraded from 4.7.0 to 6.5.0 (icon names may differ, but `bi-*` Bootstrap Icons are primarily used)
 - The `@stack('styles')` directive was added to allow custom styles to be injected from child views
+- **Security**: All CDN links include SRI (Subresource Integrity) hashes to prevent tampering and ensure resource integrity
