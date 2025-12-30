@@ -58,14 +58,50 @@
                 </div>
 
                 <ul class="nav navbar-nav navbar-right">
-                    {{-- Notification --}}
-                    <li class="notification-badge">
-                        <a href="#">
+                    {{-- Notification Dropdown --}}
+                    <li class="dropdown notification-dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-bell-o"></i>
                             @if($notificationCount > 0)
-                                <span class="badge">{{ $notificationCount }}</span>
+                                <span class="badge badge-danger">{{ $notificationCount }}</span>
                             @endif
                         </a>
+                        <div class="dropdown-menu dropdown-menu-right notification-menu">
+                            <div class="notification-header">
+                                <span>Notifikasi</span>
+                                @if($notificationCount > 0)
+                                    <form action="{{ route('notifications.readAll') }}" method="POST" class="d-inline">
+                                        @csrf
+                                        <button type="submit" class="btn btn-link btn-sm p-0">Tandai semua dibaca</button>
+                                    </form>
+                                @endif
+                            </div>
+                            <div class="notification-body">
+                                @forelse($latestNotifications as $notif)
+                                    <a href="{{ route('notifications.read', $notif->id) }}" 
+                                       class="notification-item {{ $notif->is_read ? '' : 'unread' }}">
+                                        <div class="notification-icon text-{{ $notif->type }}">
+                                            <i class="bi {{ $notif->icon }}"></i>
+                                        </div>
+                                        <div class="notification-content">
+                                            <p class="notification-title">{{ $notif->title }}</p>
+                                            <p class="notification-text">{{ \Illuminate\Support\Str::limit($notif->message, 50) }}</p>
+                                            <small class="notification-time">{{ $notif->time_ago }}</small>
+                                        </div>
+                                    </a>
+                                @empty
+                                    <div class="notification-empty">
+                                        <i class="fa fa-bell-slash-o"></i>
+                                        <p>Tidak ada notifikasi</p>
+                                    </div>
+                                @endforelse
+                            </div>
+                            @if($latestNotifications->count() > 0)
+                                <div class="notification-footer">
+                                    <a href="{{ route('notifications.index') }}">Lihat Semua Notifikasi</a>
+                                </div>
+                            @endif
+                        </div>
                     </li>
 
                     {{-- User Dropdown --}}

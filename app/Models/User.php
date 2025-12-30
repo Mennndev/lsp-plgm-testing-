@@ -55,4 +55,19 @@ class User extends Authenticatable
 {
     $this->notify(new ResetPasswordNotification($token));
 }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class)->orderByDesc('created_at');
+    }
+
+    public function unreadNotifications()
+    {
+        return $this->notifications()->where('is_read', false);
+    }
+
+    public function unreadNotificationCount()
+    {
+        return $this->unreadNotifications()->count();
+    }
 }

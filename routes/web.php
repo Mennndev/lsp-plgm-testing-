@@ -18,6 +18,7 @@ use App\Http\Controllers\admin\ProgramPelatihanController;
 use App\Http\Controllers\admin\AdminBeritaController;
 use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\PengajuanSkemaController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -116,6 +117,13 @@ Route::middleware(['auth'])->group(function () {
 
     Route::delete('/pengajuan/{id}', [PengajuanSkemaController::class, 'destroy'])
         ->name('pengajuan.destroy');
+
+    // Notification routes
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::post('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.readAll');
+    Route::delete('/notifications/{id}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
+    Route::get('/notifications/latest', [NotificationController::class, 'getLatest'])->name('notifications.latest');
 
 });
 
