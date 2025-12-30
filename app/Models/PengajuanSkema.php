@@ -106,4 +106,24 @@ class PengajuanSkema extends Model
     {
         return $this->hasMany(PengajuanPortfolio:: class);
     }
+
+    public function pengajuanPersyaratanDasar()
+    {
+        return $this->hasMany(PengajuanPersyaratanDasar::class);
+    }
+
+    public function pengajuanBuktiAdministratif()
+    {
+        return $this->hasMany(PengajuanBuktiAdministratif::class);
+    }
+
+    public function pengajuanBuktiPortofolio()
+    {
+        return $this->hasMany(PengajuanBuktiPortofolio::class);
+    }
+
+    public function pengajuanBuktiKompetensi()
+    {
+        return $this->hasMany(PengajuanBuktiKompetensi::class);
+    }
 }

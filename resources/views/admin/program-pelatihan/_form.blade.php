@@ -394,6 +394,9 @@
 
 </div>
 
+{{-- Include Persyaratan Management Section (New 6-Tab System) --}}
+@include('admin.program-pelatihan._persyaratan_section')
+
 <div class="mt-3">
     <button type="submit" class="btn btn-primary">
         <i class="bi bi-save me-1"></i> Simpan
