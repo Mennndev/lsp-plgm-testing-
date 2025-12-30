@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\PengajuanSkema;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
 
 class PengajuanController extends Controller
@@ -65,7 +66,7 @@ class PengajuanController extends Controller
             'catatan_admin' => 'nullable|string'
         ]);
 
-        $pengajuan = PengajuanSkema::findOrFail($id);
+        $pengajuan = PengajuanSkema::with(['user', 'program'])->findOrFail($id);
         
         $pengajuan->update([
             'status' => 'approved',
@@ -74,8 +75,11 @@ class PengajuanController extends Controller
             'approved_by' => auth()->id(),
         ]);
 
+        // Kirim notifikasi ke user
+        NotificationService::sendPengajuanApproved($pengajuan->user, $pengajuan);
+
         return redirect()->route('admin.pengajuan.show', $id)
-            ->with('success', 'Pengajuan berhasil disetujui.');
+            ->with('success', 'Pengajuan berhasil disetujui dan notifikasi telah dikirim ke user.');
     }
 
     public function reject($id, Request $request)
@@ -86,7 +90,7 @@ class PengajuanController extends Controller
             'catatan_admin.required' => 'Catatan admin wajib diisi untuk penolakan.'
         ]);
 
-        $pengajuan = PengajuanSkema::findOrFail($id);
+        $pengajuan = PengajuanSkema::with(['user', 'program'])->findOrFail($id);
         
         $pengajuan->update([
             'status' => 'rejected',
@@ -94,7 +98,10 @@ class PengajuanController extends Controller
             'approved_by' => auth()->id(),
         ]);
 
+        // Kirim notifikasi ke user
+        NotificationService::sendPengajuanRejected($pengajuan->user, $pengajuan, $request->catatan_admin);
+
         return redirect()->route('admin.pengajuan.show', $id)
-            ->with('success', 'Pengajuan berhasil ditolak.');
+            ->with('success', 'Pengajuan berhasil ditolak dan notifikasi telah dikirim ke user.');
     }
 }

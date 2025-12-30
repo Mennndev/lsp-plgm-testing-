@@ -29,14 +29,19 @@ class DashboardUserController extends Controller
         
         $riwayatList   = collect();  // data untuk tabel "Riwayat Asesmen"
 
-        $notificationCount = 0;      // kalau nanti ada notifikasi, isi dari DB
+        // Hitung notifikasi yang belum dibaca
+        $notificationCount = $user->unreadNotificationCount();
+        
+        // Ambil 5 notifikasi terbaru untuk dropdown
+        $latestNotifications = $user->notifications()->take(5)->get();
 
         return view('dashboard.user', compact(
             'user',
             'asesmenList',
             'pengajuanList',
             'riwayatList',
-            'notificationCount'
+            'notificationCount',
+            'latestNotifications'
         ));
     }
 
