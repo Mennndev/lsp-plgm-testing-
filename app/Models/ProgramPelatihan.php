@@ -47,4 +47,19 @@ class ProgramPelatihan extends Model
         'kode_skema'    // PK di program_pelatihans
     );
 }
+
+    public function persyaratanDasar()
+    {
+        return $this->hasMany(PersyaratanDasar::class)->orderBy('urutan');
+    }
+
+    public function buktiAdministratif()
+    {
+        return $this->hasMany(BuktiAdministratif::class)->orderBy('urutan');
+    }
+
+    public function buktiPortofolioTemplate()
+    {
+        return $this->hasMany(BuktiPortofolioTemplate::class)->orderBy('urutan');
+    }
 }
