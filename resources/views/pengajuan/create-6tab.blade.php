@@ -7,8 +7,8 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Pengajuan Skema - {{ $program->nama }}</title>
 
-  {{-- Bootstrap CSS --}}
-  <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+  {{-- Bootstrap 5 CSS --}}
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   {{-- Bootstrap Icon --}}
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
   {{-- Custom CSS --}}
@@ -762,8 +762,12 @@
 </div>
 
 {{-- Scripts --}}
-<script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
-<script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+<!-- jQuery (for legacy plugins) -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+<!-- Bootstrap 5 Bundle (includes Popper) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
 <script src="{{ asset('js/pengajuan-6tab.js') }}"></script>
 
 </body>
