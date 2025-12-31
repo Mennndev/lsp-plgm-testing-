@@ -89,7 +89,7 @@
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{{ url('/') }}">Beranda</a></li>
 
           <li class="nav-item dropdown">
-            <a href="#" class="nav-link" id="profilDropdown" role="button" data-bs-toggle="dropdown"
+            <a href="#" class="nav-link dropdown-toggle" id="profilDropdown" role="button" data-bs-toggle="dropdown"
                aria-haspopup="true" aria-expanded="false">
               Profil
             </a>
@@ -102,7 +102,7 @@
           </li>
 
           <li class="nav-item dropdown">
-            <a href="#" class="nav-link" id="sertifikasiDropdown" role="button" data-bs-toggle="dropdown"
+            <a href="#" class="nav-link dropdown-toggle" id="sertifikasiDropdown" role="button" data-bs-toggle="dropdown"
                aria-haspopup="true" aria-expanded="false">
               Sertifikasi
             </a>

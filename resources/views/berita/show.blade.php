@@ -89,7 +89,7 @@
           <li class="nav-item dropdown">
             <a href="#" class="nav-link dropdown-toggle" id="profilDropdown" role="button" data-bs-toggle="dropdown"
                aria-haspopup="true" aria-expanded="false">
-              Profil <i class="bi dropdown-toggle" data-bs-toggle="dropdown"></i>
+              Profil
             </a>
             <div class="dropdown-menu" aria-labelledby="profilDropdown">
               <a class="dropdown-item" href="{{ url('tentang-kami') }}">Tentang LSP</a>
@@ -100,7 +100,7 @@
           </li>
 
           <li class="nav-item dropdown">
-            <a href="#" class="nav-link" id="sertifikasiDropdown" role="button" data-bs-toggle="dropdown"
+            <a href="#" class="nav-link dropdown-toggle" id="sertifikasiDropdown" role="button" data-bs-toggle="dropdown"
                aria-haspopup="true" aria-expanded="false">
               Sertifikasi
             </a>
