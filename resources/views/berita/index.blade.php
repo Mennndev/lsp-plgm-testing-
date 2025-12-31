@@ -20,8 +20,8 @@
   <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon" />
   <link rel="apple-touch-icon" href="{{ asset('images/apple-touch-icon.png') }}">
 
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   <!--Bootstrap Icon-->
   <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -91,7 +91,7 @@
           <li class="nav-item dropdown">
             <a href="#" class="nav-link" id="profilDropdown" role="button" data-toggle="dropdown"
                aria-haspopup="true" aria-expanded="false">
-              Profil <i class="bi dropdown-toggle" data-toggle="dropdown"></i>
+              Profil
             </a>
             <div class="dropdown-menu" aria-labelledby="profilDropdown">
               <a class="dropdown-item" href="{{ url('tentang-kami') }}">Tentang LSP</a>
@@ -104,7 +104,7 @@
           <li class="nav-item dropdown">
             <a href="#" class="nav-link" id="sertifikasiDropdown" role="button" data-toggle="dropdown"
                aria-haspopup="true" aria-expanded="false">
-              Sertifikasi <i class="bi dropdown-toggle" data-toggle="dropdown"></i>
+              Sertifikasi
             </a>
             <div class="dropdown-menu" aria-labelledby="sertifikasiDropdown">
               <a class="dropdown-item" href="{{ route('Skema.index') }}">Skema Sertifikasi</a>
@@ -245,8 +245,14 @@
   <i class="fa fa-angle-up"></i>
 </a>
 
+<!-- jQuery (for legacy plugins) -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+<!-- Bootstrap 5 Bundle (includes Popper) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+<!-- Other legacy JS plugins -->
 <!-- ALL JS FILES -->
-<script src="{{ asset('js/all.js') }}"></script>
 <script src="{{ asset('js/jquery.mobile.customized.min.js') }}"></script>
 <script src="{{ asset('js/jquery.easing.1.3.js') }}"></script>
 <script src="{{ asset('js/parallaxie.js') }}"></script>
