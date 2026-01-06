@@ -264,6 +264,7 @@
 <script src="{{ asset('js/parallaxie.js') }}"></script>
 <script src="{{ asset('js/slick.min.js') }}"></script>
 <script src="{{ asset('js/animated-slider.js') }}"></script>
+<script src="{{ asset('js/imagesloaded.pkgd.min.js') }}"></script>
 <!-- Contact form JavaScript -->
 <script src="{{ asset('js/jqBootstrapValidation.js') }}"></script>
 <script src="{{ asset('js/contact_me.js') }}"></script>

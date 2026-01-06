@@ -13,17 +13,21 @@ return new class extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+
+            // PERUBAHAN DISINI: Gunakan unsignedInteger agar cocok dengan tabel users lama
+            $table->unsignedInteger('user_id');
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('title');
             $table->text('message');
-            $table->string('type')->default('info'); // info, success, warning, danger
-            $table->string('icon')->nullable(); // bi-check-circle, bi-x-circle, etc
-            $table->string('link')->nullable(); // URL untuk redirect saat diklik
-            $table->json('data')->nullable(); // data tambahan jika diperlukan
+            $table->string('type')->default('info');
+            $table->string('icon')->nullable();
+            $table->string('link')->nullable();
+            $table->json('data')->nullable();
             $table->boolean('is_read')->default(false);
             $table->timestamp('read_at')->nullable();
             $table->timestamps();
-            
+
             $table->index(['user_id', 'is_read']);
         });
     }
