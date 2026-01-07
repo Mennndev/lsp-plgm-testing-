@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Pembayaran extends Model
 {
@@ -32,17 +33,17 @@ class Pembayaran extends Model
         'batas_waktu_bayar' => 'datetime',
     ];
 
-    public function pengajuan()
+    public function pengajuan(): BelongsTo
     {
         return $this->belongsTo(PengajuanSkema::class, 'pengajuan_skema_id');
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function verifier()
+    public function verifier(): BelongsTo
     {
         return $this->belongsTo(User::class, 'verified_by');
     }
