@@ -8,10 +8,10 @@
 
     {{-- Bootstrap 5 CSS --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    
+
     {{-- Bootstrap Icons --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    
+
     {{-- Font Awesome --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer">
 
@@ -33,12 +33,12 @@
         <ul class="sidebar-nav">
             <li>
                 <a href="#" class="active menu-link" data-target="beranda">
-                    <i class="fa fa-dashboard"></i> Beranda
+                    <i class="fas fa-tachometer-alt"></i> Beranda
                 </a>
             </li>
             <li>
                 <a href="#" class="menu-link" data-target="pengajuan">
-                    <i class="fa fa-file-text-o"></i> Pengajuan Skema
+                    <i class="far fa-file-lines"></i> Pengajuan Skema
                 </a>
             </li>
             <li>
@@ -56,16 +56,16 @@
             <div class="container-fluid">
                 {{-- Hamburger Toggle --}}
                 <button class="btn btn-link text-dark" type="button" id="sidebarToggle">
-                    <i class="fa fa-bars fs-5"></i>
+                    <i class="fas fa-bars fs-5"></i>
                 </button>
-                
+
                 {{-- Right Side --}}
                 <ul class="navbar-nav ms-auto d-flex flex-row align-items-center">
                     {{-- Notification Dropdown --}}
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle position-relative" href="#" id="notificationDropdown" 
+                        <a class="nav-link dropdown-toggle position-relative" href="#" id="notificationDropdown"
                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa fa-bell-o"></i>
+                            <i class="far fa-bell"></i>
                             @if(($notificationCount ?? 0) > 0)
                                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                     {{ $notificationCount }}
@@ -85,7 +85,7 @@
                             <li><hr class="dropdown-divider m-0"></li>
                             <li class="notification-body" style="max-height: 300px; overflow-y: auto;">
                                 @forelse($latestNotifications ?? [] as $notif)
-                                    <a href="{{ route('notifications.read', $notif->id) }}" 
+                                    <a href="{{ route('notifications.read', $notif->id) }}"
                                        class="dropdown-item d-flex align-items-start py-2 {{ $notif->is_read ? '' : 'bg-light' }}">
                                         <div class="notification-icon me-3 text-{{ $notif->type ?? 'primary' }}">
                                             <i class="bi {{ $notif->icon ?? 'bi-bell' }} fs-5"></i>
@@ -114,7 +114,7 @@
 
                     {{-- User Dropdown --}}
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" 
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown"
                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="https://ui-avatars.com/api/?name={{ urlencode($user->nama ?? $user->name ?? 'User') }}&background=4e73df&color=fff&size=32"
                                  alt="User" class="rounded-circle me-2" width="32" height="32">
@@ -146,7 +146,7 @@
             {{-- BERANDA --}}
             <div id="beranda" class="content-section active">
                 <div class="page-header page-header-beranda">
-                    <h1><i class="fa fa-home"></i> Beranda</h1>
+                    <h1><i class="fas fa-home"></i> Beranda</h1>
                     <p>Ringkasan jadwal asesmen Anda.</p>
                 </div>
 
@@ -364,13 +364,13 @@
         const sidebarToggle = document.getElementById('sidebarToggle');
         const menuToggle = document.getElementById('menu-toggle');
         const wrapper = document.getElementById('wrapper');
-        
+
         if (sidebarToggle) {
             sidebarToggle.addEventListener('click', function() {
                 wrapper.classList.toggle('toggled');
             });
         }
-        
+
         if (menuToggle) {
             menuToggle.addEventListener('click', function() {
                 wrapper.classList.toggle('toggled');
