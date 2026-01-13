@@ -668,11 +668,37 @@
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 
     <script>
-        // Helper function to toggle no results message
-        function updateNoResultsDisplay(visibleCount) {
+        // State management
+        let currentSearchTerm = '';
+        let currentFilter = 'all';
+
+        // Helper function to apply both search and filter
+        function applyFiltersAndSearch() {
+            const cards = document.querySelectorAll('.skema-card');
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                const status = card.getAttribute('data-status');
+                
+                // Check if card matches search term
+                const matchesSearch = !currentSearchTerm || text.includes(currentSearchTerm);
+                
+                // Check if card matches filter
+                const matchesFilter = currentFilter === 'all' || currentFilter === status;
+                
+                // Show card only if it matches both conditions
+                if (matchesSearch && matchesFilter) {
+                    card.style.display = '';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Update no results display
             const cardsGrid = document.getElementById('cardsGrid');
             const noResults = document.getElementById('noResults');
-            const cards = document.querySelectorAll('.skema-card');
             
             if (visibleCount === 0 && cards.length > 0) {
                 cardsGrid.style.display = 'none';
@@ -685,23 +711,10 @@
 
         // Search functionality
         const searchInput = document.getElementById('searchSkema');
-        const cards = document.querySelectorAll('.skema-card');
 
         searchInput.addEventListener('keyup', function() {
-            const searchValue = this.value.toLowerCase();
-            let visibleCount = 0;
-
-            cards.forEach(card => {
-                const text = card.textContent.toLowerCase();
-                if (text.includes(searchValue)) {
-                    card.style.display = '';
-                    visibleCount++;
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-
-            updateNoResultsDisplay(visibleCount);
+            currentSearchTerm = this.value.toLowerCase();
+            applyFiltersAndSearch();
         });
 
         // Filter functionality
@@ -713,39 +726,25 @@
                 filterButtons.forEach(btn => btn.classList.remove('active'));
                 this.classList.add('active');
 
-                const filter = this.getAttribute('data-filter');
-                let visibleCount = 0;
-
-                cards.forEach(card => {
-                    const status = card.getAttribute('data-status');
-                    
-                    if (filter === 'all' || filter === status) {
-                        card.style.display = '';
-                        visibleCount++;
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-
-                updateNoResultsDisplay(visibleCount);
+                currentFilter = this.getAttribute('data-filter');
+                applyFiltersAndSearch();
             });
         });
 
-        // Animate cards on load using CSS animations
+        // Animate cards on load
         window.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.skema-card');
+            
             cards.forEach((card, index) => {
                 card.style.opacity = '0';
                 card.style.transform = 'translateY(20px)';
                 card.style.transition = 'all 0.5s ease';
-                card.style.animationDelay = `${index * 0.1}s`;
                 
-                // Use requestAnimationFrame for better performance
-                requestAnimationFrame(() => {
-                    requestAnimationFrame(() => {
-                        card.style.opacity = '1';
-                        card.style.transform = 'translateY(0)';
-                    });
-                });
+                // Stagger the animation for each card
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
             });
         });
     </script>
