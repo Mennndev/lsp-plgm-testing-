@@ -9,7 +9,7 @@ use App\Models\PengajuanApl01;
 use App\Models\PengajuanApl02;
 use App\Models\PengajuanDokumen;
 use App\Models\User;
-use App\Models\PengajuanPortfolio;
+use App\Models\PengajuanPortofolio;
 use App\Models\PengajuanPersyaratanDasar;
 use App\Models\PengajuanBuktiAdministratif;
 use App\Models\PengajuanBuktiPortofolio;
@@ -129,7 +129,7 @@ class PengajuanSkemaController extends Controller
                     $deskripsi = $request->portfolio_deskripsi[$unitId][$index];
                 }
 
-                PengajuanPortfolio:: create([
+                PengajuanPortofolio:: create([
                     'pengajuan_skema_id' => $pengajuan->id,
                     'unit_kompetensi_id' => $unitId,
                     'nama_file' => $file->getClientOriginalName(),

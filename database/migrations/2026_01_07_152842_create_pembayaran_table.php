@@ -6,40 +6,34 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('pembayaran', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('pengajuan_skema_id');
-            $table->foreign('pengajuan_skema_id')->references('id')->on('pengajuan_skema')->onDelete('cascade');
-            $table->unsignedInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->bigInteger('pengajuan_skema_id')->unsigned();
+            $table->integer('user_id');
+            $table->string('order_id')->unique(); // ID unik untuk Midtrans
             $table->decimal('nominal', 12, 2);
-            $table->string('metode_pembayaran')->default('transfer_bank');
-            $table->string('bank_tujuan')->nullable();
-            $table->string('nomor_rekening')->nullable();
-            $table->string('atas_nama')->nullable();
-            $table->string('bukti_pembayaran')->nullable();
-            $table->timestamp('tanggal_upload')->nullable();
-            $table->timestamp('tanggal_verifikasi')->nullable();
-            $table->enum('status', ['pending', 'uploaded', 'verified', 'rejected'])->default('pending');
-            $table->text('catatan_admin')->nullable();
-            $table->unsignedInteger('verified_by')->nullable();
-            $table->foreign('verified_by')->references('id')->on('users')->onDelete('set null');
-            $table->timestamp('batas_waktu_bayar')->nullable();
+            $table->string('metode_pembayaran')->nullable(); // bank_transfer, gopay, dll
+            $table->string('payment_type')->nullable(); // Tipe dari Midtrans
+            $table->string('transaction_id')->nullable(); // Transaction ID dari Midtrans
+            $table->string('transaction_status')->nullable(); // Status dari Midtrans
+            $table->string('snap_token')->nullable(); // Snap Token untuk popup
+            $table->string('pdf_url')->nullable(); // URL PDF instruksi pembayaran
+            $table->json('payment_details')->nullable(); // Detail pembayaran (VA number, dll)
+            $table->enum('status', ['pending', 'processing', 'success', 'failed', 'expired', 'refunded'])->default('pending');
+            $table->timestamp('paid_at')->nullable();
+            $table->timestamp('expired_at')->nullable();
+            $table->text('catatan')->nullable();
             $table->timestamps();
-            
+
+            $table->foreign('pengajuan_skema_id')->references('id')->on('pengajuan_skema')->onDelete('cascade');
             $table->index(['user_id', 'status']);
-            $table->index('pengajuan_skema_id');
+            $table->index('order_id');
+            $table->index('transaction_id');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('pembayaran');

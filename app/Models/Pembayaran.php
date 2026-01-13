@@ -3,80 +3,89 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Pembayaran extends Model
 {
     protected $table = 'pembayaran';
-    
+
     protected $fillable = [
         'pengajuan_skema_id',
         'user_id',
+        'order_id',
         'nominal',
         'metode_pembayaran',
-        'bank_tujuan',
-        'nomor_rekening',
-        'atas_nama',
-        'bukti_pembayaran',
-        'tanggal_upload',
-        'tanggal_verifikasi',
+        'payment_type',
+        'transaction_id',
+        'transaction_status',
+        'snap_token',
+        'pdf_url',
+        'payment_details',
         'status',
-        'catatan_admin',
-        'verified_by',
-        'batas_waktu_bayar',
+        'paid_at',
+        'expired_at',
+        'catatan',
     ];
 
     protected $casts = [
-        'nominal' => 'decimal:2',
-        'tanggal_upload' => 'datetime',
-        'tanggal_verifikasi' => 'datetime',
-        'batas_waktu_bayar' => 'datetime',
+        'nominal' => 'decimal: 2',
+        'payment_details' => 'array',
+        'paid_at' => 'datetime',
+        'expired_at' => 'datetime',
     ];
 
-    public function pengajuan(): BelongsTo
+    public function pengajuan()
     {
         return $this->belongsTo(PengajuanSkema::class, 'pengajuan_skema_id');
     }
 
-    public function user(): BelongsTo
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function verifier(): BelongsTo
+    // Generate Order ID unik
+    public static function generateOrderId()
     {
-        return $this->belongsTo(User::class, 'verified_by');
+        return 'LSP-' . date('YmdHis') . '-' . strtoupper(uniqid());
     }
 
+    // Status label
     public function getStatusLabelAttribute()
     {
         return match($this->status) {
             'pending' => 'Menunggu Pembayaran',
-            'uploaded' => 'Menunggu Verifikasi',
-            'verified' => 'Terverifikasi',
-            'rejected' => 'Ditolak',
+            'processing' => 'Sedang Diproses',
+            'success' => 'Berhasil',
+            'failed' => 'Gagal',
+            'expired' => 'Kadaluarsa',
+            'refunded' => 'Dikembalikan',
             default => $this->status,
         };
     }
 
+    // Status badge color
     public function getStatusBadgeColorAttribute()
     {
         return match($this->status) {
             'pending' => 'warning',
-            'uploaded' => 'info',
-            'verified' => 'success',
-            'rejected' => 'danger',
+            'processing' => 'info',
+            'success' => 'success',
+            'failed' => 'danger',
+            'expired' => 'secondary',
+            'refunded' => 'dark',
             default => 'secondary',
         };
     }
 
-    public function isExpired()
-    {
-        return $this->batas_waktu_bayar && now()->gt($this->batas_waktu_bayar) && $this->status === 'pending';
-    }
-
+    // Format nominal
     public function getFormattedNominalAttribute()
     {
         return 'Rp ' . number_format($this->nominal, 0, ',', '.');
+    }
+
+    // Cek apakah bisa bayar
+    public function canPay()
+    {
+        return in_array($this->status, ['pending', 'failed', 'expired']);
     }
 }

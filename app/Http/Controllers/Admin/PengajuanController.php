@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class PengajuanController extends Controller
 {
     private const DEFAULT_PAYMENT_AMOUNT = 500000;
-    
+
     public function index(Request $request)
     {
         $query = PengajuanSkema::with(['user', 'program']);
@@ -51,10 +51,10 @@ class PengajuanController extends Controller
     public function show($id)
     {
         $pengajuan = PengajuanSkema::with([
-            'user', 
-            'program.units', 
-            'apl01', 
-            'apl02.unitKompetensi', 
+            'user',
+            'program.units',
+            'apl01',
+            'apl02.unitKompetensi',
             'dokumen',
             'approver'
         ])->findOrFail($id);
@@ -63,38 +63,36 @@ class PengajuanController extends Controller
     }
 
     public function approve($id, Request $request)
-    {
-        $request->validate([
-            'catatan_admin' => 'nullable|string'
-        ]);
+{
+    $request->validate([
+        'catatan_admin' => 'nullable|string'
+    ]);
 
-        $pengajuan = PengajuanSkema::with(['user', 'program'])->findOrFail($id);
-        
-        $pengajuan->update([
-            'status' => 'approved',
-            'tanggal_disetujui' => now(),
-            'catatan_admin' => $request->catatan_admin,
-            'approved_by' => auth()->id(),
-        ]);
+    $pengajuan = PengajuanSkema::with(['user', 'program'])->findOrFail($id);
 
-        // Buat record pembayaran otomatis
-        \App\Models\Pembayaran::create([
-            'pengajuan_skema_id' => $pengajuan->id,
-            'user_id' => $pengajuan->user_id,
-            'nominal' => $pengajuan->program->estimasi_biaya ?? self::DEFAULT_PAYMENT_AMOUNT,
-            'bank_tujuan' => 'BCA',
-            'nomor_rekening' => '1234567890',
-            'atas_nama' => 'LSP Politeknik LP3I Global Mandiri',
-            'status' => 'pending',
-            'batas_waktu_bayar' => now()->addDays(7),
-        ]);
+    $pengajuan->update([
+        'status' => 'approved',
+        'tanggal_disetujui' => now(),
+        'catatan_admin' => $request->catatan_admin,
+        'approved_by' => auth()->id(),
+    ]);
 
-        // Kirim notifikasi ke user
-        NotificationService::sendPengajuanApproved($pengajuan->user, $pengajuan);
+    // Buat record pembayaran (tanpa snap token dulu, nanti generate saat user buka halaman bayar)
+    \App\Models\Pembayaran::create([
+        'pengajuan_skema_id' => $pengajuan->id,
+        'user_id' => $pengajuan->user_id,
+        'order_id' => \App\Models\Pembayaran::generateOrderId(),
+        'nominal' => $pengajuan->program->harga ?? 500000,
+        'status' => 'pending',
+        'expired_at' => now()->addDays(7), // 7 hari untuk bayar
+    ]);
 
-        return redirect()->route('admin.pengajuan.show', $id)
-            ->with('success', 'Pengajuan berhasil disetujui dan notifikasi telah dikirim ke user.');
-    }
+    // Kirim notifikasi ke user
+    \App\Services\NotificationService::sendPengajuanApproved($pengajuan->user, $pengajuan);
+
+    return redirect()->route('admin.pengajuan.show', $id)
+        ->with('success', 'Pengajuan berhasil disetujui.  User dapat melakukan pembayaran.');
+}
 
     public function reject($id, Request $request)
     {
@@ -105,7 +103,7 @@ class PengajuanController extends Controller
         ]);
 
         $pengajuan = PengajuanSkema::with(['user', 'program'])->findOrFail($id);
-        
+
         $pengajuan->update([
             'status' => 'rejected',
             'catatan_admin' => $request->catatan_admin,

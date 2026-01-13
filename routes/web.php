@@ -126,8 +126,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/notifications/latest', [NotificationController::class, 'getLatest'])->name('notifications.latest');
 
     // Pembayaran routes (User)
-    Route::get('/pembayaran/{pengajuanId}', [\App\Http\Controllers\PembayaranController::class, 'show'])->name('pembayaran.show');
-    Route::post('/pembayaran/{pengajuanId}/upload', [\App\Http\Controllers\PembayaranController::class, 'upload'])->name('pembayaran.upload');
+   // Pembayaran routes (User) - dalam grup auth
+Route::get('/pembayaran/{pengajuanId}', [PembayaranController:: class, 'show'])
+    ->name('pembayaran.show');
+Route::post('/pembayaran/{pengajuanId}/process', [PembayaranController::class, 'process'])
+    ->name('pembayaran.process');
+Route::get('/pembayaran/{id}/finish', [PembayaranController::class, 'finish'])
+    ->name('pembayaran.finish');
+Route::get('/pembayaran/{pengajuanId}/check-status', [PembayaranController::class, 'checkStatus'])
+    ->name('pembayaran.check-status');
 
 });
 
@@ -156,7 +163,7 @@ Route::prefix('admin')
                 ->name('pengajuan.approve');
             Route::post('/pengajuan/{id}/reject', [\App\Http\Controllers\Admin\PengajuanController::class, 'reject'])
                 ->name('pengajuan.reject');
-            
+
             // Pembayaran Management (Admin)
             Route::get('/pembayaran', [\App\Http\Controllers\Admin\PembayaranController::class, 'index'])
                 ->name('pembayaran.index');
@@ -169,6 +176,8 @@ Route::prefix('admin')
         });
     });
 
-
+Route::post('/pembayaran/notification', [PembayaranController:: class, 'notification'])
+    ->name('pembayaran. notification')
+    ->withoutMiddleware(['auth', 'web']); 
 
 

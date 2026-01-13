@@ -58,7 +58,7 @@
                                 <tr>
                                     <td class="text-center">1</td>
                                     <td>
-                                        <input type="text" name="elemen_nama[${unitIndex}][]" 
+                                        <input type="text" name="elemen_nama[${unitIndex}][]"
                                                class="form-control form-control-sm"
                                                placeholder="Nama Elemen Kompetensi" required>
                                     </td>
@@ -131,7 +131,7 @@
                 <tr>
                     <td class="text-center">${elemenCount + 1}</td>
                     <td>
-                        <input type="text" name="elemen_nama[${unitIndex}][]" 
+                        <input type="text" name="elemen_nama[${unitIndex}][]"
                                class="form-control form-control-sm"
                                placeholder="Nama Elemen Kompetensi" required>
                     </td>
@@ -151,7 +151,7 @@
             const button = e.target.closest('.remove-elemen');
             const row = button.closest('tr');
             const tbody = row.closest('.elemen-wrapper');
-            
+
             if (tbody.querySelectorAll('tr').length > 1) {
                 row.remove();
                 updateElemenNumbers(row.closest('.unit-card'));
@@ -173,36 +173,7 @@
     }
 
 
-    // ========== PROFESI TERKAIT ==========
-    const profesiWrapper = document.getElementById('profesi-wrapper');
-    const addProfesiBtn  = document.getElementById('add-profesi');
-
-    if (addProfesiBtn) {
-        addProfesiBtn.addEventListener('click', function () {
-            let rowCount = profesiWrapper.rows.length + 1;
-
-            let row = `
-                <tr>
-                    <td class="text-center">${rowCount}</td>
-                    <td>
-                        <input type="text" name="profesi_nama[]" class="form-control" required>
-                    </td>
-                    <td class="text-center">
-                        <button type="button" class="btn btn-danger btn-sm remove-profesi">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </td>
-                </tr>`;
-            profesiWrapper.insertAdjacentHTML('beforeend', row);
-        });
-    }
-
-    // Hapus baris profesi
-    document.addEventListener('click', function (e) {
-        if (e.target.closest('.remove-profesi')) {
-            e.target.closest('tr').remove();
-        }
-    });
+   
 </script>
 @endpush
 @endsection
