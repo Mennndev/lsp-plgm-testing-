@@ -16,12 +16,6 @@
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -623,7 +617,7 @@
                         <!-- Card Body -->
                         <div class="card-body-section">
                             <div class="card-description">
-                                Program sertifikasi kompetensi profesional yang diakui secara nasional sesuai standar industri.
+                                {{ $program->deskripsi ?? 'Program sertifikasi kompetensi profesional yang diakui secara nasional sesuai standar industri.' }}
                             </div>
                         </div>
 
@@ -674,11 +668,24 @@
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 
     <script>
+        // Helper function to toggle no results message
+        function updateNoResultsDisplay(visibleCount) {
+            const cardsGrid = document.getElementById('cardsGrid');
+            const noResults = document.getElementById('noResults');
+            const cards = document.querySelectorAll('.skema-card');
+            
+            if (visibleCount === 0 && cards.length > 0) {
+                cardsGrid.style.display = 'none';
+                noResults.style.display = 'block';
+            } else {
+                cardsGrid.style.display = 'grid';
+                noResults.style.display = 'none';
+            }
+        }
+
         // Search functionality
         const searchInput = document.getElementById('searchSkema');
         const cards = document.querySelectorAll('.skema-card');
-        const cardsGrid = document.getElementById('cardsGrid');
-        const noResults = document.getElementById('noResults');
 
         searchInput.addEventListener('keyup', function() {
             const searchValue = this.value.toLowerCase();
@@ -694,14 +701,7 @@
                 }
             });
 
-            // Show/hide no results message
-            if (visibleCount === 0 && cards.length > 0) {
-                cardsGrid.style.display = 'none';
-                noResults.style.display = 'block';
-            } else {
-                cardsGrid.style.display = 'grid';
-                noResults.style.display = 'none';
-            }
+            updateNoResultsDisplay(visibleCount);
         });
 
         // Filter functionality
@@ -727,30 +727,25 @@
                     }
                 });
 
-                // Show/hide no results message
-                if (visibleCount === 0 && cards.length > 0) {
-                    cardsGrid.style.display = 'none';
-                    noResults.style.display = 'block';
-                } else {
-                    cardsGrid.style.display = 'grid';
-                    noResults.style.display = 'none';
-                }
+                updateNoResultsDisplay(visibleCount);
             });
         });
 
-        // Animate cards on load
-        window.addEventListener('load', function() {
+        // Animate cards on load using CSS animations
+        window.addEventListener('DOMContentLoaded', function() {
             cards.forEach((card, index) => {
-                setTimeout(() => {
-                    card.style.opacity = '0';
-                    card.style.transform = 'translateY(20px)';
-                    card.style.transition = 'all 0.5s ease';
-                    
-                    setTimeout(() => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'all 0.5s ease';
+                card.style.animationDelay = `${index * 0.1}s`;
+                
+                // Use requestAnimationFrame for better performance
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
                         card.style.opacity = '1';
                         card.style.transform = 'translateY(0)';
-                    }, 50);
-                }, index * 100);
+                    });
+                });
             });
         });
     </script>
