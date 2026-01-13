@@ -29,16 +29,8 @@ class PendaftaranController extends Controller
             'jenis_kelamin'     => ['required', 'in:Laki-laki,Perempuan'],
             'tempat_lahir'      => ['required', 'string', 'max:255'],
             'tanggal_lahir'     => ['required', 'date'],
-            'alamat'            => ['required', 'string'],
-            'kota'              => ['required', 'string'],
-            'provinsi'          => ['required', 'string'],
 
-            'pendidikan'        => ['required', 'string'],
-            'pekerjaan'         => ['required', 'string'],
-            'instansi'          => ['nullable', 'string'],
-
-            'no_ktp'            => ['required', 'digits:16'],
-            'ktp'               => ['required', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+            'nik'               => ['required', 'digits:16'],
 
             'password'          => ['required', 'string', 'min:6', 'confirmed'],
 
@@ -55,13 +47,7 @@ class PendaftaranController extends Controller
             'role'      => 'asesi',      // sesuai enum di tabel users
         ]);
 
-        // 2) UPLOAD KTP → simpannya ke kolom ktp_path
-        $ktpPath = null;
-        if ($request->hasFile('ktp')) {
-            $ktpPath = $request->file('ktp')->store('ktp', 'public');
-        }
-
-        // 3) SIMPAN TTD (base64) → file → kolom ttd_path
+        // 2) SIMPAN TTD (base64) → file → kolom ttd_path
         $ttdPath = null;
         if (!empty($validated['ttd_digital'])) {
             [$meta, $data] = explode(',', $validated['ttd_digital']);
@@ -73,27 +59,27 @@ class PendaftaranController extends Controller
             Storage::disk('public')->put($ttdPath, $binary);
         }
 
-        // 4) SIMPAN KE TABEL PENDAFTARANS
+        // 3) SIMPAN KE TABEL PENDAFTARANS
         Pendaftaran::create([
             'user_id'       => $user->id,
             'email'         => $validated['email'],
             'jenis_kelamin' => $validated['jenis_kelamin'],
             'tempat_lahir'  => $validated['tempat_lahir'],
             'tanggal_lahir' => $validated['tanggal_lahir'],
-            'alamat'        => $validated['alamat'],
-            'kota'          => $validated['kota'],
-            'provinsi'      => $validated['provinsi'],
+            'alamat'        => null,  // Moved to profile
+            'kota'          => null,  // Moved to profile
+            'provinsi'      => null,  // Moved to profile
 
-            'pendidikan'    => $validated['pendidikan'],
-            'pekerjaan'     => $validated['pekerjaan'],
-            'instansi'      => $validated['instansi'] ?? null,
+            'pendidikan'    => null,  // Moved to profile
+            'pekerjaan'     => null,  // Moved to profile
+            'instansi'      => null,  // Moved to profile
 
             // karena field skema & jadwal tidak dipakai di form, biarkan null
             'skema'         => null,
             'jadwal'        => null,
 
-            'no_ktp'        => $validated['no_ktp'],
-            'ktp_path'      => $ktpPath,
+            'no_ktp'        => $validated['nik'],  // Changed from no_ktp to nik
+            'ktp_path'      => null,  // KTP upload removed
             'ttd_path'      => $ttdPath,
             'setuju'        => 1, // karena sudah divalidasi "accepted"
         ]);
