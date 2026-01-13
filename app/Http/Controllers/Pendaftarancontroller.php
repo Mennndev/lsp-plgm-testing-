@@ -78,7 +78,7 @@ class PendaftaranController extends Controller
             'skema'         => null,
             'jadwal'        => null,
 
-            'no_ktp'        => $validated['nik'],  // Changed from no_ktp to nik
+            'no_ktp'        => $validated['nik'],  // Stores NIK (16-digit national ID). Column name 'no_ktp' retained for backward compatibility
             'ktp_path'      => null,  // KTP upload removed
             'ttd_path'      => $ttdPath,
             'setuju'        => 1, // karena sudah divalidasi "accepted"
