@@ -185,113 +185,24 @@
                                 </div>
 
                                 <div class="mb-4">
-                                    <label class="form-label">Alamat Lengkap *</label>
-                                    <textarea class="form-control" name="alamat" rows="2" required>{{ old('alamat') }}</textarea>
-                                    @error('alamat') <small class="text-danger">{{ $message }}</small> @enderror
-                                </div>
-
-                                <div class="row g-3 mb-4">
-                                    <div class="col-md-6">
-                                        <label class="form-label">Kota/Kabupaten *</label>
-                                        <input type="text" class="form-control"
-                                               name="kota"
-                                               value="{{ old('kota') }}"
-                                               required>
-                                        @error('kota') <small class="text-danger">{{ $message }}</small> @enderror
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <label class="form-label">Provinsi *</label>
-                                        <input type="text" class="form-control"
-                                               name="provinsi"
-                                               value="{{ old('provinsi') }}"
-                                               required>
-                                        @error('provinsi') <small class="text-danger">{{ $message }}</small> @enderror
-                                    </div>
-                                </div>
-
-                                <!-- B. PENDIDIKAN & PEKERJAAN -->
-                                <div class="mb-3 pb-3 border-bottom">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <div class="section-circle me-2">B</div>
-                                        <div>
-                                            <h6 class="mb-0 fw-bold">Pendidikan & Pekerjaan</h6>
-                                            <small class="text-muted">Informasi latar belakang pendidikan dan status Anda saat ini.</small>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row g-3 mb-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label">Pendidikan Terakhir *</label>
-                                        <select class="form-select" name="pendidikan" required>
-                                            <option value="">Pilih</option>
-                                            @foreach(['SMA/SMK','D1','D2','D3','S1','S2','S3'] as $p)
-                                                <option value="{{ $p }}" {{ old('pendidikan')==$p?'selected':'' }}>
-                                                    {{ $p }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        @error('pendidikan') <small class="text-danger">{{ $message }}</small> @enderror
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <label class="form-label">Pekerjaan *</label>
-                                        <input type="text" class="form-control"
-                                               name="pekerjaan"
-                                               value="{{ old('pekerjaan') }}"
-                                               placeholder="Mahasiswa / Karyawan / dll"
-                                               required>
-                                        @error('pekerjaan') <small class="text-danger">{{ $message }}</small> @enderror
-                                    </div>
-                                </div>
-
-                                <div class="mb-4">
-                                    <label class="form-label">Instansi (Opsional)</label>
-                                    <input type="text" class="form-control"
-                                           name="instansi"
-                                           value="{{ old('instansi') }}"
-                                           placeholder="Nama perusahaan / kampus / instansi">
-                                </div>
-
-                                <!-- C. KTP -->
-                                <div class="mb-3 pb-3 border-bottom">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <div class="section-circle me-2">C</div>
-                                        <div>
-                                            <h6 class="mb-0 fw-bold">Kartu Tanda Penduduk</h6>
-                                            <small class="text-muted">Nomor KTP dan foto KTP digunakan untuk verifikasi identitas.</small>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Nomor KTP *</label>
+                                    <label class="form-label">NIK (Nomor Induk Kependudukan) *</label>
                                     <div class="input-group">
                                         <span class="input-group-text bg-light"><i class="bi bi-credit-card-2-front"></i></span>
                                         <input type="text"
                                                maxlength="16"
                                                class="form-control"
-                                               name="no_ktp"
-                                               value="{{ old('no_ktp') }}"
+                                               name="nik"
+                                               value="{{ old('nik') }}"
+                                               placeholder="16 digit NIK"
                                                required>
                                     </div>
-                                    @error('no_ktp') <small class="text-danger">{{ $message }}</small> @enderror
+                                    @error('nik') <small class="text-danger">{{ $message }}</small> @enderror
                                 </div>
 
-                                <div class="mb-4">
-                                    <label class="form-label">Upload Foto KTP (JPG/PNG, maks. 2MB) *</label>
-                                    <input type="file" class="form-control" name="ktp" accept="image/*">
-                                    @error('ktp') <small class="text-danger">{{ $message }}</small> @enderror
-                                    <small class="text-muted d-block mt-1" style="font-size:12px;">
-                                        Gunakan foto yang jelas dan dapat terbaca.
-                                    </small>
-                                </div>
-
-                                <!-- D. AKUN LOGIN -->
+                                <!-- B. AKUN LOGIN -->
                                 <div class="mb-3 pb-3 border-bottom">
                                     <div class="d-flex align-items-center mb-2">
-                                        <div class="section-circle me-2">D</div>
+                                        <div class="section-circle me-2">B</div>
                                         <div>
                                             <h6 class="mb-0 fw-bold">Akun Login</h6>
                                             <small class="text-muted">Akun ini digunakan untuk mengakses portal asesi.</small>
@@ -325,10 +236,10 @@
                                     </div>
                                 </div>
 
-                                <!-- E. TANDA TANGAN -->
+                                <!-- C. TANDA TANGAN -->
                                 <div class="mb-3 pb-3 border-bottom">
                                     <div class="d-flex align-items-center mb-2">
-                                        <div class="section-circle me-2">E</div>
+                                        <div class="section-circle me-2">C</div>
                                         <div>
                                             <h6 class="mb-0 fw-bold">Tanda Tangan Digital</h6>
                                             <small class="text-muted">
@@ -356,6 +267,17 @@
                                     <p class="mb-1" style="font-size: 13px;">Preview tanda tangan:</p>
                                     <div class="border rounded p-2 bg-white">
                                         <img id="signature-preview-img" class="img-fluid" alt="Preview TTD">
+                                    </div>
+                                </div>
+
+                                <!-- D. PERSETUJUAN -->
+                                <div class="mb-3 pb-3 border-bottom mt-4">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <div class="section-circle me-2">D</div>
+                                        <div>
+                                            <h6 class="mb-0 fw-bold">Persetujuan</h6>
+                                            <small class="text-muted">Persetujuan syarat dan ketentuan pendaftaran.</small>
+                                        </div>
                                     </div>
                                 </div>
 
