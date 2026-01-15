@@ -187,49 +187,107 @@
                 </div>
                 <div class="card-body">
                     <h6 class="mb-2">Elemen Kompetensi</h6>
-                    <table class="table table-sm table-bordered">
-                        <thead class="table-light">
-                            <tr>
-                                <th width="50">No</th>
-                                <th>Nama Elemen Kompetensi</th>
-                                <th width="80">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody class="elemen-wrapper">
-                            @if($unit->elemenKompetensis && $unit->elemenKompetensis->count())
-                                @foreach($unit->elemenKompetensis as $elemenIndex => $elemen)
-                                    <tr>
-                                        <td class="text-center">{{ $elemenIndex + 1 }}</td>
-                                        <td>
+                    <div class="elemen-wrapper">
+                        @if($unit->elemenKompetensis && $unit->elemenKompetensis->count())
+                            @foreach($unit->elemenKompetensis as $elemenIndex => $elemen)
+                                <div class="card mb-3 elemen-card">
+                                    <div class="card-body py-2">
+                                        <div class="row align-items-center mb-2">
+                                            <div class="col-auto">
+                                                <strong class="text-muted">{{ $elemenIndex + 1 }}.</strong>
+                                            </div>
+                                            <div class="col">
+                                                <input type="text" name="elemen_nama[{{ $unitIndex }}][]" 
+                                                       class="form-control form-control-sm"
+                                                       value="{{ $elemen->nama_elemen }}" 
+                                                       placeholder="Nama Elemen Kompetensi" required>
+                                            </div>
+                                            <div class="col-auto">
+                                                <button type="button" class="btn btn-danger btn-sm remove-elemen">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        
+                                        {{-- KUK Section --}}
+                                        <div class="ms-4">
+                                            <p class="mb-2 text-muted small">
+                                                <i class="bi bi-list-check"></i> Kriteria Unjuk Kerja (KUK)
+                                            </p>
+                                            <div class="kuk-wrapper">
+                                                @forelse($elemen->kriteriaUnjukKerja as $kukIndex => $kuk)
+                                                    <div class="input-group input-group-sm mb-2 kuk-row">
+                                                        <span class="input-group-text">{{ $kukIndex + 1 }}.</span>
+                                                        <input type="text" name="kuk_deskripsi[{{ $unitIndex }}][{{ $elemenIndex }}][]"
+                                                               class="form-control" 
+                                                               placeholder="Deskripsi Kriteria Unjuk Kerja"
+                                                               value="{{ $kuk->deskripsi }}" required>
+                                                        <button type="button" class="btn btn-outline-danger remove-kuk">
+                                                            <i class="bi bi-x"></i>
+                                                        </button>
+                                                    </div>
+                                                @empty
+                                                    <div class="input-group input-group-sm mb-2 kuk-row">
+                                                        <span class="input-group-text">1.</span>
+                                                        <input type="text" name="kuk_deskripsi[{{ $unitIndex }}][{{ $elemenIndex }}][]"
+                                                               class="form-control" 
+                                                               placeholder="Deskripsi Kriteria Unjuk Kerja" required>
+                                                        <button type="button" class="btn btn-outline-danger remove-kuk">
+                                                            <i class="bi bi-x"></i>
+                                                        </button>
+                                                    </div>
+                                                @endforelse
+                                            </div>
+                                            <button type="button" class="btn btn-outline-primary btn-sm add-kuk">
+                                                <i class="bi bi-plus"></i> Tambah KUK
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
+                            <div class="card mb-3 elemen-card">
+                                <div class="card-body py-2">
+                                    <div class="row align-items-center mb-2">
+                                        <div class="col-auto">
+                                            <strong class="text-muted">1.</strong>
+                                        </div>
+                                        <div class="col">
                                             <input type="text" name="elemen_nama[{{ $unitIndex }}][]" 
                                                    class="form-control form-control-sm"
-                                                   value="{{ $elemen->nama_elemen }}" 
                                                    placeholder="Nama Elemen Kompetensi" required>
-                                        </td>
-                                        <td class="text-center">
+                                        </div>
+                                        <div class="col-auto">
                                             <button type="button" class="btn btn-danger btn-sm remove-elemen">
                                                 <i class="bi bi-trash"></i>
                                             </button>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            @else
-                                <tr>
-                                    <td class="text-center">1</td>
-                                    <td>
-                                        <input type="text" name="elemen_nama[{{ $unitIndex }}][]" 
-                                               class="form-control form-control-sm"
-                                               placeholder="Nama Elemen Kompetensi" required>
-                                    </td>
-                                    <td class="text-center">
-                                        <button type="button" class="btn btn-danger btn-sm remove-elemen">
-                                            <i class="bi bi-trash"></i>
+                                        </div>
+                                    </div>
+                                    
+                                    {{-- KUK Section --}}
+                                    <div class="ms-4">
+                                        <p class="mb-2 text-muted small">
+                                            <i class="bi bi-list-check"></i> Kriteria Unjuk Kerja (KUK)
+                                        </p>
+                                        <div class="kuk-wrapper">
+                                            <div class="input-group input-group-sm mb-2 kuk-row">
+                                                <span class="input-group-text">1.</span>
+                                                <input type="text" name="kuk_deskripsi[{{ $unitIndex }}][0][]"
+                                                       class="form-control" 
+                                                       placeholder="Deskripsi Kriteria Unjuk Kerja" required>
+                                                <button type="button" class="btn btn-outline-danger remove-kuk">
+                                                    <i class="bi bi-x"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-outline-primary btn-sm add-kuk">
+                                            <i class="bi bi-plus"></i> Tambah KUK
                                         </button>
-                                    </td>
-                                </tr>
-                            @endif
-                        </tbody>
-                    </table>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
                     <button type="button" class="btn btn-outline-secondary btn-sm add-elemen">
                         <i class="bi bi-plus-circle"></i> Tambah Elemen
                     </button>
@@ -260,30 +318,48 @@
             </div>
             <div class="card-body">
                 <h6 class="mb-2">Elemen Kompetensi</h6>
-                <table class="table table-sm table-bordered">
-                    <thead class="table-light">
-                        <tr>
-                            <th width="50">No</th>
-                            <th>Nama Elemen Kompetensi</th>
-                            <th width="80">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody class="elemen-wrapper">
-                        <tr>
-                            <td class="text-center">1</td>
-                            <td>
-                                <input type="text" name="elemen_nama[0][]" 
-                                       class="form-control form-control-sm"
-                                       placeholder="Nama Elemen Kompetensi" required>
-                            </td>
-                            <td class="text-center">
-                                <button type="button" class="btn btn-danger btn-sm remove-elemen">
-                                    <i class="bi bi-trash"></i>
+                <div class="elemen-wrapper">
+                    <div class="card mb-3 elemen-card">
+                        <div class="card-body py-2">
+                            <div class="row align-items-center mb-2">
+                                <div class="col-auto">
+                                    <strong class="text-muted">1.</strong>
+                                </div>
+                                <div class="col">
+                                    <input type="text" name="elemen_nama[0][]" 
+                                           class="form-control form-control-sm"
+                                           placeholder="Nama Elemen Kompetensi" required>
+                                </div>
+                                <div class="col-auto">
+                                    <button type="button" class="btn btn-danger btn-sm remove-elemen">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            {{-- KUK Section --}}
+                            <div class="ms-4">
+                                <p class="mb-2 text-muted small">
+                                    <i class="bi bi-list-check"></i> Kriteria Unjuk Kerja (KUK)
+                                </p>
+                                <div class="kuk-wrapper">
+                                    <div class="input-group input-group-sm mb-2 kuk-row">
+                                        <span class="input-group-text">1.</span>
+                                        <input type="text" name="kuk_deskripsi[0][0][]"
+                                               class="form-control" 
+                                               placeholder="Deskripsi Kriteria Unjuk Kerja" required>
+                                        <button type="button" class="btn btn-outline-danger remove-kuk">
+                                            <i class="bi bi-x"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-outline-primary btn-sm add-kuk">
+                                    <i class="bi bi-plus"></i> Tambah KUK
                                 </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <button type="button" class="btn btn-outline-secondary btn-sm add-elemen">
                     <i class="bi bi-plus-circle"></i> Tambah Elemen
                 </button>

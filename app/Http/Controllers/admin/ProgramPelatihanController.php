@@ -76,11 +76,14 @@ if ($request->unit_kode) {
             if (isset($request->elemen_nama[$i]) && is_array($request->elemen_nama[$i])) {
                 foreach ($request->elemen_nama[$i] as $elemenIndex => $namaElemen) {
                     if ($namaElemen) {
-                        \App\Models\ElemenKompetensi::create([
+                        $elemen = \App\Models\ElemenKompetensi::create([
                             'unit_kompetensi_id' => $unit->id,
                             'no_urut' => $elemenIndex + 1,
                             'nama_elemen' => $namaElemen,
                         ]);
+
+                        // Simpan Kriteria Unjuk Kerja (KUK) untuk elemen ini
+                        $this->saveKriteriaUnjukKerja($request, $elemen, $i, $elemenIndex);
                     }
                 }
             }
@@ -120,7 +123,7 @@ if ($request->profesi_nama) {
         // parameter nama variabel mengikuti resource route (program_pelatihan)
         // Load relationships including new persyaratan
         $program_pelatihan->load([
-            'units.elemenKompetensis',
+            'units.elemenKompetensis.kriteriaUnjukKerja',
             'profesiTerkait',
             'persyaratanDasar',
             'buktiAdministratif',
@@ -176,11 +179,14 @@ if ($request->profesi_nama) {
                 if (isset($request->elemen_nama[$i]) && is_array($request->elemen_nama[$i])) {
                     foreach ($request->elemen_nama[$i] as $elemenIndex => $namaElemen) {
                         if ($namaElemen) {
-                            \App\Models\ElemenKompetensi::create([
+                            $elemen = \App\Models\ElemenKompetensi::create([
                                 'unit_kompetensi_id' => $unit->id,
                                 'no_urut' => $elemenIndex + 1,
                                 'nama_elemen' => $namaElemen,
                             ]);
+
+                            // Simpan Kriteria Unjuk Kerja (KUK) untuk elemen ini
+                            $this->saveKriteriaUnjukKerja($request, $elemen, $i, $elemenIndex);
                         }
                     }
                 }
@@ -307,6 +313,24 @@ if ($request->profesi_nama) {
                         'nama_dokumen' => $nama,
                         'is_wajib' => isset($request->bukti_portofolio_wajib[$index]) && $request->bukti_portofolio_wajib[$index] == '1',
                         'urutan' => $request->bukti_portofolio_urutan[$index] ?? ($index + 1),
+                    ]);
+                }
+            }
+        }
+    }
+
+    /**
+     * Save Kriteria Unjuk Kerja for an elemen
+     */
+    protected function saveKriteriaUnjukKerja(Request $request, $elemen, $unitIndex, $elemenIndex): void
+    {
+        if (isset($request->kuk_deskripsi[$unitIndex][$elemenIndex]) && is_array($request->kuk_deskripsi[$unitIndex][$elemenIndex])) {
+            foreach ($request->kuk_deskripsi[$unitIndex][$elemenIndex] as $kukIndex => $deskripsi) {
+                if ($deskripsi) {
+                    KriteriaUnjukKerja::create([
+                        'elemen_kompetensi_id' => $elemen->id,
+                        'no_urut' => $kukIndex + 1,
+                        'deskripsi' => $deskripsi,
                     ]);
                 }
             }

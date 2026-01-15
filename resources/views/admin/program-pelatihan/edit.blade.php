@@ -48,30 +48,47 @@
                     </div>
                     <div class="card-body">
                         <h6 class="mb-2">Elemen Kompetensi</h6>
-                        <table class="table table-sm table-bordered">
-                            <thead class="table-light">
-                                <tr>
-                                    <th width="50">No</th>
-                                    <th>Nama Elemen Kompetensi</th>
-                                    <th width="80">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody class="elemen-wrapper">
-                                <tr>
-                                    <td class="text-center">1</td>
-                                    <td>
-                                        <input type="text" name="elemen_nama[${unitIndex}][]"
-                                               class="form-control form-control-sm"
-                                               placeholder="Nama Elemen Kompetensi" required>
-                                    </td>
-                                    <td class="text-center">
-                                        <button type="button" class="btn btn-danger btn-sm remove-elemen">
-                                            <i class="bi bi-trash"></i>
+                        <div class="elemen-wrapper">
+                            <div class="card mb-3 elemen-card">
+                                <div class="card-body py-2">
+                                    <div class="row align-items-center mb-2">
+                                        <div class="col-auto">
+                                            <strong class="text-muted">1.</strong>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" name="elemen_nama[${unitIndex}][]"
+                                                   class="form-control form-control-sm"
+                                                   placeholder="Nama Elemen Kompetensi" required>
+                                        </div>
+                                        <div class="col-auto">
+                                            <button type="button" class="btn btn-danger btn-sm remove-elemen">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="ms-4">
+                                        <p class="mb-2 text-muted small">
+                                            <i class="bi bi-list-check"></i> Kriteria Unjuk Kerja (KUK)
+                                        </p>
+                                        <div class="kuk-wrapper">
+                                            <div class="input-group input-group-sm mb-2 kuk-row">
+                                                <span class="input-group-text">1.</span>
+                                                <input type="text" name="kuk_deskripsi[${unitIndex}][0][]"
+                                                       class="form-control" 
+                                                       placeholder="Deskripsi Kriteria Unjuk Kerja" required>
+                                                <button type="button" class="btn btn-outline-danger remove-kuk">
+                                                    <i class="bi bi-x"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-outline-primary btn-sm add-kuk">
+                                            <i class="bi bi-plus"></i> Tambah KUK
                                         </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <button type="button" class="btn btn-outline-secondary btn-sm add-elemen">
                             <i class="bi bi-plus-circle"></i> Tambah Elemen
                         </button>
@@ -105,12 +122,20 @@
                 unitLabel.textContent = `Unit ${unitIndex + 1}`;
             }
 
-            // Update elemen name attributes
-            const elemenInputs = card.querySelectorAll('.elemen-wrapper input[type="text"]');
-            elemenInputs.forEach(input => {
-                const currentName = input.getAttribute('name');
-                const newName = currentName.replace(/elemen_nama\[\d+\]/, `elemen_nama[${unitIndex}]`);
-                input.setAttribute('name', newName);
+            // Update elemen name attributes and KUK name attributes
+            const elemenCards = card.querySelectorAll('.elemen-card');
+            elemenCards.forEach((elemenCard, elemenIndex) => {
+                // Update elemen input name
+                const elemenInput = elemenCard.querySelector('input[name^="elemen_nama"]');
+                if (elemenInput) {
+                    elemenInput.setAttribute('name', `elemen_nama[${unitIndex}][]`);
+                }
+
+                // Update KUK input names
+                const kukInputs = elemenCard.querySelectorAll('input[name^="kuk_deskripsi"]');
+                kukInputs.forEach(kukInput => {
+                    kukInput.setAttribute('name', `kuk_deskripsi[${unitIndex}][${elemenIndex}][]`);
+                });
             });
 
             // Update elemen row numbers
@@ -124,26 +149,53 @@
         if (e.target.closest('.add-elemen')) {
             const button = e.target.closest('.add-elemen');
             const card = button.closest('.unit-card');
-            const tbody = card.querySelector('.elemen-wrapper');
+            const elemenWrapper = card.querySelector('.elemen-wrapper');
             const unitCards = Array.from(unitWrapper.querySelectorAll('.unit-card'));
             const unitIndex = unitCards.indexOf(card);
-            const elemenCount = tbody.querySelectorAll('tr').length;
+            const elemenCount = elemenWrapper.querySelectorAll('.elemen-card').length;
 
-            const row = `
-                <tr>
-                    <td class="text-center">${elemenCount + 1}</td>
-                    <td>
-                        <input type="text" name="elemen_nama[${unitIndex}][]"
-                               class="form-control form-control-sm"
-                               placeholder="Nama Elemen Kompetensi" required>
-                    </td>
-                    <td class="text-center">
-                        <button type="button" class="btn btn-danger btn-sm remove-elemen">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </td>
-                </tr>`;
-            tbody.insertAdjacentHTML('beforeend', row);
+            const elemenCard = `
+                <div class="card mb-3 elemen-card">
+                    <div class="card-body py-2">
+                        <div class="row align-items-center mb-2">
+                            <div class="col-auto">
+                                <strong class="text-muted">${elemenCount + 1}.</strong>
+                            </div>
+                            <div class="col">
+                                <input type="text" name="elemen_nama[${unitIndex}][]"
+                                       class="form-control form-control-sm"
+                                       placeholder="Nama Elemen Kompetensi" required>
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-danger btn-sm remove-elemen">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="ms-4">
+                            <p class="mb-2 text-muted small">
+                                <i class="bi bi-list-check"></i> Kriteria Unjuk Kerja (KUK)
+                            </p>
+                            <div class="kuk-wrapper">
+                                <div class="input-group input-group-sm mb-2 kuk-row">
+                                    <span class="input-group-text">1.</span>
+                                    <input type="text" name="kuk_deskripsi[${unitIndex}][${elemenCount}][]"
+                                           class="form-control" 
+                                           placeholder="Deskripsi Kriteria Unjuk Kerja" required>
+                                    <button type="button" class="btn btn-outline-danger remove-kuk">
+                                        <i class="bi bi-x"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-outline-primary btn-sm add-kuk">
+                                <i class="bi bi-plus"></i> Tambah KUK
+                            </button>
+                        </div>
+                    </div>
+                </div>`;
+            elemenWrapper.insertAdjacentHTML('beforeend', elemenCard);
+            updateElemenNumbers(card);
         }
     });
 
@@ -151,12 +203,13 @@
     document.addEventListener('click', function (e) {
         if (e.target.closest('.remove-elemen')) {
             const button = e.target.closest('.remove-elemen');
-            const row = button.closest('tr');
-            const tbody = row.closest('.elemen-wrapper');
+            const elemenCard = button.closest('.elemen-card');
+            const elemenWrapper = elemenCard.closest('.elemen-wrapper');
 
-            if (tbody.querySelectorAll('tr').length > 1) {
-                row.remove();
-                updateElemenNumbers(row.closest('.unit-card'));
+            if (elemenWrapper.querySelectorAll('.elemen-card').length > 1) {
+                elemenCard.remove();
+                updateElemenNumbers(elemenCard.closest('.unit-card'));
+                updateUnitNumbers(); // Update KUK indices
             } else {
                 alert('Minimal harus ada 1 elemen kompetensi per unit');
             }
@@ -165,14 +218,64 @@
 
     // Update elemen row numbers
     function updateElemenNumbers(card) {
-        const rows = card.querySelectorAll('.elemen-wrapper tr');
-        rows.forEach((row, index) => {
-            const noCell = row.querySelector('td:first-child');
-            if (noCell) {
-                noCell.textContent = index + 1;
+        const elemenCards = card.querySelectorAll('.elemen-card');
+        elemenCards.forEach((elemenCard, index) => {
+            const numberLabel = elemenCard.querySelector('.row .col-auto strong');
+            if (numberLabel) {
+                numberLabel.textContent = `${index + 1}.`;
             }
         });
     }
+
+    // ========== KRITERIA UNJUK KERJA (KUK) ==========
+    // Add KUK
+    document.addEventListener('click', function (e) {
+        if (e.target.closest('.add-kuk')) {
+            const button = e.target.closest('.add-kuk');
+            const elemenCard = button.closest('.elemen-card');
+            const kukWrapper = elemenCard.querySelector('.kuk-wrapper');
+            const kukCount = kukWrapper.querySelectorAll('.kuk-row').length;
+            
+            const unitCard = elemenCard.closest('.unit-card');
+            const unitIndex = Array.from(unitWrapper.querySelectorAll('.unit-card')).indexOf(unitCard);
+            const elemenIndex = Array.from(unitCard.querySelectorAll('.elemen-card')).indexOf(elemenCard);
+            
+            const kukRow = `
+                <div class="input-group input-group-sm mb-2 kuk-row">
+                    <span class="input-group-text">${kukCount + 1}.</span>
+                    <input type="text" name="kuk_deskripsi[${unitIndex}][${elemenIndex}][]"
+                           class="form-control" 
+                           placeholder="Deskripsi Kriteria Unjuk Kerja" required>
+                    <button type="button" class="btn btn-outline-danger remove-kuk">
+                        <i class="bi bi-x"></i>
+                    </button>
+                </div>`;
+            kukWrapper.insertAdjacentHTML('beforeend', kukRow);
+        }
+    });
+
+    // Remove KUK
+    document.addEventListener('click', function (e) {
+        if (e.target.closest('.remove-kuk')) {
+            const button = e.target.closest('.remove-kuk');
+            const kukRow = button.closest('.kuk-row');
+            const kukWrapper = kukRow.closest('.kuk-wrapper');
+            
+            if (kukWrapper.querySelectorAll('.kuk-row').length > 1) {
+                kukRow.remove();
+                // Update numbering
+                const kukRows = kukWrapper.querySelectorAll('.kuk-row');
+                kukRows.forEach((row, index) => {
+                    const numberSpan = row.querySelector('.input-group-text');
+                    if (numberSpan) {
+                        numberSpan.textContent = `${index + 1}.`;
+                    }
+                });
+            } else {
+                alert('Minimal harus ada 1 Kriteria Unjuk Kerja per elemen');
+            }
+        }
+    });
 
 
   
