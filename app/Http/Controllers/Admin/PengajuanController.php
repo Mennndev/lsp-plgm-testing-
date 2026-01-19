@@ -50,16 +50,16 @@ class PengajuanController extends Controller
 
     public function show($id)
 {
-   $pengajuan = PengajuanSkema::with([
-    'user',
-    'program',
-    'apl01',
-    'apl02.unitKompetensi. elemenKompetensi.kriteriaUnjukKerja', // BENAR!
-    'dokumen',
-    'buktiKompetensi',
-    'pembayaran',
-    'approver'
-])->findOrFail($id);
+    $pengajuan = PengajuanSkema::with([
+        'user',
+        'program',
+        'apl01',
+        'apl02.unitKompetensi.elemenKompetensis.kriteriaUnjukKerja', // dengan 's'!
+        'dokumen',
+        'buktiKompetensi',
+        'pembayaran',
+        'approver'
+    ])->findOrFail($id);
 
     return view('admin.pengajuan.show', compact('pengajuan'));
 }

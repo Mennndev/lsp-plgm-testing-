@@ -104,7 +104,7 @@ class PengajuanSkema extends Model
 
     public function portfolio()
     {
-        return $this->hasMany(PengajuanPortfolio:: class);
+        return $this->hasMany(PengajuanPortofolio::class);
     }
 
     public function pengajuanPersyaratanDasar()
@@ -122,7 +122,7 @@ class PengajuanSkema extends Model
         return $this->hasMany(PengajuanBuktiPortofolio::class);
     }
 
-    public function pengajuanBuktiKompetensi()
+   public function buktiKompetensi() // Nama disederhanakan
     {
         return $this->hasMany(PengajuanBuktiKompetensi::class);
     }
