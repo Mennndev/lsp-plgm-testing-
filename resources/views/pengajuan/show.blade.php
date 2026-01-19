@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail Pengajuan</title>
-    
+
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -42,7 +42,7 @@
                         @endif
                     </div>
                 </div>
-                
+
                 @if($pengajuan->catatan_admin)
                 <hr>
                 <div class="alert alert-{{ $pengajuan->status == 'rejected' ? 'danger' : 'info' }}">
@@ -65,7 +65,7 @@
                         <div class="col-md-6">
                             <p class="mb-2"><strong>Nominal:</strong> {{ $pengajuan->pembayaran->formatted_nominal }}</p>
                             <p class="mb-2">
-                                <strong>Status:</strong> 
+                                <strong>Status:</strong>
                                 <span class="badge bg-{{ $pengajuan->pembayaran->status_badge_color }}">
                                     {{ $pengajuan->pembayaran->status_label }}
                                 </span>
@@ -74,13 +74,13 @@
                         <div class="col-md-6">
                             @if($pengajuan->pembayaran->batas_waktu_bayar)
                             <p class="mb-2">
-                                <strong>Batas Waktu:</strong> 
+                                <strong>Batas Waktu:</strong>
                                 {{ $pengajuan->pembayaran->batas_waktu_bayar->format('d/m/Y H:i') }} WIB
                             </p>
                             @endif
                             @if($pengajuan->pembayaran->tanggal_upload)
                             <p class="mb-2">
-                                <strong>Tanggal Upload:</strong> 
+                                <strong>Tanggal Upload:</strong>
                                 {{ $pengajuan->pembayaran->tanggal_upload->format('d/m/Y H:i') }} WIB
                             </p>
                             @endif
@@ -95,7 +95,7 @@
                     @endif
                     <hr>
                     <a href="{{ route('pembayaran.show', $pengajuan->id) }}" class="btn btn-primary">
-                        <i class="bi bi-credit-card"></i> 
+                        <i class="bi bi-credit-card"></i>
                         @if($pengajuan->pembayaran->status === 'pending' || $pengajuan->pembayaran->status === 'rejected')
                             Lakukan Pembayaran
                         @else
@@ -180,7 +180,7 @@
                 <div class="mb-4">
                     <h6 class="fw-bold">{{ $index + 1 }}. {{ $apl02->unitKompetensi->judul_unit }}</h6>
                     <p class="small text-muted">Kode Unit: {{ $apl02->unitKompetensi->kode_unit }}</p>
-                    
+
                     @if($apl02->self_assessment)
                     <div class="table-responsive">
                         <table class="table table-bordered table-sm">
@@ -191,19 +191,31 @@
                                     <th width="20%">Bukti</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                @foreach($apl02->self_assessment as $key => $assessment)
-                                <tr>
-                                    <td>Elemen {{ $key }}</td>
-                                    <td>
-                                        <span class="badge bg-{{ $assessment['status'] == 'K' ? 'success' : 'secondary' }}">
-                                            {{ $assessment['status'] == 'K' ? 'Kompeten' : 'Belum Kompeten' }}
-                                        </span>
-                                    </td>
-                                    <td>{{ $assessment['bukti'] ?? '-' }}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
+                          <tbody>
+    @foreach($apl02->self_assessment as $key => $assessment)
+    <tr>
+        <td>Elemen {{ $key }}</td>
+        <td>
+            @php
+                // Handle jika $assessment adalah array atau string
+                if (is_array($assessment)) {
+                    $status = $assessment['status'] ??  null;
+                } else {
+                    $status = $assessment;
+                }
+            @endphp
+
+            @if($status == 'K')
+                <span class="badge bg-success">Kompeten</span>
+            @elseif($status == 'BK')
+                <span class="badge bg-danger">Belum Kompeten</span>
+            @else
+                <span class="badge bg-warning">Belum Dinilai</span>
+            @endif
+        </td>
+    </tr>
+    @endforeach
+</tbody>
                         </table>
                     </div>
                     @endif
@@ -257,13 +269,13 @@
             <a href="{{ route('dashboard.user') }}" class="btn btn-secondary">
                 <i class="bi bi-arrow-left"></i> Kembali ke Dashboard
             </a>
-            
+
             @if($pengajuan->status == 'draft')
             <div>
                 <a href="{{ route('pengajuan.create', $pengajuan->program_pelatihan_id) }}" class="btn btn-warning">
                     <i class="bi bi-pencil"></i> Edit Draft
                 </a>
-                <form action="{{ route('pengajuan.destroy', $pengajuan->id) }}" method="POST" class="d-inline" 
+                <form action="{{ route('pengajuan.destroy', $pengajuan->id) }}" method="POST" class="d-inline"
                       onsubmit="return confirm('Apakah Anda yakin ingin menghapus draft ini?')">
                     @csrf
                     @method('DELETE')

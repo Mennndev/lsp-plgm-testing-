@@ -150,19 +150,21 @@
                                 <th width="20%">Bukti</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @foreach($apl02->self_assessment as $key => $assessment)
-                            <tr>
-                                <td>Elemen {{ $key }}</td>
-                                <td>
-                                    <span class="badge bg-{{ $assessment['status'] == 'K' ? 'success' : 'secondary' }}">
-                                        {{ $assessment['status'] == 'K' ? 'Kompeten' : 'Belum Kompeten' }}
-                                    </span>
-                                </td>
-                                <td>{{ $assessment['bukti'] ?? '-' }}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
+                       <tbody>
+    @foreach($apl02->self_assessment as $key => $assessment)
+    <tr>
+        <td>Elemen {{ $key }}</td>
+        <td>
+            @php
+                $status = $assessment['status'] ?? null;
+            @endphp
+            <span class="badge bg-{{ $status == 'K' ?  'success' :  'secondary' }}">
+                {{ $status == 'K' ? 'Kompeten' : 'Belum Kompeten' }}
+            </span>
+        </td>
+    </tr>
+    @endforeach
+</tbody>
                     </table>
                 </div>
                 @endif
