@@ -140,34 +140,69 @@
                 <h6 class="font-weight-bold">{{ $index + 1 }}. {{ $apl02->unitKompetensi->judul_unit }}</h6>
                 <p class="small text-muted">Kode Unit: {{ $apl02->unitKompetensi->kode_unit }}</p>
 
-                @if($apl02->self_assessment)
-                <div class="table-responsive">
-                    <table class="table table-bordered table-sm">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Elemen</th>
-                                <th width="15%">Status</th>
-                                <th width="20%">Bukti</th>
-                            </tr>
-                        </thead>
-                       <tbody>
-    @foreach($apl02->self_assessment as $key => $assessment)
-    <tr>
-        <td>Elemen {{ $key }}</td>
-        <td>
+      @if($apl02->self_assessment)
+<div class="table-responsive">
+    <table class="table table-bordered table-sm">
+        <thead class="table-light">
+            <tr>
+                <th>Elemen</th>
+                <th width="15%">Status</th>
+                <th width="20%">Bukti</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($apl02->unitKompetensi->elemenKompetensis as $elemen)
             @php
-                $status = $assessment['status'] ?? null;
+                // Ambil status dari self_assessment berdasarkan elemen ID
+                $assessment = $apl02->self_assessment[$elemen->id] ?? null;
+
+                if (is_array($assessment)) {
+                    $status = $assessment['status'] ??  null;
+                } else {
+                    $status = $assessment;
+                }
+
+                // Ambil bukti kompetensi untuk elemen ini (via KUK)
+                $buktis = collect();
+                if (isset($pengajuan->buktiKompetensi)) {
+                    foreach ($elemen->kriteriaUnjukKerja as $kuk) {
+                        $buktiKuk = $pengajuan->buktiKompetensi->where('kriteria_unjuk_kerja_id', $kuk->id);
+                        $buktis = $buktis->merge($buktiKuk);
+                    }
+                }
             @endphp
-            <span class="badge bg-{{ $status == 'K' ?  'success' :  'secondary' }}">
-                {{ $status == 'K' ? 'Kompeten' : 'Belum Kompeten' }}
-            </span>
-        </td>
-    </tr>
-    @endforeach
-</tbody>
-                    </table>
-                </div>
-                @endif
+            <tr>
+                <td>{{ $elemen->nama_elemen }}</td>
+                <td>
+                    @if($status == 'K')
+                        <span class="badge bg-success">Kompeten</span>
+                    @elseif($status == 'BK')
+                        <span class="badge bg-danger">Belum Kompeten</span>
+                    @else
+                        <span class="badge bg-secondary">Belum Dinilai</span>
+                    @endif
+                </td>
+                <td>
+                    @if($buktis->count() > 0)
+                        @foreach($buktis as $bukti)
+                            <a href="{{ asset('storage/' . $bukti->path) }}"
+                               target="_blank"
+                               class="btn btn-sm btn-outline-primary mb-1 d-block">
+                                <i class="bi bi-file-earmark"></i> {{ Str::limit($bukti->nama_file, 15) }}
+                            </a>
+                        @endforeach
+                    @else
+                        <span class="text-muted">-</span>
+                    @endif
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+@else
+<p class="text-muted">Tidak ada data self assessment</p>
+@endif
             </div>
             @if(!$loop->last)<hr>@endif
             @endforeach
