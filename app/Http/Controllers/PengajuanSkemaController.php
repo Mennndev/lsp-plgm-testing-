@@ -64,7 +64,7 @@ class PengajuanSkemaController extends Controller
 
     public function store(StorePengajuanRequest $request)
     {
-
+        dd($request->self_assessment);
         DB::beginTransaction();
 
         try {
