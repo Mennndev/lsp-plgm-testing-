@@ -146,6 +146,8 @@
     $sa = $apl02->self_assessment;
 @endphp
 
+
+
 <div class="table-responsive">
     <table class="table table-bordered table-sm">
         <thead class="table-light">
