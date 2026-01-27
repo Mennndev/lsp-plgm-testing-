@@ -23,4 +23,9 @@ class ElemenKompetensi extends Model
     {
         return $this->hasMany(KriteriaUnjukKerja::class)->orderBy('no_urut');
     }
+
+    public function unit()
+    {
+        return $this->belongsTo(UnitKompetensi::class, 'unit_kompetensi_id');
+    }
 }

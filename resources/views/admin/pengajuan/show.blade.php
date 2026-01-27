@@ -12,6 +12,28 @@
         </a>
     </div>
 
+    <form method="POST" action="{{ route('admin.pengajuan.assign-asesor', $pengajuan->id) }}">
+    @csrf
+
+    <div class="mb-3">
+        <label class="form-label">Pilih Asesor</label>
+        <select name="asesor_id" class="form-select" required>
+            <option value="">-- Pilih Asesor --</option>
+            @foreach($listAsesor as $asesor)
+                <option value="{{ $asesor->id }}"
+                    {{ $pengajuan->asesor_id == $asesor->id ? 'selected' : '' }}>
+                    {{ $asesor->nama ?? $asesor->name }} ({{ $asesor->email }})
+                </option>
+            @endforeach
+        </select>
+    </div>
+
+    <button class="btn btn-primary">
+        <i class="bi bi-person-check"></i> Assign Asesor
+    </button>
+</form>
+
+
     <!-- Alerts -->
     @if(session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -128,152 +150,159 @@
     </div>
     @endif
 
-    <!-- APL-02 Data -->
-    @if($pengajuan->apl02->count() > 0)
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">APL-02: Self Assessment</h6>
-        </div>
-        <div class="card-body">
-            @foreach($pengajuan->apl02 as $index => $apl02)
-            <div class="mb-4">
-                <h6 class="font-weight-bold">{{ $index + 1 }}. {{ $apl02->unitKompetensi->judul_unit }}</h6>
-                <p class="small text-muted">Kode Unit: {{ $apl02->unitKompetensi->kode_unit }}</p>
+   <hr>
 
-    @if($apl02->self_assessment)
+<hr>
+<h4 class="mt-4 mb-3">APL-02: Self Assessment & Bukti Kompetensi</h4>
+
 @php
-    // Ambil self assessment (sudah array karena di-cast)
-    $sa = $apl02->self_assessment;
+    $buktiPerKuk = $pengajuan->buktiKompetensi->groupBy('kriteria_unjuk_kerja_id');
 @endphp
 
-
-
-<div class="table-responsive">
-    <table class="table table-bordered table-sm">
-        <thead class="table-light">
-            <tr>
-                <th>Elemen</th>
-                <th width="20%">Status</th>
-                <th width="25%">Bukti</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($apl02->unitKompetensi->elemenKompetensis as $elemen)
-
-           @php
-    $sa = $apl02->self_assessment;
-
-    $allK = true;
-
-    foreach ($elemen->kriteriaUnjukKerja as $kuk) {
-        if (
-            !isset($sa[$kuk->id]) ||
-            !is_array($sa[$kuk->id]) ||
-            !collect($sa[$kuk->id])->contains(function($v) {
-                return ($v['status'] ?? null) === 'K';
-            })
-        ) {
-            $allK = false;
-            break;
-        }
-    }
-
-    $status = $allK ? 'K' : 'BK';
-
-    // Ambil bukti kompetensi
-    $buktis = collect();
-    if (isset($pengajuan->buktiKompetensi)) {
-        foreach ($elemen->kriteriaUnjukKerja as $kuk) {
-            $buktiKuk = $pengajuan->buktiKompetensi
-                ->where('kriteria_unjuk_kerja_id', $kuk->id);
-            $buktis = $buktis->merge($buktiKuk);
-        }
-    }
-@endphp
-
-
-            <tr>
-                <td>{{ $elemen->nama_elemen }}</td>
-                <td>
-                @if($status === 'K')
-    <span class="badge bg-success">Kompeten (Self Assessment)</span>
+@if($selfAssessments->count() == 0)
+    <div class="alert alert-warning">Belum ada data self assessment.</div>
 @else
-    <span class="badge bg-danger">Belum Kompeten (Self Assessment)</span>
-@endif
 
+@foreach($selfAssessments->groupBy(fn($i) => $i->kuk->elemen->unit->id) as $unitGroup)
+    @php $unit = $unitGroup->first()->kuk->elemen->unit; @endphp
 
-                </td>
-                <td>
-                    @if($buktis->count() > 0)
-                        @foreach($buktis as $bukti)
-                            <a href="{{ asset('storage/' . $bukti->path) }}"
-                               target="_blank"
-                               class="btn btn-sm btn-outline-primary mb-1 d-block">
-                                <i class="bi bi-file-earmark"></i>
-                                {{ Str::limit($bukti->nama_file, 20) }}
-                            </a>
-                        @endforeach
-                    @else
-                        <span class="text-muted">-</span>
-                    @endif
-                </td>
-            </tr>
-
-            @endforeach
-        </tbody>
-    </table>
-</div>
-@else
-<p class="text-muted">Tidak ada data self assessment</p>
-@endif
-
-
-            </div>
-            @if(!$loop->last)<hr>@endif
-            @endforeach
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-light fw-bold">
+            {{ $unit->kode_unit }} - {{ $unit->judul_unit }}
         </div>
-    </div>
-    @endif
 
-    <!-- Dokumen -->
-    @if($pengajuan->dokumen->count() > 0)
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Dokumen Pendukung</h6>
-        </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover">
-                    <thead class="table-light">
+
+            @foreach($unitGroup->groupBy(fn($i) => $i->kuk->elemen->id) as $elemenGroup)
+                @php $elemen = $elemenGroup->first()->kuk->elemen; @endphp
+
+                <h6 class="mt-3 text-primary">
+                    Elemen {{ $elemen->no_urut }}: {{ $elemen->nama_elemen }}
+                </h6>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-sm align-middle">
+                        <thead class="table-light">
+                            <tr class="text-center">
+                                <th width="5%">No</th>
+                                <th>Kriteria Unjuk Kerja</th>
+                                <th width="18%">Self Assessment</th>
+                                <th width="32%">Bukti Pendukung</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        @foreach($elemenGroup as $row)
                         <tr>
-                            <th>No</th>
-                            <th>Jenis Dokumen</th>
-                            <th>Nama File</th>
-                            <th>Ukuran</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($pengajuan->dokumen as $index => $dok)
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td><span class="badge bg-info">{{ strtoupper($dok->jenis_dokumen) }}</span></td>
-                            <td>{{ $dok->nama_file }}</td>
-                            <td>{{ $dok->formatted_size }}</td>
+                            <td class="text-center">{{ $row->kuk->no_urut }}</td>
+
+                            <td>{{ $row->kuk->deskripsi }}</td>
+
+                            {{-- STATUS --}}
+                            <td class="text-center">
+                                @if($row->nilai === 'K')
+                                    <span class="badge bg-success px-3 py-2">
+                                        <i class="bi bi-check-circle"></i> Kompeten
+                                    </span>
+                                @else
+                                    <span class="badge bg-danger px-3 py-2">
+                                        <i class="bi bi-x-circle"></i> Belum Kompeten
+                                    </span>
+                                @endif
+                            </td>
+
+                            {{-- BUKTI --}}
                             <td>
-                                <a href="{{ asset('storage/' . $dok->path) }}" class="btn btn-sm btn-primary" target="_blank">
-                                    <i class="bi bi-download"></i> Download
-                                </a>
+                                @if(isset($buktiPerKuk[$row->kriteria_unjuk_kerja_id]))
+                                    <div class="d-flex flex-column gap-1">
+                                        @foreach($buktiPerKuk[$row->kriteria_unjuk_kerja_id] as $bukti)
+                                            <a href="{{ asset('storage/'.$bukti->path) }}"
+                                               target="_blank"
+                                               class="btn btn-sm btn-outline-primary text-start">
+                                                <i class="bi bi-file-earmark"></i>
+                                                {{ \Illuminate\Support\Str::limit($bukti->nama_file, 40) }}
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <span class="text-muted fst-italic">
+                                        <i class="bi bi-file-earmark-x"></i> Tidak ada bukti
+                                    </span>
+                                @endif
                             </td>
                         </tr>
                         @endforeach
-                    </tbody>
-                </table>
-            </div>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            @endforeach
+
         </div>
     </div>
-    @endif
+@endforeach
+
+@endif
+
+
+   @if($pengajuan->pengajuanBuktiAdministratif->count())
+<div class="card mb-4 shadow">
+    <div class="card-header bg-primary text-white">
+        <i class="bi bi-folder-check"></i> Bukti Administratif
+    </div>
+    <div class="card-body">
+        <ul class="list-group">
+            @foreach($pengajuan->pengajuanBuktiAdministratif as $bukti)
+                <li class="list-group-item">
+                    <a href="{{ asset('storage/'.$bukti->path) }}" target="_blank">
+                        <i class="bi bi-paperclip"></i> {{ $bukti->nama_file }}
+                    </a>
+                </li>
+            @endforeach
+        </ul>
+    </div>
 </div>
+@endif
+
+@if($pengajuan->pengajuanBuktiPortofolio->count())
+<div class="card mb-4 shadow">
+    <div class="card-header bg-info text-white">
+        <i class="bi bi-briefcase"></i> Bukti Portofolio
+    </div>
+    <div class="card-body">
+        <ul class="list-group">
+            @foreach($pengajuan->pengajuanBuktiPortofolio as $bukti)
+                <li class="list-group-item">
+                    <a href="{{ asset('storage/'.$bukti->path) }}" target="_blank">
+                        <i class="bi bi-paperclip"></i> {{ $bukti->nama_file }}
+                    </a>
+                </li>
+            @endforeach
+        </ul>
+    </div>
+</div>
+@endif
+
+@if($pengajuan->pengajuanPersyaratanDasar->count())
+<div class="card mb-4 shadow">
+    <div class="card-header bg-secondary text-white">
+        <i class="bi bi-journal-check"></i> Persyaratan Dasar
+    </div>
+    <div class="card-body">
+        <ul class="list-group">
+            @foreach($pengajuan->pengajuanPersyaratanDasar as $bukti)
+                <li class="list-group-item">
+                    <a href="{{ asset('storage/'.$bukti->path) }}" target="_blank">
+                        <i class="bi bi-paperclip"></i> {{ $bukti->nama_file }}
+                    </a>
+                </li>
+            @endforeach
+        </ul>
+    </div>
+</div>
+@endif
+
 
 <!-- Approve Modal -->
 <div class="modal fade" id="approveModal" tabindex="-1" aria-labelledby="approveModalLabel" aria-hidden="true">

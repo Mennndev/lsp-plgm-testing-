@@ -64,7 +64,7 @@ class PengajuanSkemaController extends Controller
 
     public function store(StorePengajuanRequest $request)
     {
-        dd($request->self_assessment);
+
         DB::beginTransaction();
 
         try {
@@ -106,16 +106,17 @@ class PengajuanSkemaController extends Controller
                 'catatan' => $request->catatan,
             ]);
 
-            // Create pengajuan_apl02 for each unit
-            if ($request->has('self_assessment')) {
-                foreach ($request->self_assessment as $unitId => $assessment) {
-                    PengajuanApl02::create([
-                        'pengajuan_skema_id' => $pengajuan->id,
-                        'unit_kompetensi_id' => $unitId,
-                        'self_assessment' => $assessment,
-                    ]);
-                }
-            }
+           // ✅ SIMPAN SELF ASSESSMENT PER KUK (ARSITEKTUR BARU & BENAR)
+if ($request->has('self_assessment')) {
+    foreach ($request->self_assessment as $kukId => $status) {
+        \App\Models\PengajuanSelfAssessment::create([
+            'pengajuan_skema_id' => $pengajuan->id,
+            'kriteria_unjuk_kerja_id' => $kukId,
+            'status' => $status, // "K" atau "BK"
+        ]);
+    }
+}
+
 
             if ($request->hasFile('portfolio')) {
     foreach ($request->file('portfolio') as $unitId => $files) {

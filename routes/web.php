@@ -19,6 +19,8 @@ use App\Http\Controllers\admin\AdminBeritaController;
 use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\PengajuanSkemaController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\PembayaranController;
+use App\Http\Controllers\Asesor\DashboardController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -147,6 +149,11 @@ Route::prefix('admin')
         Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])
             ->name('dashboard');
 
+          Route::post('/pengajuan/{id}/assign-asesor',
+        [PengajuanController::class, 'assignAsesor']
+        )->name('pengajuan.assign-asesor');
+
+
         // CRUD Program Pelatihan
         Route::resource('program-pelatihan', ProgramPelatihanController::class);
         // CRUD Asesi
@@ -174,10 +181,18 @@ Route::prefix('admin')
             Route::post('/pembayaran/{id}/reject', [\App\Http\Controllers\Admin\PembayaranController::class, 'reject'])
                 ->name('pembayaran.reject');
         });
+
+
+
     });
 
-Route::post('/pembayaran/notification', [PembayaranController:: class, 'notification'])
-    ->name('pembayaran. notification')
-    ->withoutMiddleware(['auth', 'web']); 
+Route::middleware(['auth', 'role:asesor'])->prefix('asesor')->name('asesor.')->group(function () {
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+});
+
+
+
 
 

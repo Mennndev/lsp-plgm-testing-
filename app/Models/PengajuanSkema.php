@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+
 class PengajuanSkema extends Model
 {
     protected $table = 'pengajuan_skema';
@@ -131,4 +132,31 @@ class PengajuanSkema extends Model
     {
         return $this->hasOne(Pembayaran::class, 'pengajuan_skema_id');
     }
+
+    public function selfAssessments()
+{
+    return $this->hasMany(PengajuanSelfAssessment::class);
+}
+
+public function asesorAssessments()
+{
+    return $this->hasMany(PengajuanAsesorAssessment::class);
+}
+
+public function asesors()
+{
+    return $this->belongsToMany(
+        User::class,
+        'pengajuan_asesor',
+        'pengajuan_skema_id',
+        'asesor_id'
+    );
+}
+
+public function asesor()
+{
+    return $this->belongsTo(User::class, 'asesor_id');
+}
+
+
 }

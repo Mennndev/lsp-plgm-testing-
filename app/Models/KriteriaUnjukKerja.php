@@ -22,6 +22,10 @@ class KriteriaUnjukKerja extends Model
         return $this->belongsTo(ElemenKompetensi::class);
     }
 
+    public function elemen(){
+        return $this->belongsTo(ElemenKompetensi::class, 'elemen_kompetensi_id');
+    }
+
     /**
      * Relationship: has many pengajuan bukti kompetensi
      */
@@ -29,4 +33,10 @@ class KriteriaUnjukKerja extends Model
     {
         return $this->hasMany(PengajuanBuktiKompetensi::class);
     }
+
+    public function buktiKompetensis()
+{
+    return $this->hasMany(PengajuanBuktiKompetensi::class, 'kriteria_unjuk_kerja_id');
+}
+
 }

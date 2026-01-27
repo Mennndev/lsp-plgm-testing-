@@ -319,7 +319,7 @@
         <div class="card-body">
           <div class="alert alert-info">
             <i class="bi bi-info-circle"></i>
-            <strong>Petunjuk:</strong> Silakan lampirkan file untuk setiap persyaratan yang diminta. 
+            <strong>Petunjuk:</strong> Silakan lampirkan file untuk setiap persyaratan yang diminta.
             File dengan tanda <span class="text-danger">*</span> adalah wajib diisi.
           </div>
 
@@ -367,7 +367,7 @@
             </table>
           @else
             <div class="alert alert-warning">
-              <i class="bi bi-exclamation-triangle"></i> 
+              <i class="bi bi-exclamation-triangle"></i>
               Tidak ada persyaratan dasar untuk skema ini. Silakan lanjutkan ke tab berikutnya.
             </div>
           @endif
@@ -443,7 +443,7 @@
             </table>
           @else
             <div class="alert alert-warning">
-              <i class="bi bi-exclamation-triangle"></i> 
+              <i class="bi bi-exclamation-triangle"></i>
               Tidak ada bukti administratif untuk skema ini. Silakan lanjutkan ke tab berikutnya.
             </div>
           @endif
@@ -519,7 +519,7 @@
             </table>
           @else
             <div class="alert alert-warning">
-              <i class="bi bi-exclamation-triangle"></i> 
+              <i class="bi bi-exclamation-triangle"></i>
               Tidak ada bukti portofolio untuk skema ini. Silakan lanjutkan ke tab berikutnya.
             </div>
           @endif
@@ -585,40 +585,45 @@
                           </thead>
                           <tbody>
                             @foreach($elemen->kriteriaUnjukKerja as $kukIndex => $kuk)
-                              @php 
-                                $oldStatus = old("self_assessment.{$unit->id}.{$elemen->id}.{$kuk->id}.status"); 
+                              @php
+                                $oldStatus = old("self_assessment.{$kuk->id}");
                               @endphp
-                              <tr>
-                                <td class="text-center">{{ $kuk->no_urut }}</td>
-                                <td>{{ $kuk->deskripsi }}</td>
-                                <td class="text-center">
-                                  <input type="radio"
-                                         class="form-check-input"
-                                         name="self_assessment[{{ $unit->id }}][{{ $elemen->id }}][{{ $kuk->id }}][status]"
-                                         value="K"
-                                         {{ $oldStatus === 'K' ? 'checked' : '' }}>
-                                </td>
-                                <td class="text-center">
-                                  <input type="radio"
-                                         class="form-check-input"
-                                         name="self_assessment[{{ $unit->id }}][{{ $elemen->id }}][{{ $kuk->id }}][status]"
-                                         value="BK"
-                                         {{ $oldStatus === 'BK' ? 'checked' : '' }}>
-                                </td>
-                                <td>
-                                  <input type="file"
-                                         class="form-control form-control-sm"
-                                         name="bukti_kompetensi[{{ $kuk->id }}]"
-                                         accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
-                                  <small class="text-muted">Max 2MB</small>
-                                </td>
-                              </tr>
+                              tr>
+    <td class="text-center">{{ $kuk->no_urut }}</td>
+    <td>{{ $kuk->deskripsi }}</td>
+
+    <td class="text-center">
+        <input type="radio"
+               class="form-check-input"
+               name="self_assessment[{{ $kuk->id }}]"
+               value="K"
+               required
+               {{ $oldStatus === 'K' ? 'checked' : '' }}>
+    </td>
+
+    <td class="text-center">
+        <input type="radio"
+               class="form-check-input"
+               name="self_assessment[{{ $kuk->id }}]"
+               value="BK"
+               required
+               {{ $oldStatus === 'BK' ? 'checked' : '' }}>
+    </td>
+
+    <td>
+        <input type="file"
+               class="form-control form-control-sm"
+               name="bukti_kompetensi[{{ $kuk->id }}]"
+               accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+        <small class="text-muted">Max 2MB</small>
+    </td>
+</tr>
                             @endforeach
                           </tbody>
                         </table>
                       @else
                         <div class="alert alert-warning">
-                          <i class="bi bi-exclamation-triangle"></i> 
+                          <i class="bi bi-exclamation-triangle"></i>
                           Tidak ada Kriteria Unjuk Kerja untuk elemen ini.
                         </div>
                       @endif
@@ -626,7 +631,7 @@
                   @endforeach
                 @else
                   <div class="alert alert-warning">
-                    <i class="bi bi-exclamation-triangle"></i> 
+                    <i class="bi bi-exclamation-triangle"></i>
                     Tidak ada Elemen Kompetensi untuk unit ini.
                   </div>
                 @endif
@@ -636,7 +641,7 @@
             @endforeach
           @else
             <div class="alert alert-warning">
-              <i class="bi bi-exclamation-triangle"></i> 
+              <i class="bi bi-exclamation-triangle"></i>
               Tidak ada Unit Kompetensi untuk skema ini.
             </div>
           @endif

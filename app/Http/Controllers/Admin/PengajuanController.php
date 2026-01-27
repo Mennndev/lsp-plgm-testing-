@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\PengajuanSkema;
 use App\Services\NotificationService;
 use Illuminate\Http\Request;
+use App\Models\PengajuanBuktiKompetensi;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class PengajuanController extends Controller
 {
@@ -50,18 +53,26 @@ class PengajuanController extends Controller
 
     public function show($id)
 {
-    $pengajuan = PengajuanSkema::with([
-        'user',
-        'program',
-        'apl01',
-        'apl02.unitKompetensi.elemenKompetensis.kriteriaUnjukKerja', // dengan 's'!
-        'dokumen',
-        'buktiKompetensi',
-        'pembayaran',
-        'approver'
-    ])->findOrFail($id);
+   $pengajuan = PengajuanSkema::with([
+    'user',
+    'program',
+    'apl01',
+    'buktiKompetensi.kuk.elemen.unit',
+    'pengajuanBuktiAdministratif',
+    'pengajuanBuktiPortofolio',
+    'pengajuanPersyaratanDasar',
+    'pembayaran',
+    'approver'
+])->findOrFail($id);
 
-    return view('admin.pengajuan.show', compact('pengajuan'));
+
+    $selfAssessments = $pengajuan->selfAssessments()->with('kuk.elemen.unit')->get();
+    $buktiKompetensi = $pengajuan->buktiKompetensi;
+    $listAsesor = User::where('role', 'asesor')->get();
+
+
+
+    return view('admin.pengajuan.show', compact('pengajuan', 'selfAssessments', 'buktiKompetensi', 'listAsesor'));
 }
 
     public function approve($id, Request $request)
@@ -118,4 +129,29 @@ class PengajuanController extends Controller
         return redirect()->route('admin.pengajuan.show', $id)
             ->with('success', 'Pengajuan berhasil ditolak dan notifikasi telah dikirim ke user.');
     }
+
+    public function assignAsesor(Request $request, $pengajuanId)
+{
+    $request->validate([
+        'asesor_id' => 'required|exists:users,id'
+    ]);
+
+    // Hapus dulu kalau sebelumnya sudah ada (biar 1 asesor saja)
+    DB::table('pengajuan_asesor')
+        ->where('pengajuan_skema_id', $pengajuanId)
+        ->delete();
+
+    // Insert baru
+    DB::table('pengajuan_asesor')->insert([
+        'pengajuan_skema_id' => $pengajuanId,
+        'asesor_id' => $request->asesor_id,
+        'role' => 'utama',
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
+
+    return back()->with('success', 'Asesor berhasil ditugaskan');
+}
+
+
 }

@@ -62,4 +62,10 @@ class ProgramPelatihan extends Model
     {
         return $this->hasMany(BuktiPortofolioTemplate::class)->orderBy('urutan');
     }
+
+    public function asesors()
+{
+    return $this->belongsToMany(User::class, 'program_asesor', 'program_pelatihan_id', 'asesor_id');
+}
+
 }

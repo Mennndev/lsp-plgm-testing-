@@ -31,4 +31,10 @@ class PengajuanBuktiKompetensi extends Model
     {
         return $this->belongsTo(KriteriaUnjukKerja::class);
     }
+
+    public function kuk()
+{
+    return $this->belongsTo(KriteriaUnjukKerja::class, 'kriteria_unjuk_kerja_id');
+}
+
 }

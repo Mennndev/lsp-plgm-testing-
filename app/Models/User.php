@@ -70,4 +70,12 @@ class User extends Authenticatable
     {
         return $this->unreadNotifications()->count();
     }
+
+   public function pengajuanYangDiAses()
+{
+    return $this->hasMany(PengajuanSkema::class, 'asesor_id');
+}
+
+
+
 }
