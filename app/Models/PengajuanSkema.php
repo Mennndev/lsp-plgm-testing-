@@ -153,10 +153,6 @@ public function asesors()
     );
 }
 
-public function asesor()
-{
-    return $this->belongsTo(User::class, 'asesor_id');
-}
 
 
 }

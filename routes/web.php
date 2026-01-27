@@ -21,6 +21,8 @@ use App\Http\Controllers\PengajuanSkemaController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\Asesor\DashboardController;
+use App\Http\Controllers\Asesor\PengajuanController;
+use App\Http\Controllers\Asesor\PenilaianController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -189,6 +191,12 @@ Route::prefix('admin')
 Route::middleware(['auth', 'role:asesor'])->prefix('asesor')->name('asesor.')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/pengajuan/{id}', [PengajuanController::class, 'show'])
+        ->name('pengajuan.show');
+
+     Route::post('/pengajuan/{id}/nilai', [PenilaianController::class, 'simpan'])
+        ->name('pengajuan.nilai');
+    Route::post('/pengajuan/{id}', [PenilaianController::class, 'store'])->name('pengajuan.store');
 
 });
 

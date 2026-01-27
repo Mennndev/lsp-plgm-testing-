@@ -17,14 +17,19 @@
             <tbody>
                 @foreach($pengajuanList as $row)
                 <tr>
-                    <td>{{ $row->pengajuan->user->nama }}</td>
-                    <td>{{ $row->pengajuan->program->nama }}</td>
-                    <td>{{ $row->pengajuan->pengajuan->status ?? '-' }}</td>
-                    <td>
-                        <a href="{{ route('asesor.pengajuan.show', $row->pengajuan->id) }}" class="btn btn-sm btn-primary">
-                            Nilai
-                        </a>
-                    </td>
+                  <td>{{ $row->pengajuan->user->nama }}</td>
+                <td>{{ $row->pengajuan->program->nama }}</td>
+                <td>
+                    <span class="badge bg-info">
+                        {{ $row->pengajuan->status }}
+                    </span>
+                </td>
+                <td>
+                   <a href="{{ route('asesor.pengajuan.show', $row->pengajuan->id) }}" class="btn btn-primary">
+                Mulai Penilaian
+                </a>
+
+                </td>
                 </tr>
                 @endforeach
             </tbody>
