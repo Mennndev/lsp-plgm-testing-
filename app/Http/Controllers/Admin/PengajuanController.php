@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\PengajuanBuktiKompetensi;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class PengajuanController extends Controller
 {
@@ -87,7 +88,7 @@ class PengajuanController extends Controller
         'status' => 'approved',
         'tanggal_disetujui' => now(),
         'catatan_admin' => $request->catatan_admin,
-        'approved_by' => auth()->id(),
+        'approved_by' => Auth::id(),
     ]);
 
     // Buat record pembayaran (tanpa snap token dulu, nanti generate saat user buka halaman bayar)
@@ -95,7 +96,7 @@ class PengajuanController extends Controller
         'pengajuan_skema_id' => $pengajuan->id,
         'user_id' => $pengajuan->user_id,
         'order_id' => \App\Models\Pembayaran::generateOrderId(),
-        'nominal' => $pengajuan->program->harga ?? 500000,
+        'nominal' => $pengajuan->program->estimasi_biaya ?? 500000,
         'status' => 'pending',
         'expired_at' => now()->addDays(7), // 7 hari untuk bayar
     ]);
@@ -120,7 +121,7 @@ class PengajuanController extends Controller
         $pengajuan->update([
             'status' => 'rejected',
             'catatan_admin' => $request->catatan_admin,
-            'approved_by' => auth()->id(),
+            'approved_by' => Auth::id(),
         ]);
 
         // Kirim notifikasi ke user

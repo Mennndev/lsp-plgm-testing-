@@ -200,6 +200,10 @@ Route::middleware(['auth', 'role:asesor'])->prefix('asesor')->name('asesor.')->g
 
 });
 
+Route::get('/cek-midtrans', function () {
+    return config('midtrans');
+});
+
 
 
 

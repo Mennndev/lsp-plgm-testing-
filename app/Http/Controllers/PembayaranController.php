@@ -34,6 +34,12 @@ class PembayaranController extends Controller
 
         $pembayaran = $pengajuan->pembayaran;
 
+        // Update nominal pembayaran jika berbeda dengan estimasi_biaya program
+        if ($pembayaran && $pengajuan->program && $pembayaran->nominal != $pengajuan->program->estimasi_biaya) {
+            $pembayaran->nominal = $pengajuan->program->estimasi_biaya;
+            $pembayaran->save();
+        }
+
         // Jika sudah bayar, redirect ke detail pengajuan
         if ($pembayaran && $pembayaran->status === 'success') {
             return redirect()->route('pengajuan.show', $pengajuanId)
@@ -43,7 +49,7 @@ class PembayaranController extends Controller
         return view('pembayaran.show', [
             'pengajuan' => $pengajuan,
             'pembayaran' => $pembayaran,
-            'clientKey' => config('midtrans. client_key'),
+            'clientKey' => config('midtrans.client_key'),
         ]);
     }
 
@@ -88,7 +94,7 @@ class PembayaranController extends Controller
                 'pengajuan_skema_id' => $pengajuan->id,
                 'user_id' => Auth:: id(),
                 'order_id' => Pembayaran:: generateOrderId(),
-                'nominal' => $pengajuan->program->harga ??  500000,
+                'nominal' => $pengajuan->program->estimasi_biaya ??  500000,
                 'status' => 'pending',
             ]);
         }
