@@ -1,6 +1,6 @@
 <?php
+
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PembayaranController;
 
-
-// Midtrans Notification Route
 Route::post('/midtrans/notification', [PembayaranController::class, 'notification']);
