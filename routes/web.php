@@ -1,7 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\admin;
-
+namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardUserController;
@@ -14,8 +13,9 @@ use App\Http\Controllers\VisiMisicontroller;
 use App\Http\Controllers\KebijakanMutucontroller;
 use App\Http\Controllers\StrukturOrganisasicontroller;
 use App\Http\Controllers\Skemacontroller;
-use App\Http\Controllers\admin\ProgramPelatihanController;
-use App\Http\Controllers\admin\AdminBeritaController;
+use App\Http\Controllers\Admin\ProgramPelatihanController;
+use App\Http\Controllers\Admin\AdminBeritaController;
+use App\Http\Controllers\Admin\AsesiController;
 use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\PengajuanSkemaController;
 use App\Http\Controllers\NotificationController;
@@ -203,6 +203,9 @@ Route::middleware(['auth', 'role:asesor'])->prefix('asesor')->name('asesor.')->g
 Route::get('/cek-midtrans', function () {
     return config('midtrans');
 });
+
+
+
 
 
 

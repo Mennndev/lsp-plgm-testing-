@@ -4,24 +4,26 @@ namespace App\Services;
 
 use App\Models\Pembayaran;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 use Midtrans\Config;
 use Midtrans\Snap;
 use Midtrans\Transaction;
 use Midtrans\Notification;
 use Exception;
+use Carbon\Carbon;
 
 class MidtransService
 {
     public function __construct()
     {
-        Config::$serverKey = config('midtrans. server_key');
+        Config::$serverKey = config('midtrans.server_key');
         Config::$isProduction = config('midtrans.is_production');
-        Config::$isSanitized = config('midtrans.is_sanitized');
-        Config::$is3ds = config('midtrans.is_3ds');
+        Config::$isSanitized = true;
+        Config::$is3ds = true;
     }
 
     /**
-     * Buat Snap Token untuk pembayaran
+     * Generate Snap Token
      */
     public function createSnapToken(Pembayaran $pembayaran, User $user): string
     {
@@ -33,30 +35,30 @@ class MidtransService
             'customer_details' => [
                 'first_name' => $user->nama,
                 'email' => $user->email,
-                'phone' => $user->no_hp ??  '',
+                'phone' => $user->no_hp ?? '',
             ],
             'item_details' => [
                 [
                     'id' => 'SKEMA-' . $pembayaran->pengajuan_skema_id,
                     'price' => (int) $pembayaran->nominal,
                     'quantity' => 1,
-                    'name' => 'Sertifikasi:  ' . ($pembayaran->pengajuan->program->nama ?? 'Skema Sertifikasi'),
+                    'name' => 'Sertifikasi: ' . ($pembayaran->pengajuan->program->nama ?? 'Skema Sertifikasi'),
                 ],
             ],
+            'enabled_payments' => ['qris', 'gopay', 'bank_transfer'],
             'callbacks' => [
                 'finish' => route('pembayaran.finish', $pembayaran->id),
             ],
             'expiry' => [
-                'start_time' => date('Y-m-d H:i: s O'),
+                'start_time' => Carbon::now()->format('Y-m-d H:i:s O'),
                 'unit' => 'days',
-                'duration' => 1, // 1 hari expired
+                'duration' => 1,
             ],
         ];
 
         try {
-            $snapToken = Snap:: getSnapToken($params);
+            $snapToken = Snap::getSnapToken($params);
 
-            // Simpan snap token
             $pembayaran->update([
                 'snap_token' => $snapToken,
                 'expired_at' => now()->addDay(),
@@ -64,135 +66,98 @@ class MidtransService
 
             return $snapToken;
         } catch (Exception $e) {
-            throw new Exception('Gagal membuat transaksi:  ' . $e->getMessage());
+            Log::error('Midtrans Snap Error', ['error' => $e->getMessage()]);
+            throw new Exception('Gagal membuat transaksi Midtrans');
         }
     }
 
     /**
-     * Handle notification dari Midtrans (webhook)
+     * Handle Webhook Midtrans
      */
     public function handleNotification(): array
     {
         $notification = new Notification();
 
-        $transactionStatus = $notification->transaction_status;
         $orderId = $notification->order_id;
-        $paymentType = $notification->payment_type;
-        $fraudStatus = $notification->fraud_status ??  null;
-        $transactionId = $notification->transaction_id;
+        $statusCode = $notification->status_code;
+        $grossAmount = $notification->gross_amount;
+        $signatureKey = $notification->signature_key;
+
+        // VALIDASI SIGNATURE
+        $expectedSignature = hash(
+            'sha512',
+            $orderId . $statusCode . $grossAmount . config('midtrans.server_key')
+        );
+
+        if ($signatureKey !== $expectedSignature) {
+            Log::warning('Midtrans signature invalid', compact('orderId'));
+            abort(403, 'Invalid signature');
+        }
 
         $pembayaran = Pembayaran::where('order_id', $orderId)->first();
 
         if (! $pembayaran) {
-            return [
-                'success' => false,
-                'message' => 'Pembayaran tidak ditemukan',
-            ];
+            return ['success' => false, 'message' => 'Pembayaran tidak ditemukan'];
         }
 
-        // Update payment details
-        $paymentDetails = [
-            'payment_type' => $paymentType,
-            'transaction_id' => $transactionId,
-            'transaction_time' => $notification->transaction_time ??  null,
-            'gross_amount' => $notification->gross_amount ??  null,
-        ];
-
-        // Tambahkan VA number jika ada
-        if (isset($notification->va_numbers)) {
-            $paymentDetails['va_numbers'] = $notification->va_numbers;
-        }
-
-        // Tambahkan payment code jika ada (untuk convenience store)
-        if (isset($notification->payment_code)) {
-            $paymentDetails['payment_code'] = $notification->payment_code;
-        }
-
-        // Update pembayaran
         $pembayaran->update([
-            'payment_type' => $paymentType,
-            'transaction_id' => $transactionId,
-            'transaction_status' => $transactionStatus,
-            'payment_details' => $paymentDetails,
-            'pdf_url' => $notification->pdf_url ??  null,
+            'payment_type' => $notification->payment_type,
+            'transaction_id' => $notification->transaction_id,
+            'transaction_time' => $notification->transaction_time,
+            'gross_amount' => $grossAmount,
+            'payment_details' => json_encode($notification),
         ]);
 
-        // Handle berdasarkan status
-        if ($transactionStatus == 'capture') {
-            if ($fraudStatus == 'accept') {
-                $this->setSuccess($pembayaran);
-            }
-        } elseif ($transactionStatus == 'settlement') {
-            $this->setSuccess($pembayaran);
-        } elseif ($transactionStatus == 'pending') {
-            $pembayaran->update(['status' => 'processing']);
-        } elseif ($transactionStatus == 'deny' || $transactionStatus == 'cancel') {
-            $pembayaran->update(['status' => 'failed']);
-        } elseif ($transactionStatus == 'expire') {
-            $pembayaran->update(['status' => 'expired']);
-        } elseif ($transactionStatus == 'refund') {
-            $pembayaran->update(['status' => 'refunded']);
+        switch ($notification->transaction_status) {
+            case 'capture':
+            case 'settlement':
+                $this->markSuccess($pembayaran);
+                break;
+
+            case 'pending':
+                $pembayaran->update(['status' => 'processing']);
+                break;
+
+            case 'deny':
+            case 'cancel':
+                $pembayaran->update(['status' => 'failed']);
+                break;
+
+            case 'expire':
+                $pembayaran->update(['status' => 'expired']);
+                break;
+
+            case 'refund':
+                $pembayaran->update(['status' => 'refunded']);
+                break;
         }
 
         return [
             'success' => true,
-            'message' => 'Notification handled',
             'order_id' => $orderId,
-            'status' => $transactionStatus,
+            'status' => $notification->transaction_status,
         ];
     }
 
-    /**
-     * Set pembayaran sukses
-     */
-    private function setSuccess(Pembayaran $pembayaran): void
+    private function markSuccess(Pembayaran $pembayaran): void
     {
         $pembayaran->update([
             'status' => 'success',
             'paid_at' => now(),
         ]);
 
-        // Update status pengajuan menjadi 'paid'
         $pembayaran->pengajuan->update([
             'status' => 'paid',
         ]);
-
-        // Kirim notifikasi ke user
-        NotificationService::send(
-            $pembayaran->user,
-            'Pembayaran Berhasil',
-            "Pembayaran untuk skema \"{$pembayaran->pengajuan->program->nama}\" berhasil.  Silakan menunggu jadwal asesmen.",
-            [
-                'type' => 'success',
-                'icon' => 'bi-check-circle-fill',
-                'link' => route('pengajuan.show', $pembayaran->pengajuan_skema_id),
-            ]
-        );
     }
 
-    /**
-     * Cek status transaksi di Midtrans
-     */
     public function checkStatus(string $orderId): array
     {
-        try {
-            $status = Transaction::status($orderId);
-            return (array) $status;
-        } catch (Exception $e) {
-            throw new Exception('Gagal cek status:  ' . $e->getMessage());
-        }
+        return (array) Transaction::status($orderId);
     }
 
-    /**
-     * Cancel transaksi
-     */
     public function cancel(string $orderId): array
     {
-        try {
-            $cancel = Transaction::cancel($orderId);
-            return (array) $cancel;
-        } catch (Exception $e) {
-            throw new Exception('Gagal cancel transaksi: ' .  $e->getMessage());
-        }
+        return (array) Transaction::cancel($orderId);
     }
 }
