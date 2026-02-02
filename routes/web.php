@@ -1,6 +1,5 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardUserController;
@@ -152,7 +151,7 @@ Route::prefix('admin')
             ->name('dashboard');
 
           Route::post('/pengajuan/{id}/assign-asesor',
-        [PengajuanController::class, 'assignAsesor']
+        [\App\Http\Controllers\Admin\PengajuanController::class, 'assignAsesor']
         )->name('pengajuan.assign-asesor');
 
 
