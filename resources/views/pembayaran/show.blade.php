@@ -182,10 +182,12 @@
 @endsection
 
 @push('scripts')
-{{-- Midtrans Snap JS --}}
-<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ $clientKey }}"></script>
-{{-- Untuk Production, ganti dengan:  --}}
-{{-- <script src="https://app.midtrans.com/snap/snap.js" data-client-key="{{ $clientKey }}"></script> --}}
+{{-- Midtrans Snap JS - Auto switch between Sandbox and Production --}}
+@if(config('midtrans.is_production'))
+    <script src="https://app.midtrans.com/snap/snap.js" data-client-key="{{ $clientKey }}"></script>
+@else
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ $clientKey }}"></script>
+@endif
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
