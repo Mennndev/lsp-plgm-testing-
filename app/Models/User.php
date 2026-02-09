@@ -25,6 +25,8 @@ class User extends Authenticatable
         'password',
         'no_hp',
         'role',
+        'alamat',
+        'status_aktif',
         'created_at',
         'updated_at'
     ];
@@ -49,6 +51,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'status_aktif' => 'boolean',
         ];
     }
     public function sendPasswordResetNotification($token)

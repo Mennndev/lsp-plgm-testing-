@@ -101,7 +101,7 @@
                                         </span>
                                     @endif
                                 </td>
-                                <td>{{ $asesor->created_at->format('d M Y') }}</td>
+                                <td>{{ $asesor->created_at ? $asesor->created_at->format('d M Y') : '-' }}</td>
                                 <td>
                                     <div class="btn-group" role="group">
                                         <a href="{{ route('admin.asesor.edit', $asesor->id) }}" 
