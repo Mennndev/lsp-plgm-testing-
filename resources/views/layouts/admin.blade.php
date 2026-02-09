@@ -51,6 +51,12 @@
                 </a>
             </li>
 
+            <li class="{{ request()->is('admin/asesor*') ? 'active' : '' }}">
+                <a href="{{ route('admin.asesor.index') }}">
+                    <i class="bi bi-person-badge"></i> Manajemen Asesor
+                </a>
+            </li>
+
             <li class="{{ request() ->is('admin/pengajuan*') ? 'active' : '' }}">
                 <a href="{{ url('admin/pengajuan') }}">
                     <i class="bi bi-file-earmark-text"></i> Pengajuan Sertifikasi

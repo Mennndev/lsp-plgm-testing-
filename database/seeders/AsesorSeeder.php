@@ -19,6 +19,10 @@ class AsesorSeeder extends Seeder
             'email' => 'Ahmad@gmail.com',
             'password' => Hash::make('ahmad123'),
             'role' => 'asesor',
+            'no_hp' => '081234567891',
+            'status_aktif' => true,
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
     }
 }

@@ -20,6 +20,7 @@ use App\Http\Controllers\PengajuanSkemaController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\Admin\AsesorController;
 use App\Http\Controllers\Asesor\DashboardController;
 use App\Http\Controllers\Asesor\PengajuanController;
 use App\Http\Controllers\Asesor\PenilaianController;
@@ -176,6 +177,8 @@ Route::prefix('admin')
         Route::resource('program-pelatihan', ProgramPelatihanController::class);
         // CRUD Asesi
         Route::resource('asesi', AsesiController::class);
+        // CRUD Asesor
+        Route::resource('asesor', AsesorController::class);
         Route::resource('berita' , AdminBeritaController::class);
 
         // Pengajuan Management (Admin Only)
