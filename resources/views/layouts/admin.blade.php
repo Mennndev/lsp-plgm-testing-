@@ -63,6 +63,12 @@
                 </a>
             </li>
 
+            <li class="{{ request()->is('admin/livechat*') ? 'active' : '' }}">
+                <a href="{{ route('admin.chat.index') }}">
+                    <i class="bi bi-chat-dots"></i> Live Chat
+                </a>
+            </li>
+
              <li class="{{ request()->is('admin/pengguna*') ? 'active' : '' }}">
                 <a href="{{ url('admin/berita') }}">
                     <i class="bi bi-newspaper"></i> Berita

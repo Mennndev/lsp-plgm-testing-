@@ -172,8 +172,26 @@ if (messagesContainer) {
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
-// Auto-refresh messages setiap 3 detik
+// Auto-refresh messages setiap 3 detik, jangan reload saat admin sedang mengetik
+const messageInput = document.querySelector('textarea[name="message"]');
+let isTyping = false;
+
+if (messageInput) {
+    messageInput.addEventListener('focus', function() {
+        isTyping = true;
+    });
+    messageInput.addEventListener('blur', function() {
+        isTyping = false;
+    });
+    messageInput.addEventListener('input', function() {
+        isTyping = true;
+    });
+}
+
 setInterval(function() {
+    if (isTyping) {
+        return;
+    }
     fetch('{{ route("admin.chat.get-messages", $chat->id) }}')
         .then(response => response.json())
         .then(data => {

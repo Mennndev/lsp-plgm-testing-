@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.dashboard')
 
 @section('title', 'Live Chat')
 
@@ -129,8 +129,12 @@
 
 @push('scripts')
 <script>
-// Auto-refresh chat list setiap 5 detik
-setInterval(function() {
+// Auto-refresh chat list setiap 5 detik, tapi jangan reload saat modal terbuka
+const refreshInterval = setInterval(function() {
+    const modal = document.getElementById('newChatModal');
+    if (modal && modal.classList.contains('show')) {
+        return;
+    }
     location.reload();
 }, 5000);
 </script>
