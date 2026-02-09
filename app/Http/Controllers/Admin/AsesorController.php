@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateAsesorRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class AsesorController extends Controller
 {
@@ -16,7 +17,7 @@ class AsesorController extends Controller
      */
     public function index(Request $request)
     {
-        $query = User::where('role', 'asesor');
+        $query = User::where('role', 'asesor')->with('asesorProfile');
         
         // Search functionality
         if ($request->has('search') && $request->search != '') {
@@ -48,19 +49,35 @@ class AsesorController extends Controller
     {
         $data = $request->validated();
         
-        // Hash the password
-        $data['password'] = Hash::make($data['password']);
+        // Begin transaction
+        DB::beginTransaction();
         
-        // Set role as asesor
-        $data['role'] = 'asesor';
-        
-        // Handle status_aktif checkbox (defaults to true if not provided)
-        $data['status_aktif'] = $request->has('status_aktif') ? true : false;
-        
-        User::create($data);
-        
-        return redirect()->route('admin.asesor.index')
-                         ->with('success', 'Asesor berhasil ditambahkan');
+        try {
+            // Create user
+            $user = User::create([
+                'nama' => $data['nama'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+                'no_hp' => $data['no_hp'],
+                'role' => 'asesor',
+                'status_aktif' => $request->has('status_aktif') ? true : false,
+            ]);
+            
+            // Create asesor profile
+            $user->asesorProfile()->create([
+                'alamat' => $data['alamat'] ?? null,
+            ]);
+            
+            DB::commit();
+            
+            return redirect()->route('admin.asesor.index')
+                             ->with('success', 'Asesor berhasil ditambahkan');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()
+                             ->withInput()
+                             ->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -68,7 +85,7 @@ class AsesorController extends Controller
      */
     public function show(string $id)
     {
-        $asesor = User::where('role', 'asesor')->findOrFail($id);
+        $asesor = User::where('role', 'asesor')->with('asesorProfile')->findOrFail($id);
         return view('admin.asesor.show', compact('asesor'));
     }
 
@@ -77,7 +94,7 @@ class AsesorController extends Controller
      */
     public function edit(string $id)
     {
-        $asesor = User::where('role', 'asesor')->findOrFail($id);
+        $asesor = User::where('role', 'asesor')->with('asesorProfile')->findOrFail($id);
         return view('admin.asesor.edit', compact('asesor'));
     }
 
@@ -90,23 +107,39 @@ class AsesorController extends Controller
         
         $data = $request->validated();
         
-        // Only update password if provided
-        if (!empty($data['password'])) {
-            $data['password'] = Hash::make($data['password']);
-        } else {
-            unset($data['password']);
+        // Begin transaction
+        DB::beginTransaction();
+        
+        try {
+            // Update user
+            $asesor->update([
+                'nama' => $data['nama'],
+                'email' => $data['email'],
+                'no_hp' => $data['no_hp'],
+                'status_aktif' => $request->has('status_aktif') ? true : false,
+            ]);
+            
+            // Update password if provided
+            if (!empty($data['password'])) {
+                $asesor->update(['password' => Hash::make($data['password'])]);
+            }
+            
+            // Update or create asesor profile
+            $asesor->asesorProfile()->updateOrCreate(
+                ['user_id' => $asesor->id],
+                ['alamat' => $data['alamat'] ?? null]
+            );
+            
+            DB::commit();
+            
+            return redirect()->route('admin.asesor.index')
+                             ->with('success', 'Data asesor berhasil diperbarui');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()
+                             ->withInput()
+                             ->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
-        
-        // Remove password_confirmation from data
-        unset($data['password_confirmation']);
-        
-        // Handle status_aktif checkbox
-        $data['status_aktif'] = $request->has('status_aktif') ? true : false;
-        
-        $asesor->update($data);
-        
-        return redirect()->route('admin.asesor.index')
-                         ->with('success', 'Data asesor berhasil diperbarui');
     }
 
     /**

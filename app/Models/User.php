@@ -25,7 +25,6 @@ class User extends Authenticatable
         'password',
         'no_hp',
         'role',
-        'alamat',
         'status_aktif',
         'created_at',
         'updated_at'
@@ -93,4 +92,10 @@ class User extends Authenticatable
     public function chatMessages()
     {
         return $this->hasMany(ChatMessage::class);
-    }}
+    }
+
+    public function asesorProfile()
+    {
+        return $this->hasOne(AsesorProfile::class);
+    }
+}
