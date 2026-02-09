@@ -45,7 +45,6 @@ class MidtransService
                     'name' => 'Sertifikasi: ' . ($pembayaran->pengajuan->program->nama ?? 'Skema Sertifikasi'),
                 ],
             ],
-            'enabled_payments' => ['qris', 'gopay', 'bank_transfer'],
             'callbacks' => [
                 'finish' => route('pembayaran.finish', $pembayaran->id),
             ],
@@ -55,6 +54,13 @@ class MidtransService
                 'duration' => 1,
             ],
         ];
+
+        // Only add 'enabled_payments' if specifically configured
+        // If not configured (null), Midtrans will show all activated payment methods
+        $enabledPayments = config('midtrans.enabled_payments');
+        if (!empty($enabledPayments)) {
+            $params['enabled_payments'] = $this->parseEnabledPayments($enabledPayments);
+        }
 
         try {
             $snapToken = Snap::getSnapToken($params);
@@ -69,6 +75,23 @@ class MidtransService
             Log::error('Midtrans Snap Error', ['error' => $e->getMessage()]);
             throw new Exception('Gagal membuat transaksi Midtrans');
         }
+    }
+
+    /**
+     * Parse enabled payments configuration to array format
+     * 
+     * @param mixed $enabledPayments
+     * @return array
+     */
+    private function parseEnabledPayments($enabledPayments): array
+    {
+        // If already an array, return as is
+        if (is_array($enabledPayments)) {
+            return $enabledPayments;
+        }
+
+        // If string, convert comma-separated values to array and trim whitespace
+        return array_map('trim', explode(',', $enabledPayments));
     }
 
     /**
