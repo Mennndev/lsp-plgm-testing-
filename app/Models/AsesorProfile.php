@@ -15,7 +15,7 @@ class AsesorProfile extends Model
         'pengalaman_tahun',
         'riwayat_pendidikan',
         'sertifikat_path',
-        'catatan'
+        'catatan',
     ];
 
     protected $casts = [
