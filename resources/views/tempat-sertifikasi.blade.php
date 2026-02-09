@@ -79,7 +79,7 @@
                 Sertifikasi
               </a>
               <div class="dropdown-menu" aria-labelledby="sertifikasiDropdown">
-                <a class="dropdown-item" href="{{ route('Skema.index') }}">Skema Sertifikasi</a>
+                <a class="dropdown-item" href="{{ route('skema.index') }}">Skema Sertifikasi</a>
                 <a class="dropdown-item" href="{{ url('tempat-sertifikasi') }}">Tempat Uji Kompetensi</a>
               </div>
             </li>

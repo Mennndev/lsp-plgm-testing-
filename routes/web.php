@@ -48,9 +48,9 @@ Route::get('/kebijakan-mutu', [KebijakanMutucontroller::class, 'index'])->name('
 Route::get('/struktur-organisasi', [StrukturOrganisasicontroller::class, 'index'])->name('struktur-organisasi');
 
 //skema sertifikasi routes
-Route::get('/skema-sertifikasi', [Skemacontroller::class, 'index'])->name('Skema.index');
+Route::get('/skema-sertifikasi', [Skemacontroller::class, 'index'])->name('skema.index');
 Route::get('/skema/{program:slug}', [SkemaController::class, 'show'])
-    ->name('Skema.show');
+    ->name('skema.show');
 
 Route::get('/tempat-sertifikasi', function () {
     return view('tempat-sertifikasi');

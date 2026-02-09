@@ -114,7 +114,7 @@
                             Sertifikasi
                         </a>
                         <div class="dropdown-menu" aria-labelledby="sertifikasiDropdown">
-                            <a class="dropdown-item" href="{{ route('Skema.index') }}">Skema Sertifikasi</a>
+                            <a class="dropdown-item" href="{{ route('skema.index') }}">Skema Sertifikasi</a>
                             <a class="dropdown-item" href="{{ url('tempat-sertifikasi') }}">Tempat Uji Kompetensi</a>
                         </div>
                     </li>
@@ -243,7 +243,7 @@
                 <button type="button" class="kategori-link" data-filter="digital-marketing">
                 Pemasaran
                 </button>
-                <a href="{{ url('Skema.index') }}" class="kategori-seeall">Lihat Semua →</a>
+                <a href="{{ url('skema.index') }}" class="kategori-seeall">Lihat Semua →</a>
             </div>
         </div>
     </div>

@@ -15,7 +15,7 @@ class Skemacontroller extends Controller
     // ambil semua program yang dipublish
     $programs = ProgramPelatihan::where('is_published', 1)->get();
 
-    return view('Skema.index', compact('programs'));
+    return view('skema.index', compact('programs'));
 }
 
     /**
