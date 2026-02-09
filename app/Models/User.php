@@ -76,6 +76,18 @@ class User extends Authenticatable
     return $this->hasMany(PengajuanSkema::class, 'asesor_id');
 }
 
+    // Chat relationships
+    public function chats()
+    {
+        return $this->hasMany(Chat::class, 'user_id');
+    }
 
+    public function assignedChats()
+    {
+        return $this->hasMany(Chat::class, 'admin_id');
+    }
 
-}
+    public function chatMessages()
+    {
+        return $this->hasMany(ChatMessage::class);
+    }}

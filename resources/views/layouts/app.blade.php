@@ -21,6 +21,17 @@
 
 @stack('scripts')
 
+<!-- Live Chat Widget Button -->
+@auth
+<div id="chatWidget" style="position: fixed; bottom: 20px; right: 20px; z-index: 999;">
+    <a href="{{ route('chat.index') }}" class="btn btn-primary btn-lg rounded-circle" 
+       style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.2);"
+       title="Live Chat">
+        <i class="bi bi-chat-dots" style="font-size: 24px;"></i>
+    </a>
+</div>
+@endauth
+
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

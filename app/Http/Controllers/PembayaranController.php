@@ -161,18 +161,57 @@ class PembayaranController extends Controller
             ], 404);
         }
 
-        // Jika masih processing, cek ke Midtrans
-        if ($pembayaran->status === 'processing' && $pembayaran->order_id) {
+        // Cek ke Midtrans untuk update status
+        if (in_array($pembayaran->status, ['pending', 'processing']) && $pembayaran->order_id) {
             try {
                 $status = $this->midtransService->checkStatus($pembayaran->order_id);
+                
+                // Update status berdasarkan response dari Midtrans
+                if (isset($status['transaction_status'])) {
+                    $transactionStatus = $status['transaction_status'];
+                    
+                    // Update payment details
+                    $pembayaran->update([
+                        'payment_type' => $status['payment_type'] ?? $pembayaran->payment_type,
+                        'transaction_id' => $status['transaction_id'] ?? $pembayaran->transaction_id,
+                        'transaction_status' => $transactionStatus,
+                    ]);
+                    
+                    // Update status based on transaction status
+                    switch ($transactionStatus) {
+                        case 'capture':
+                        case 'settlement':
+                            $pembayaran->update([
+                                'status' => 'success',
+                                'paid_at' => now(),
+                            ]);
+                            $pembayaran->pengajuan->update(['status' => 'paid']);
+                            break;
+                            
+                        case 'pending':
+                            $pembayaran->update(['status' => 'processing']);
+                            break;
+                            
+                        case 'deny':
+                        case 'cancel':
+                            $pembayaran->update(['status' => 'failed']);
+                            break;
+                            
+                        case 'expire':
+                            $pembayaran->update(['status' => 'expired']);
+                            break;
+                    }
+                }
 
                 return response()->json([
                     'success' => true,
                     'status' => $pembayaran->fresh()->status,
+                    'status_label' => $pembayaran->fresh()->status_label,
                     'midtrans_status' => $status,
                 ]);
             } catch (Exception $e) {
                 // Ignore error, return current status
+                \Log::error('Error checking payment status: ' . $e->getMessage());
             }
         }
 
@@ -181,5 +220,40 @@ class PembayaranController extends Controller
             'status' => $pembayaran->status,
             'status_label' => $pembayaran->status_label,
         ]);
+    }
+
+    /**
+     * Reset/Buat pembayaran baru
+     */
+    public function reset($pengajuanId)
+    {
+        $pengajuan = PengajuanSkema::with(['program', 'pembayaran'])
+            ->where('user_id', Auth::id())
+            ->findOrFail($pengajuanId);
+
+        if ($pengajuan->status !== 'approved') {
+            return redirect()->back()
+                ->with('error', 'Pengajuan belum disetujui.');
+        }
+
+        $pembayaran = $pengajuan->pembayaran;
+
+        // Update pembayaran lama jika ada
+        if ($pembayaran) {
+            $pembayaran->update([
+                'order_id' => Pembayaran::generateOrderId(),
+                'status' => 'pending',
+                'transaction_id' => null,
+                'transaction_status' => null,
+                'snap_token' => null,
+                'pdf_url' => null,
+                'payment_details' => null,
+                'paid_at' => null,
+                'expired_at' => null,
+            ]);
+        }
+
+        return redirect()->back()
+            ->with('success', 'Pembayaran telah direset. Silakan lakukan pembayaran ulang.');
     }
 }

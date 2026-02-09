@@ -19,6 +19,7 @@ use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\PengajuanSkemaController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PembayaranController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\Asesor\DashboardController;
 use App\Http\Controllers\Asesor\PengajuanController;
 use App\Http\Controllers\Asesor\PenilaianController;
@@ -55,6 +56,11 @@ Route::get('/skema/{program:slug}', [SkemaController::class, 'show'])
 Route::get('/tempat-sertifikasi', function () {
     return view('tempat-sertifikasi');
 });
+
+// Webhook for Midtrans - No Auth Required, No CSRF protection
+Route::post('/webhook/midtrans', [PembayaranController::class, 'notification'])
+    ->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class)
+    ->name('webhook.midtrans');
 
 // password reset routes
 Route::get('/password/forgot', [PasswordResetController::class, 'request'])
@@ -138,6 +144,17 @@ Route::get('/pembayaran/{id}/finish', [PembayaranController::class, 'finish'])
     ->name('pembayaran.finish');
 Route::get('/pembayaran/{pengajuanId}/check-status', [PembayaranController::class, 'checkStatus'])
     ->name('pembayaran.check-status');
+Route::post('/pembayaran/{pengajuanId}/reset', [PembayaranController::class, 'reset'])
+    ->name('pembayaran.reset');
+
+// Live Chat Routes
+Route::get('/livechat', [ChatController::class, 'index'])->name('chat.index');
+Route::post('/livechat/store', [ChatController::class, 'store'])->name('chat.store');
+Route::get('/livechat/{id}', [ChatController::class, 'show'])->name('chat.show');
+Route::post('/livechat/{id}/send-message', [ChatController::class, 'sendMessage'])->name('chat.send-message');
+Route::post('/livechat/{id}/close', [ChatController::class, 'close'])->name('chat.close');
+Route::get('/livechat/{id}/get-messages', [ChatController::class, 'getMessages'])->name('chat.get-messages');
+Route::get('/livechat/get-chats', [ChatController::class, 'getChats'])->name('chat.get-chats');
 
 });
 
@@ -181,6 +198,26 @@ Route::prefix('admin')
                 ->name('pembayaran.verify');
             Route::post('/pembayaran/{id}/reject', [\App\Http\Controllers\Admin\PembayaranController::class, 'reject'])
                 ->name('pembayaran.reject');
+
+            // Live Chat Management (Admin)
+            Route::get('/livechat', [\App\Http\Controllers\Admin\ChatController::class, 'index'])
+                ->name('chat.index');
+            Route::get('/livechat/{id}', [\App\Http\Controllers\Admin\ChatController::class, 'show'])
+                ->name('chat.show');
+            Route::post('/livechat/{id}/send-message', [\App\Http\Controllers\Admin\ChatController::class, 'sendMessage'])
+                ->name('chat.send-message');
+            Route::post('/livechat/{id}/close', [\App\Http\Controllers\Admin\ChatController::class, 'close'])
+                ->name('chat.close');
+            Route::post('/livechat/{id}/assign', [\App\Http\Controllers\Admin\ChatController::class, 'assign'])
+                ->name('chat.assign');
+            Route::post('/livechat/{id}/unassign', [\App\Http\Controllers\Admin\ChatController::class, 'unassign'])
+                ->name('chat.unassign');
+            Route::get('/livechat/{id}/get-messages', [\App\Http\Controllers\Admin\ChatController::class, 'getMessages'])
+                ->name('chat.get-messages');
+            Route::get('/livechat/get-chats', [\App\Http\Controllers\Admin\ChatController::class, 'getChats'])
+                ->name('chat.get-chats');
+            Route::get('/livechat/get-stats', [\App\Http\Controllers\Admin\ChatController::class, 'getStats'])
+                ->name('chat.get-stats');
         });
 
 
