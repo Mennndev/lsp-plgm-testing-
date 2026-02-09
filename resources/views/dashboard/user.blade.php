@@ -46,6 +46,12 @@
                     <i class="fa fa-history"></i> Riwayat Asesmen
                 </a>
             </li>
+            {{-- Live Chat Menu --}}
+            <li>
+                <a href="{{ route('chat.index') }}" class="menu-link">
+                    <i class="bi bi-chat-dots"></i> Live Chat
+                </a>
+            </li>
         </ul>
     </div>
 
@@ -148,6 +154,22 @@
                 <div class="page-header page-header-beranda">
                     <h1><i class="fas fa-home"></i> Beranda</h1>
                     <p>Ringkasan jadwal asesmen Anda.</p>
+                </div>
+
+                {{-- Quick Actions Section --}}
+                <div class="row mb-4">
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card h-100 shadow-sm" style="transition: transform 0.2s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                            <div class="card-body text-center">
+                                <i class="bi bi-chat-dots text-primary" style="font-size: 3rem;"></i>
+                                <h5 class="card-title mt-3">Live Chat</h5>
+                                <p class="card-text text-muted">Hubungi admin untuk bantuan dan pertanyaan</p>
+                                <a href="{{ route('chat.index') }}" class="btn btn-primary">
+                                    <i class="bi bi-chat-left-dots me-2"></i>Buka Live Chat
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 {{-- Filter (belum pakai DB, nanti bisa dihubungkan) --}}
@@ -415,6 +437,14 @@
     });
 </script>
 
+{{-- Live Chat Widget Button --}}
+<div id="chatWidget" style="position: fixed; bottom: 20px; right: 20px; z-index: 999;">
+    <a href="{{ route('chat.index') }}" class="btn btn-primary btn-lg rounded-circle" 
+       style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.2);"
+       title="Live Chat">
+        <i class="bi bi-chat-dots" style="font-size: 24px;"></i>
+    </a>
+</div>
 
 </body>
 </html>
