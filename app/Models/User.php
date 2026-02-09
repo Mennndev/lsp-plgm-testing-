@@ -3,10 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Notifications\ResetPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Notifications\ResetPasswordNotification;
 
 class User extends Authenticatable
 {
@@ -25,10 +25,9 @@ class User extends Authenticatable
         'password',
         'no_hp',
         'role',
-        'alamat',
         'status_aktif',
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 
     /**
@@ -54,10 +53,11 @@ class User extends Authenticatable
             'status_aktif' => 'boolean',
         ];
     }
+
     public function sendPasswordResetNotification($token)
-{
-    $this->notify(new ResetPasswordNotification($token));
-}
+    {
+        $this->notify(new ResetPasswordNotification($token));
+    }
 
     public function notifications()
     {
@@ -74,10 +74,10 @@ class User extends Authenticatable
         return $this->unreadNotifications()->count();
     }
 
-   public function pengajuanYangDiAses()
-{
-    return $this->hasMany(PengajuanSkema::class, 'asesor_id');
-}
+    public function pengajuanYangDiAses()
+    {
+        return $this->hasMany(PengajuanSkema::class, 'asesor_id');
+    }
 
     // Chat relationships
     public function chats()
@@ -93,4 +93,10 @@ class User extends Authenticatable
     public function chatMessages()
     {
         return $this->hasMany(ChatMessage::class);
-    }}
+    }
+
+    public function asesorProfile()
+    {
+        return $this->hasOne(AsesorProfile::class);
+    }
+}
