@@ -46,6 +46,12 @@
                     <i class="fa fa-history"></i> Riwayat Asesmen
                 </a>
             </li>
+            {{-- Live Chat Menu --}}
+            <li>
+                <a href="{{ route('chat.index') }}" class="menu-link">
+                    <i class="bi bi-chat-dots"></i> Live Chat
+                </a>
+            </li>
         </ul>
     </div>
 
@@ -148,6 +154,22 @@
                 <div class="page-header page-header-beranda">
                     <h1><i class="fas fa-home"></i> Beranda</h1>
                     <p>Ringkasan jadwal asesmen Anda.</p>
+                </div>
+
+                {{-- Quick Actions Section --}}
+                <div class="row mb-4">
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card h-100 shadow-sm hover-card">
+                            <div class="card-body text-center">
+                                <i class="bi bi-chat-dots text-primary chat-icon"></i>
+                                <h5 class="card-title mt-3">Live Chat</h5>
+                                <p class="card-text text-muted">Hubungi admin untuk bantuan dan pertanyaan</p>
+                                <a href="{{ route('chat.index') }}" class="btn btn-primary">
+                                    <i class="bi bi-chat-left-dots me-2"></i>Buka Live Chat
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 {{-- Filter (belum pakai DB, nanti bisa dihubungkan) --}}
@@ -415,6 +437,13 @@
     });
 </script>
 
+{{-- Live Chat Widget Button --}}
+<div id="chatWidget">
+    <a href="{{ route('chat.index') }}" class="btn btn-primary btn-lg rounded-circle chat-widget-button" 
+       title="Live Chat">
+        <i class="bi bi-chat-dots"></i>
+    </a>
+</div>
 
 </body>
 </html>
