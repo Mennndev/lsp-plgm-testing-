@@ -144,7 +144,7 @@
                                        id="status_aktif" 
                                        name="status_aktif" 
                                        value="1"
-                                       {{ old('status_aktif', true) ? 'checked' : '' }}>
+                                       {{ old('status_aktif', 1) ? 'checked' : '' }}>
                                 <label class="form-check-label" for="status_aktif">
                                     <strong>Status Aktif</strong>
                                     <small class="d-block text-muted">Aktifkan akun asesor ini</small>
