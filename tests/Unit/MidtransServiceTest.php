@@ -10,7 +10,7 @@ class MidtransServiceTest extends TestCase
     /**
      * Test that enabled_payments config returns null by default
      */
-    public function test_all_payment_methods_enabled_when_config_is_null(): void
+    public function testAllPaymentMethodsEnabledWhenConfigIsNull(): void
     {
         // Set config to null (default - all methods enabled)
         Config::set('midtrans.enabled_payments', null);
@@ -22,7 +22,7 @@ class MidtransServiceTest extends TestCase
     /**
      * Test that enabled_payments config works with comma-separated string
      */
-    public function test_payment_methods_restricted_when_config_has_values(): void
+    public function testPaymentMethodsRestrictedWhenConfigHasValues(): void
     {
         // Set config to specific payment methods as comma-separated string
         Config::set('midtrans.enabled_payments', 'qris,gopay,bank_transfer');
@@ -39,7 +39,7 @@ class MidtransServiceTest extends TestCase
     /**
      * Test that enabled_payments works with array config
      */
-    public function test_payment_methods_with_array_config(): void
+    public function testPaymentMethodsWithArrayConfig(): void
     {
         // Set config to array of payment methods
         Config::set('midtrans.enabled_payments', ['qris', 'gopay', 'credit_card']);
@@ -53,7 +53,7 @@ class MidtransServiceTest extends TestCase
     /**
      * Test that empty string config is treated as "all methods enabled"
      */
-    public function test_empty_string_config_enables_all_methods(): void
+    public function testEmptyStringConfigEnablesAllMethods(): void
     {
         // Set config to empty string (should be treated as no restriction)
         Config::set('midtrans.enabled_payments', '');
@@ -66,7 +66,7 @@ class MidtransServiceTest extends TestCase
     /**
      * Test the logic used in MidtransService for handling enabled_payments
      */
-    public function test_enabled_payments_logic_with_null(): void
+    public function testEnabledPaymentsLogicWithNull(): void
     {
         Config::set('midtrans.enabled_payments', null);
         
@@ -82,7 +82,7 @@ class MidtransServiceTest extends TestCase
     /**
      * Test the logic used in MidtransService for handling enabled_payments with values
      */
-    public function test_enabled_payments_logic_with_values(): void
+    public function testEnabledPaymentsLogicWithValues(): void
     {
         Config::set('midtrans.enabled_payments', 'qris,gopay');
         
@@ -105,7 +105,7 @@ class MidtransServiceTest extends TestCase
     /**
      * Test enabled_payments with spaces in comma-separated values
      */
-    public function test_payment_methods_with_spaces(): void
+    public function testPaymentMethodsWithSpaces(): void
     {
         // Set config with spaces around values
         Config::set('midtrans.enabled_payments', 'qris, gopay, bank_transfer ');

@@ -59,10 +59,7 @@ class MidtransService
         // If not configured (null), Midtrans will show all activated payment methods
         $enabledPayments = config('midtrans.enabled_payments');
         if (!empty($enabledPayments)) {
-            // Convert comma-separated string to array if needed
-            $params['enabled_payments'] = is_array($enabledPayments) 
-                ? $enabledPayments 
-                : array_map('trim', explode(',', $enabledPayments));
+            $params['enabled_payments'] = $this->parseEnabledPayments($enabledPayments);
         }
 
         try {
@@ -78,6 +75,23 @@ class MidtransService
             Log::error('Midtrans Snap Error', ['error' => $e->getMessage()]);
             throw new Exception('Gagal membuat transaksi Midtrans');
         }
+    }
+
+    /**
+     * Parse enabled payments configuration to array format
+     * 
+     * @param mixed $enabledPayments
+     * @return array
+     */
+    private function parseEnabledPayments($enabledPayments): array
+    {
+        // If already an array, return as is
+        if (is_array($enabledPayments)) {
+            return $enabledPayments;
+        }
+
+        // If string, convert comma-separated values to array and trim whitespace
+        return array_map('trim', explode(',', $enabledPayments));
     }
 
     /**
