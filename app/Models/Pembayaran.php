@@ -11,6 +11,7 @@ class Pembayaran extends Model
     protected $fillable = [
         'pengajuan_skema_id',
         'user_id',
+        'verifier_id',
         'order_id',
         'nominal',
         'metode_pembayaran',
@@ -41,6 +42,11 @@ class Pembayaran extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function verifier()
+    {
+        return $this->belongsTo(User::class, 'verifier_id');
     }
 
     // Generate Order ID unik
@@ -88,4 +94,5 @@ class Pembayaran extends Model
     {
         return in_array($this->status, ['pending', 'failed', 'expired']);
     }
+   
 }

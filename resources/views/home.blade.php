@@ -266,7 +266,7 @@
                                 <p class="card-text text-muted small mb-3">
                                     {{ $program->deskripsi_singkat }}
                                 </p>
-                                <a href="{{ route('Skema.show', $program->slug) }}"
+                                <a href="{{ route('skema.show', $program->slug) }}"
                                    class="btn btn-sm btn-primary mt-auto">
                                     Lihat Skema
                                 </a>
