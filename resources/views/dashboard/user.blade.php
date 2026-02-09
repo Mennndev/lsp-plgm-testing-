@@ -161,7 +161,7 @@
                     <div class="col-md-6 col-lg-4 mb-4">
                         <div class="card h-100 shadow-sm hover-card">
                             <div class="card-body text-center">
-                                <i class="bi bi-chat-dots text-primary" style="font-size: 3rem;"></i>
+                                <i class="bi bi-chat-dots text-primary chat-icon"></i>
                                 <h5 class="card-title mt-3">Live Chat</h5>
                                 <p class="card-text text-muted">Hubungi admin untuk bantuan dan pertanyaan</p>
                                 <a href="{{ route('chat.index') }}" class="btn btn-primary">
@@ -438,10 +438,10 @@
 </script>
 
 {{-- Live Chat Widget Button --}}
-<div id="chatWidget" style="position: fixed; bottom: 20px; right: 20px; z-index: 999;">
+<div id="chatWidget">
     <a href="{{ route('chat.index') }}" class="btn btn-primary btn-lg rounded-circle chat-widget-button" 
        title="Live Chat">
-        <i class="bi bi-chat-dots" style="font-size: 24px;"></i>
+        <i class="bi bi-chat-dots"></i>
     </a>
 </div>
 

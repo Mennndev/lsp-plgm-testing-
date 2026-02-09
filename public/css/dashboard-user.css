@@ -422,6 +422,17 @@ body {
     transform: translateY(-5px);
 }
 
+.hover-card .chat-icon {
+    font-size: 3rem;
+}
+
+#chatWidget {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 999;
+}
+
 #chatWidget .chat-widget-button {
     width: 60px;
     height: 60px;
@@ -435,5 +446,9 @@ body {
 #chatWidget .chat-widget-button:hover {
     box-shadow: 0 6px 12px rgba(0,0,0,0.3);
     transform: translateY(-2px);
+}
+
+#chatWidget .chat-widget-button i {
+    font-size: 24px;
 }
 
