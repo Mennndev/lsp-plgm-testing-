@@ -184,4 +184,137 @@ class AsesorControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertViewHas('asesors');
     }
+
+    /**
+     * Test validation errors are returned on empty form submission.
+     */
+    public function test_validation_errors_on_empty_form(): void
+    {
+        // Create admin user
+        $admin = User::factory()->create([
+            'role' => 'admin',
+        ]);
+
+        // Act as admin
+        $this->actingAs($admin);
+
+        // Submit empty form
+        $response = $this->post(route('admin.asesor.store'), []);
+
+        // Assert validation errors
+        $response->assertSessionHasErrors(['nama', 'email', 'password', 'no_hp']);
+    }
+
+    /**
+     * Test duplicate email validation error.
+     */
+    public function test_duplicate_email_validation_error(): void
+    {
+        // Create admin user
+        $admin = User::factory()->create([
+            'role' => 'admin',
+        ]);
+
+        // Create existing asesor with email
+        $existingAsesor = User::factory()->create([
+            'email' => 'existing@example.com',
+            'role' => 'asesor',
+        ]);
+
+        // Act as admin
+        $this->actingAs($admin);
+
+        // Try to create asesor with duplicate email
+        $response = $this->post(route('admin.asesor.store'), [
+            'nama' => 'New Asesor',
+            'email' => 'existing@example.com',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+            'no_hp' => '081234567890',
+        ]);
+
+        // Assert validation error for email
+        $response->assertSessionHasErrors(['email']);
+    }
+
+    /**
+     * Test password minimum length validation.
+     */
+    public function test_password_minimum_length_validation(): void
+    {
+        // Create admin user
+        $admin = User::factory()->create([
+            'role' => 'admin',
+        ]);
+
+        // Act as admin
+        $this->actingAs($admin);
+
+        // Submit with short password
+        $response = $this->post(route('admin.asesor.store'), [
+            'nama' => 'Test Asesor',
+            'email' => 'test@example.com',
+            'password' => 'pass',
+            'password_confirmation' => 'pass',
+            'no_hp' => '081234567890',
+        ]);
+
+        // Assert validation error for password
+        $response->assertSessionHasErrors(['password']);
+    }
+
+    /**
+     * Test password confirmation mismatch validation.
+     */
+    public function test_password_confirmation_mismatch(): void
+    {
+        // Create admin user
+        $admin = User::factory()->create([
+            'role' => 'admin',
+        ]);
+
+        // Act as admin
+        $this->actingAs($admin);
+
+        // Submit with mismatched passwords
+        $response = $this->post(route('admin.asesor.store'), [
+            'nama' => 'Test Asesor',
+            'email' => 'test@example.com',
+            'password' => 'password123',
+            'password_confirmation' => 'differentpass',
+            'no_hp' => '081234567890',
+        ]);
+
+        // Assert validation error for password
+        $response->assertSessionHasErrors(['password']);
+    }
+
+    /**
+     * Test create form displays validation errors.
+     */
+    public function test_create_form_shows_validation_errors(): void
+    {
+        // Create admin user
+        $admin = User::factory()->create([
+            'role' => 'admin',
+        ]);
+
+        // Act as admin
+        $this->actingAs($admin);
+
+        // Submit invalid data
+        $response = $this->from(route('admin.asesor.create'))
+            ->post(route('admin.asesor.store'), [
+                'nama' => '',
+                'email' => 'invalid-email',
+            ]);
+
+        // Assert redirect back to form
+        $response->assertRedirect(route('admin.asesor.create'));
+        $response->assertSessionHasErrors();
+
+        // Follow redirect and check view
+        $response = $this->get(route('admin.asesor.create'));
+        $response->assertStatus(200);
+    }
 }
