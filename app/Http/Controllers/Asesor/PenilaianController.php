@@ -15,7 +15,7 @@ class PenilaianController extends Controller
         $pengajuan = PengajuanSkema::whereHas('asesors', function ($query) {
                 $query->where('users.id', Auth::id());
             })
-            ->with('user', 'program.unitKompetensi.elemen.kriteriaUnjukKerja')
+            ->with('user', 'program.units.elemenKompetensis.kriteriaUnjukKerja')
             ->findOrFail($pengajuanId);
 
         return view('asesor.penilaian.show', compact('pengajuan'));

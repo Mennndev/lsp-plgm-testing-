@@ -68,4 +68,6 @@ class ProgramPelatihan extends Model
     return $this->belongsToMany(User::class, 'program_asesor', 'program_pelatihan_id', 'asesor_id');
 }
 
+    
+
 }
