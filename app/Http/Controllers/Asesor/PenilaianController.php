@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Asesor;
 
 use App\Http\Controllers\Controller;
 use App\Models\PengajuanSkema;
-use App\Models\KriteriaUnjukKerja;
 use App\Models\PengajuanAsesorAssessment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,7 +12,10 @@ class PenilaianController extends Controller
 {
     public function show($pengajuanId)
     {
-        $pengajuan = PengajuanSkema::with('program.unitKompetensi.elemen.kriteriaUnjukKerja')
+        $pengajuan = PengajuanSkema::whereHas('asesors', function ($query) {
+                $query->where('users.id', Auth::id());
+            })
+            ->with('user', 'program.units.elemenKompetensis.kriteriaUnjukKerja')
             ->findOrFail($pengajuanId);
 
         return view('asesor.penilaian.show', compact('pengajuan'));
@@ -21,7 +23,14 @@ class PenilaianController extends Controller
 
     public function store(Request $request, $pengajuanId)
     {
-        foreach ($request->nilai as $kukId => $nilai) {
+        $request->validate([
+            'nilai' => ['required', 'array'],
+            'nilai.*' => ['required', 'in:kompeten,belum_kompeten'],
+            'catatan' => ['nullable', 'array'],
+            'catatan.*' => ['nullable', 'string'],
+        ]);
+
+        foreach ($request->input('nilai', []) as $kukId => $nilai) {
             PengajuanAsesorAssessment::updateOrCreate(
                 [
                     'pengajuan_skema_id' => $pengajuanId,
@@ -30,7 +39,7 @@ class PenilaianController extends Controller
                 ],
                 [
                     'nilai' => $nilai,
-                    'catatan' => $request->catatan[$kukId] ?? null,
+                    'catatan' => $request->input("catatan.$kukId"),
                 ]
             );
         }

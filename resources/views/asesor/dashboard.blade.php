@@ -107,7 +107,7 @@
                                 <a href="{{ route('asesor.pengajuan.show', $row['pengajuan_id']) }}" class="btn btn-outline-primary btn-sm">
                                     Lihat Detail
                                 </a>
-                                <a href="{{ route('asesor.pengajuan.show', $row['pengajuan_id']) }}" class="btn btn-primary btn-sm">
+                                <a href="{{ route('asesor.pengajuan.penilaian', $row['pengajuan_id']) }}" class="btn btn-primary btn-sm">
                                     {{ $row['status_penilaian'] === 'belum_dimulai' ? 'Mulai' : 'Lanjutkan' }} Penilaian
                                 </a>
                             </td>
