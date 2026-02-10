@@ -2,10 +2,9 @@
 
 namespace Tests\Feature\Admin;
 
-use App\Models\User;
 use App\Models\AsesorProfile;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class AsesorControllerTest extends TestCase
@@ -53,7 +52,7 @@ class AsesorControllerTest extends TestCase
         // Assert profile was created
         $user = User::where('email', 'john.doe@example.com')->first();
         $this->assertNotNull($user);
-        
+
         $this->assertDatabaseHas('asesor_profiles', [
             'user_id' => $user->id,
             'alamat' => 'Jl. Test No. 123',
