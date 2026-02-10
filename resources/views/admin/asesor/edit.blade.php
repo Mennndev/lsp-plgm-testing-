@@ -163,13 +163,13 @@
                                 <div class="col-md-6">
                                     <small class="text-muted">
                                         <i class="bi bi-calendar-plus me-1"></i>
-                                        <strong>Terdaftar:</strong> {{ $asesor->created_at->format('d F Y, H:i') }}
+                                        <strong>Terdaftar:</strong> {{ $asesor->created_at?->format('d F Y, H:i') ?? '-' }}
                                     </small>
                                 </div>
                                 <div class="col-md-6">
                                     <small class="text-muted">
                                         <i class="bi bi-calendar-check me-1"></i>
-                                        <strong>Terakhir diupdate:</strong> {{ $asesor->updated_at->format('d F Y, H:i') }}
+                                        <strong>Terakhir diupdate:</strong> {{ $asesor->updated_at?->format('d F Y, H:i') ?? '-' }}
                                     </small>
                                 </div>
                             </div>
