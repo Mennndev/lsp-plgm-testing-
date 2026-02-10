@@ -1,69 +1,8 @@
-{{-- resources/views/admin/dashboard.blade.php --}}
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    ...
+@extends('layouts.admin')
 
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+@section('title', 'Manajemen Asesor')
 
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="{{ asset('css/bootstrap-icons.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/fontawesome.min.css') }}">
-
-    <link rel="stylesheet" href="{{ asset('css/admin-dashboard.css') }}">
-</head>
-
-<body class="admin-body">
-<div id="wrapper"><!-- 🔹 HARUS id="wrapper" -->
-
-    {{-- SIDEBAR --}}
-    <div id="sidebar-wrapper"><!-- 🔹 HARUS id="sidebar-wrapper" -->
-        <div class="sidebar-brand">
-            <a href="{{ route('admin.dashboard') }}">
-                <img src="{{ asset('images/logo.png') }}" alt="LSP PLGM">
-            </a>
-        </div>
-
-        <ul class="sidebar-nav"><!-- 🔹 tambahkan class sidebar-nav -->
-            <li class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                <a href="{{ route('admin.dashboard') }}">
-                    <i class="bi bi-speedometer2"></i> Dashboard
-                </a>
-            </li>
-
-            <li class="{{ request()->is('admin/program-pelatihan*') ? 'active' : '' }}">
-                <a href="{{ url('admin/program-pelatihan') }}">
-                    <i class="bi bi-journal-text"></i> Program Pelatihan
-                </a>
-            </li>
-
-            <li class="{{ request()->is('admin/asesi*') ? 'active' : '' }}">
-                <a href="{{ url('admin/asesi') }}">
-                    <i class="bi bi-people"></i> Data Asesi
-                </a>
-            </li>
-
-             <li class="{{ request() ->is('admin/pengajuan*') ? 'active' : '' }}">
-                <a href="{{ url('admin/pengajuan') }}">
-                    <i class="bi bi-file-earmark-text"></i> Pengajuan Sertifikasi
-                </a>
-            </li>
-
-            <li class="{{ request()->is('admin/livechat*') ? 'active' : '' }}">
-                <a href="{{ route('admin.chat.index') }}">
-                    <i class="bi bi-chat-dots"></i> Live Chat
-                </a>
-            </li>
-
-             <li class="{{ request()->is('admin/pengguna*') ? 'active' : '' }}">
-                <a href="{{ url('admin/berita') }}">
-                    <i class="bi bi-newspaper"></i> Berita
-                </a>
-            </li>
-        </ul>
-    </div>
-    {{-- /SIDEBAR --}}
+@section('content')
 
     {{-- KONTEN --}}
     <div id="page-content-wrapper"><!-- 🔹 HARUS id="page-content-wrapper" -->

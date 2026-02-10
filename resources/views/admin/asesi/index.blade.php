@@ -1,70 +1,8 @@
-{{-- resources/views/admin/asesi/index.blade.php --}}
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+@extends('layouts.admin')
 
-    <title>Data Asesi – LSP PLGM</title>
+@section('title', 'Manajemen Asesor')
 
-    {{-- Bootstrap 5 & Icons --}}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer">
-
-    {{-- CSS Admin --}}
-    <link rel="stylesheet" href="{{ asset('css/admin-dashboard.css') }}">
-</head>
-
-<body class="admin-body">
-<div id="wrapper">
-
-    {{-- ================= SIDEBAR ================= --}}
-    <div id="sidebar-wrapper">
-        <div class="sidebar-brand">
-            <a href="{{ route('admin.dashboard') }}">
-                <img src="{{ asset('images/logo.png') }}" alt="LSP PLGM">
-            </a>
-        </div>
-
-        <ul class="sidebar-nav">
-            <li class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                <a href="{{ route('admin.dashboard') }}">
-                    <i class="bi bi-speedometer2"></i> Dashboard
-                </a>
-            </li>
-
-            <li class="{{ request()->is('admin/program-pelatihan*') ? 'active' : '' }}">
-                <a href="{{ url('admin/program-pelatihan') }}">
-                    <i class="bi bi-journal-text"></i> Program Pelatihan
-                </a>
-            </li>
-
-
-            <li class="{{ request()->is('admin/asesi*') ? 'active' : '' }}">
-                <a href="{{ url('admin/asesi') }}">
-                    <i class="bi bi-people"></i> Data Asesi
-                </a>
-            </li>
-
-            <li class="{{ request() ->is('admin/pengajuan*') ? 'active' : '' }}">
-                <a href="{{ url('admin/pengajuan') }}">
-                    <i class="bi bi-file-earmark-text"></i> Pengajuan Sertifikasi
-                </a>
-            </li>
-
-            <li class="{{ request()->is('admin/pengguna*') ? 'active' : '' }}">
-                <a href="{{ url('admin/berita') }}">
-                    <i class="bi bi-newspaper"></i> Berita
-                </a>
-            </li>
-        </ul>
-    </div>
-    {{-- =============== /SIDEBAR =============== --}}
+@section('content')
 
     {{-- =============== MAIN CONTENT =============== --}}
     <div id="page-content-wrapper">

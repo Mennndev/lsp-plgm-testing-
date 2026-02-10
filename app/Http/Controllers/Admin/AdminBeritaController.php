@@ -16,14 +16,14 @@ class AdminBeritaController extends Controller
             ->orderByDesc('created_at')
             ->paginate(10);
 
-        return view('admin.Berita.index', compact('beritas'));
+        return view('admin.berita.index', compact('beritas'));
     }
 
     public function create()
     {
         // kirim objek kosong ke form
         $berita = new Berita();
-        return view('admin.Berita.create', compact('berita'));
+        return view('admin.berita.create', compact('berita'));
     }
 
   public function store(Request $request)
@@ -54,7 +54,7 @@ class AdminBeritaController extends Controller
         // parameter resource bernama $beritum (default Laravel)
         $berita = $beritum;
 
-        return view('admin.Berita.edit', compact('berita'));
+        return view('admin.berita.edit', compact('berita'));
     }
 
     public function update(Request $request, Berita $beritum)
