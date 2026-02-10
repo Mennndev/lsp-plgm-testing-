@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateAsesorRequest extends FormRequest
 {
@@ -21,11 +22,17 @@ class UpdateAsesorRequest extends FormRequest
      */
     public function rules(): array
     {
-        $asesorId = $this->route('asesor'); // Get the ID from route parameter
+        $asesorRouteParam = $this->route('asesor');
+        $asesorId = is_object($asesorRouteParam) ? $asesorRouteParam->getKey() : $asesorRouteParam;
         
         return [
             'nama' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . $asesorId,
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                Rule::unique('users', 'email')->ignore($asesorId),
+            ],
             'password' => 'nullable|string|min:8|regex:/^(?=.*[a-zA-Z])(?=.*\d).+$/|confirmed',
             'password_confirmation' => 'required_with:password',
             'no_hp' => 'required|string|max:20',
