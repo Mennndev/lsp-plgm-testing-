@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Asesor;
 
 use App\Http\Controllers\Controller;
 use App\Models\PengajuanSkema;
-use App\Models\KriteriaUnjukKerja;
 use App\Models\PengajuanAsesorAssessment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,7 +12,10 @@ class PenilaianController extends Controller
 {
     public function show($pengajuanId)
     {
-        $pengajuan = PengajuanSkema::with('program.unitKompetensi.elemen.kriteriaUnjukKerja')
+        $pengajuan = PengajuanSkema::whereHas('asesors', function ($query) {
+                $query->where('users.id', Auth::id());
+            })
+            ->with('user', 'program.unitKompetensi.elemen.kriteriaUnjukKerja')
             ->findOrFail($pengajuanId);
 
         return view('asesor.penilaian.show', compact('pengajuan'));

@@ -8,5 +8,7 @@
 
 <hr>
 
-<p>Halaman penilaian akan kita isi di step berikutnya.</p>
+<div class="mt-3">
+    <a href="{{ route('asesor.pengajuan.penilaian', $pengajuan->id) }}" class="btn btn-primary">Mulai Penilaian</a>
+</div>
 @endsection
