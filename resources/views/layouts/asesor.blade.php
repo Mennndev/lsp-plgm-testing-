@@ -56,7 +56,7 @@
                 <i class="bi bi-speedometer2"></i> Dashboard
             </a>
 
-            <a href="#">
+            <a href="{{ route('asesor.dashboard', ['status_penilaian' => 'proses']) }}" class="{{ request('status_penilaian') === 'proses' ? 'active' : '' }}">
                 <i class="bi bi-clipboard-check"></i> Penilaian
             </a>
 
