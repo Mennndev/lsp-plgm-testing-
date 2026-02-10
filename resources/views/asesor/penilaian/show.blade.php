@@ -7,16 +7,16 @@
 <form method="POST" action="{{ route('asesor.pengajuan.store', $pengajuan->id) }}">
 @csrf
 
-@foreach($pengajuan->program->unitKompetensi as $unit)
-    <h5>{{ $unit->nama }}</h5>
+@forelse($pengajuan->program->units as $unit)
+    <h5>{{ $unit->judul_unit }}</h5>
 
-    @foreach($unit->elemen as $elemen)
-        <b>{{ $elemen->nama }}</b>
+    @forelse($unit->elemenKompetensis as $elemen)
+        <b>{{ $elemen->nama_elemen }}</b>
 
         <ul>
         @foreach($elemen->kriteriaUnjukKerja as $kuk)
             <li>
-                {{ $kuk->pertanyaan }}
+                {{ $kuk->deskripsi }}
 
                 <select name="nilai[{{ $kuk->id }}]" required>
                     <option value="">-- Pilih --</option>
@@ -29,8 +29,12 @@
             </li>
         @endforeach
         </ul>
-    @endforeach
-@endforeach
+    @empty
+        <p class="text-muted">Belum ada elemen kompetensi untuk unit ini.</p>
+    @endforelse
+@empty
+    <p class="text-muted">Belum ada unit kompetensi pada program ini.</p>
+@endforelse
 
 <button class="btn btn-success">Simpan Penilaian</button>
 
