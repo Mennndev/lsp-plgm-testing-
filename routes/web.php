@@ -232,9 +232,8 @@ Route::middleware(['auth', 'role:asesor'])->prefix('asesor')->name('asesor.')->g
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/pengajuan/{id}', [PengajuanController::class, 'show'])
         ->name('pengajuan.show');
-
-     Route::post('/pengajuan/{id}/nilai', [PenilaianController::class, 'simpan'])
-        ->name('pengajuan.nilai');
+    Route::get('/pengajuan/{id}/penilaian', [PenilaianController::class, 'show'])
+        ->name('pengajuan.penilaian');
     Route::post('/pengajuan/{id}', [PenilaianController::class, 'store'])->name('pengajuan.store');
 
 });
