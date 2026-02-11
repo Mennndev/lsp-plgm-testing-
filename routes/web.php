@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\AsesorController;
 use App\Http\Controllers\Asesor\DashboardController;
 use App\Http\Controllers\Asesor\PengajuanController;
 use App\Http\Controllers\Asesor\PenilaianController;
+use App\Http\Controllers\Asesor\ProfilController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -235,6 +236,10 @@ Route::middleware(['auth', 'role:asesor'])->prefix('asesor')->name('asesor.')->g
     Route::get('/pengajuan/{id}/penilaian', [PenilaianController::class, 'show'])
         ->name('pengajuan.penilaian');
     Route::post('/pengajuan/{id}', [PenilaianController::class, 'store'])->name('pengajuan.store');
+
+    // Profil routes
+    Route::get('/profil', [ProfilController::class, 'show'])->name('profil');
+    Route::put('/profil', [ProfilController::class, 'update'])->name('profil.update');
 
 });
 

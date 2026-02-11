@@ -56,8 +56,8 @@
                 </a>
             </li>
 
-            <li>
-                <a href="#" onclick="event.preventDefault();">
+            <li class="{{ request()->routeIs('asesor.profil') ? 'active' : '' }}">
+                <a href="{{ route('asesor.profil') }}">
                     <i class="bi bi-person"></i> Profil Saya
                 </a>
             </li>
