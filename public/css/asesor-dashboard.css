@@ -1,0 +1,451 @@
+/* ==============================
+   RESET BODY KHUSUS ASESOR
+============================== */
+.asesor-body {
+    margin: 0;
+    padding: 0;
+    background: #f4f6fc;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    color: #333;
+}
+
+/* ==============================
+   WRAPPER
+============================== */
+#wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ==============================
+   SIDEBAR
+============================== */
+#sidebar-wrapper {
+    width: 260px;
+    background: linear-gradient(180deg, #233C7E, #1a2e5c);
+    color: #fff;
+    position: fixed;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    padding-top: 20px;
+    z-index: 1001;
+}
+
+.sidebar-brand {
+    text-align: center;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+.sidebar-brand img {
+    width: 120px;
+}
+
+.sidebar-nav {
+    list-style: none;
+    padding: 15px 0;
+    margin: 0;
+}
+
+.sidebar-nav li {
+    margin-bottom: 6px;
+}
+
+.sidebar-nav li a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #ddd;
+    padding: 12px 20px;
+    border-radius: 8px;
+    transition: all .3s;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.sidebar-nav li.active a,
+.sidebar-nav li a:hover {
+    background: #D69F3A;
+    color: #111;
+    font-weight: 600;
+}
+
+/* ==============================
+   NAVBAR ATAS
+============================== */
+.asesor-navbar {
+    height: 70px;
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    position: fixed;
+    left: 260px;
+    right: 0;
+    top: 0;
+    z-index: 1000;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 25px;
+}
+
+.nav-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #233C7E;
+}
+
+.asesor-user {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.asesor-user .dropdown-toggle {
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.asesor-user .dropdown-toggle:hover {
+    color: #233C7E;
+}
+
+/* ==============================
+   KONTEN UTAMA
+============================== */
+#page-content-wrapper {
+    margin-left: 260px;
+    width: 100%;
+}
+
+.asesor-content {
+    padding: 90px 25px 25px;
+}
+
+/* ==============================
+   STAT CARDS
+============================== */
+.asesor-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.asesor-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+}
+
+.asesor-card .info h6 {
+    margin: 0;
+    font-size: 13px;
+    color: #777;
+}
+
+.asesor-card .info h3 {
+    margin: 4px 0 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: #233C7E;
+}
+
+.asesor-card .info small {
+    font-size: 11px;
+}
+
+.asesor-card .icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eef2ff;
+    color: #233C7E;
+    font-size: 22px;
+}
+
+/* ==============================
+   TABLE BOX
+============================== */
+.asesor-table {
+    background: #fff;
+    border-radius: 14px;
+    padding: 18px 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+    margin-bottom: 20px;
+}
+
+.asesor-table h5 {
+    margin-bottom: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #233C7E;
+}
+
+.asesor-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.asesor-table thead th {
+    background: #f4f6fc;
+    text-align: left;
+    font-size: 12px;
+    padding: 10px 12px;
+    color: #555;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.asesor-table tbody td {
+    font-size: 13px;
+    padding: 9px 12px;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.asesor-table tbody tr:hover {
+    background: #f9fafb;
+}
+
+/* ==============================
+   BUTTON ASESOR
+============================== */
+.btn-asesor {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 12px;
+    border-radius: 10px;
+    border: none;
+    font-size: 12px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-primary-asesor {
+    background: #233C7E;
+    color: #fff;
+}
+
+.btn-primary-asesor:hover {
+    background: #1a2e5c;
+    color: #fff;
+}
+
+.btn-accent-asesor {
+    background: #D69F3A;
+    color: #111;
+}
+
+.btn-accent-asesor:hover {
+    background: #c28e2f;
+    color: #111;
+}
+
+/* ==============================
+   BREADCRUMB
+============================== */
+.asesor-breadcrumb {
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.asesor-breadcrumb a {
+    color: #233C7E;
+    text-decoration: none;
+}
+
+.asesor-breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.asesor-breadcrumb .separator {
+    margin: 0 8px;
+    color: #999;
+}
+
+/* ==============================
+   CARD HEADER BRAND
+============================== */
+.card-header-brand {
+    background: linear-gradient(135deg, #233C7E, #1a2e5c);
+    color: #fff;
+    border-radius: 14px 14px 0 0 !important;
+    padding: 15px 20px;
+}
+
+.card-header-brand h5 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* ==============================
+   UNIT KOMPETENSI CARD
+============================== */
+.unit-card {
+    border: none;
+    border-radius: 14px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+    margin-bottom: 20px;
+}
+
+.unit-card-header {
+    background: linear-gradient(135deg, #233C7E, #1a2e5c);
+    color: #fff;
+    padding: 15px 20px;
+    border-radius: 14px 14px 0 0;
+}
+
+.unit-card-header h5 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+/* ==============================
+   ELEMEN KOMPETENSI
+============================== */
+.elemen-section {
+    margin-bottom: 25px;
+}
+
+.elemen-section h6 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #233C7E;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #D69F3A;
+}
+
+/* ==============================
+   KUK ITEM
+============================== */
+.kuk-item {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.kuk-item label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+    display: block;
+}
+
+/* ==============================
+   STICKY BUTTON
+============================== */
+.sticky-submit {
+    position: sticky;
+    bottom: 20px;
+    background: #fff;
+    padding: 15px;
+    border-radius: 14px;
+    box-shadow: 0 -5px 25px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+/* ==============================
+   MENU TOGGLE BUTTON
+============================== */
+#menu-toggle {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #233C7E;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+#menu-toggle:hover {
+    background: #f4f6fc;
+    border-radius: 8px;
+}
+
+/* ==============================
+   RESPONSIVE
+============================== */
+@media (max-width: 991px) {
+    #sidebar-wrapper {
+        left: -260px;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        left: 0;
+    }
+
+    #page-content-wrapper {
+        margin-left: 0;
+    }
+
+    .asesor-navbar {
+        left: 0;
+    }
+
+    .asesor-content {
+        padding: 80px 15px 20px;
+    }
+}
+
+/* ==============================
+   FILTER FORM
+============================== */
+.filter-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+    margin-bottom: 20px;
+}
+
+/* ==============================
+   PROGRESS BAR CUSTOM
+============================== */
+.progress-overall {
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.progress-overall .progress-bar {
+    background: linear-gradient(90deg, #233C7E, #D69F3A);
+    border-radius: 10px;
+}
+
+/* ==============================
+   INFO SECTION
+============================== */
+.info-row {
+    display: flex;
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    font-weight: 600;
+    color: #555;
+    width: 150px;
+}
+
+.info-value {
+    color: #333;
+}

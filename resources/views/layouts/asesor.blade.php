@@ -1,96 +1,130 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <title>Panel Asesor - @yield('title', 'Dashboard')</title>
-
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>@yield('title', 'Asesor – LSP PLGM')</title>
 
-    {{-- Bootstrap --}}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
-    {{-- Icons --}}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer">
 
-    <style>
-        body {
-            background-color: #f8fafc;
-        }
-        .sidebar {
-            width: 250px;
-            min-height: 100vh;
-            background: #1e293b;
-            color: white;
-        }
-        .sidebar a {
-            color: #cbd5e1;
-            text-decoration: none;
-            display: block;
-            padding: 10px 15px;
-        }
-        .sidebar a:hover {
-            background: #334155;
-            color: #fff;
-        }
-        .sidebar .active {
-            background: #0d6efd;
-            color: white;
-        }
-    </style>
-
-    @stack('css')
+    <!-- ASESOR CSS (KHUSUS) -->
+    <link rel="stylesheet" href="{{ asset('css/asesor-dashboard.css') }}">
+    
+    @stack('styles')
 </head>
-<body>
 
-<div class="d-flex">
+<body class="asesor-body">
 
-    {{-- SIDEBAR --}}
-    <div class="sidebar">
-        <div class="p-3 border-bottom">
-            <strong>LSP Panel Asesor</strong>
-            <div class="small text-muted">{{ auth()->user()->nama }}</div>
+<div id="wrapper">
+
+    <!-- ✅ SIDEBAR -->
+    <aside id="sidebar-wrapper">
+        <div class="sidebar-brand">
+            <img src="{{ asset('images/logo.png') }}" alt="LSP PLGM">
         </div>
 
-        <div class="mt-3">
-            <a href="{{ route('asesor.dashboard') }}" class="{{ request()->routeIs('asesor.dashboard') ? 'active' : '' }}">
-                <i class="bi bi-speedometer2"></i> Dashboard
-            </a>
+        <ul class="sidebar-nav">
+            <li class="{{ request()->routeIs('asesor.dashboard') && !request()->has('status_penilaian') ? 'active' : '' }}">
+                <a href="{{ route('asesor.dashboard') }}">
+                    <i class="bi bi-speedometer2"></i> Dashboard
+                </a>
+            </li>
 
-            <a href="{{ route('asesor.dashboard', ['status_penilaian' => 'proses']) }}" class="{{ request('status_penilaian') === 'proses' ? 'active' : '' }}">
-                <i class="bi bi-clipboard-check"></i> Penilaian
-            </a>
+            <li class="{{ request()->routeIs('asesor.dashboard') && !request()->has('status_penilaian') ? 'active' : '' }}">
+                <a href="{{ route('asesor.dashboard') }}">
+                    <i class="bi bi-clipboard-data"></i> Penugasan Saya
+                </a>
+            </li>
 
-            <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                <i class="bi bi-box-arrow-right"></i> Logout
-            </a>
+            <li class="{{ request('status_penilaian') === 'proses' ? 'active' : '' }}">
+                <a href="{{ route('asesor.dashboard', ['status_penilaian' => 'proses']) }}">
+                    <i class="bi bi-clipboard-check"></i> Penilaian
+                </a>
+            </li>
 
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                @csrf
-            </form>
-        </div>
-    </div>
+            <li class="{{ request('status_penilaian') === 'selesai' ? 'active' : '' }}">
+                <a href="{{ route('asesor.dashboard', ['status_penilaian' => 'selesai']) }}">
+                    <i class="bi bi-clock-history"></i> Riwayat Penilaian
+                </a>
+            </li>
 
-    {{-- MAIN CONTENT --}}
-    <div class="flex-fill">
+            <li>
+                <a href="#">
+                    <i class="bi bi-person"></i> Profil Saya
+                </a>
+            </li>
+        </ul>
+    </aside>
 
-        {{-- TOPBAR --}}
-        <nav class="navbar navbar-light bg-white border-bottom px-4">
-            <span class="navbar-brand mb-0 h6">
-                @yield('page-title', 'Dashboard Asesor')
-            </span>
+    <!-- ✅ KONTEN -->
+    <main id="page-content-wrapper">
+
+        <!-- ✅ NAVBAR ATAS -->
+        <nav class="asesor-navbar">
+            <button id="menu-toggle" class="btn">
+                <i class="bi bi-list"></i>
+            </button>
+
+            <div class="asesor-user">
+                <span class="text-muted me-3">Panel Asesor LSP PLGM</span>
+
+                <div class="dropdown">
+                    <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-circle"></i>
+                        {{ auth()->user()->nama ?? auth()->user()->name ?? 'Asesor' }}
+                    </a>
+
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <a class="dropdown-item" href="#">
+                            <i class="bi bi-gear"></i> Pengaturan Akun
+                        </a>
+
+                        <div class="dropdown-divider"></div>
+
+                        <a class="dropdown-item" href="{{ route('logout') }}"
+                           onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                            <i class="bi bi-box-arrow-right"></i> Logout
+                        </a>
+
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                    </div>
+                </div>
+            </div>
         </nav>
 
-        {{-- CONTENT --}}
-        <div class="p-4">
+        <!-- ✅ KONTEN DINAMIS -->
+        <section class="asesor-content">
             @yield('content')
-        </div>
+        </section>
 
-    </div>
+    </main>
 
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- jQuery (optional, for legacy code) -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
-@stack('js')
+<!-- Bootstrap 5 Bundle (includes Popper) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+<!-- Asesor custom JS -->
+<script>
+    document.getElementById('menu-toggle').onclick = function () {
+        document.getElementById('wrapper').classList.toggle('toggled');
+    }
+</script>
+
+@stack('scripts')
+
 </body>
 </html>
