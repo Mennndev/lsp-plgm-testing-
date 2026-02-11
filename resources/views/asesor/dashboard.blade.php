@@ -78,13 +78,13 @@
                                 'belum_dimulai' => 'bg-secondary',
                                 'proses' => 'bg-warning text-dark',
                                 'selesai' => 'bg-success',
-                            ][$row['status_penilaian']];
+                            ][$row['status_penilaian']] ?? 'bg-secondary';
 
                             $statusText = [
                                 'belum_dimulai' => 'Belum Dinilai',
                                 'proses' => 'Sedang Dinilai',
                                 'selesai' => 'Selesai',
-                            ][$row['status_penilaian']];
+                            ][$row['status_penilaian']] ?? 'Unknown';
                         @endphp
                         <tr>
                             <td>{{ $row['nama_asesi'] }}</td>
@@ -107,9 +107,19 @@
                                 <a href="{{ route('asesor.pengajuan.show', $row['pengajuan_id']) }}" class="btn btn-outline-primary btn-sm">
                                     Lihat Detail
                                 </a>
-                                <a href="{{ route('asesor.pengajuan.penilaian', $row['pengajuan_id']) }}" class="btn btn-primary btn-sm">
-                                    {{ $row['status_penilaian'] === 'belum_dimulai' ? 'Mulai' : 'Lanjutkan' }} Penilaian
-                                </a>
+                                @if($row['status_penilaian'] === 'selesai')
+                                    <a href="{{ route('asesor.pengajuan.penilaian', $row['pengajuan_id']) }}" class="btn btn-success btn-sm">
+                                        Lihat Hasil
+                                    </a>
+                                @elseif($row['status_penilaian'] === 'proses')
+                                    <a href="{{ route('asesor.pengajuan.penilaian', $row['pengajuan_id']) }}" class="btn btn-primary btn-sm">
+                                        Lanjutkan Penilaian
+                                    </a>
+                                @else
+                                    <a href="{{ route('asesor.pengajuan.penilaian', $row['pengajuan_id']) }}" class="btn btn-primary btn-sm">
+                                        Mulai Penilaian
+                                    </a>
+                                @endif
                             </td>
                         </tr>
                     @empty
@@ -120,6 +130,12 @@
                 </tbody>
             </table>
         </div>
+
+        @if($pengajuanList->hasPages())
+            <div class="mt-3">
+                {{ $pengajuanList->appends(['q' => $search, 'status_penilaian' => $penilaianStatus])->links() }}
+            </div>
+        @endif
     </div>
 </div>
 @endsection
