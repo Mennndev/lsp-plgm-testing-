@@ -41,7 +41,7 @@
         <div class="col-md-4 mb-4">
             <div class="card shadow-sm" style="border-top: 3px solid #233C7E;">
                 <div class="card-body text-center">
-                    <div class="mb-3">
+                    <div class="mb-3" id="photo-container">
                         @if($asesorProfile && $asesorProfile->foto_profile)
                             <img src="{{ asset('storage/' . $asesorProfile->foto_profile) }}" 
                                  alt="Foto Profil" 
@@ -146,12 +146,6 @@
                                 Bidang Keahlian / Kompetensi
                             </label>
                             <div id="bidang-keahlian-container">
-                                @php
-                                    $bidangKeahlian = old('bidang_keahlian', $asesorProfile?->bidang_keahlian ?? []);
-                                    if (empty($bidangKeahlian)) {
-                                        $bidangKeahlian = [''];
-                                    }
-                                @endphp
                                 @foreach($bidangKeahlian as $index => $bidang)
                                 <div class="input-group mb-2 bidang-keahlian-item">
                                     <input type="text" 
@@ -211,8 +205,10 @@
                 preview.src = reader.result;
             } else {
                 // Create new img element if it doesn't exist
-                const parentDiv = event.target.closest('.card-body').querySelector('.mb-3');
-                parentDiv.innerHTML = `<img src="${reader.result}" alt="Foto Profil" class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover; border: 4px solid #233C7E;" id="preview-foto">`;
+                const photoContainer = document.getElementById('photo-container');
+                if (photoContainer) {
+                    photoContainer.innerHTML = `<img src="${reader.result}" alt="Foto Profil" class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover; border: 4px solid #233C7E;" id="preview-foto">`;
+                }
             }
         }
         

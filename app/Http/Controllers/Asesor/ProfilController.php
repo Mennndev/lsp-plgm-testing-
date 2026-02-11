@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Asesor;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules\Password;
 
 class ProfilController extends Controller
 {
@@ -15,7 +13,13 @@ class ProfilController extends Controller
         $user = auth()->user();
         $asesorProfile = $user->asesorProfile;
 
-        return view('asesor.profil.show', compact('user', 'asesorProfile'));
+        // Prepare bidang keahlian data for the view
+        $bidangKeahlian = old('bidang_keahlian', $asesorProfile?->bidang_keahlian ?? []);
+        if (empty($bidangKeahlian)) {
+            $bidangKeahlian = [''];
+        }
+
+        return view('asesor.profil.show', compact('user', 'asesorProfile', 'bidangKeahlian'));
     }
 
     public function update(Request $request)
@@ -28,9 +32,16 @@ class ProfilController extends Controller
             'no_hp' => 'nullable|string|max:20',
             'alamat' => 'nullable|string',
             'bidang_keahlian' => 'nullable|array',
-            'bidang_keahlian.*' => 'string',
+            'bidang_keahlian.*' => 'string|min:1|regex:/\S/',
             'foto_profile' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
+
+        // Filter out empty bidang keahlian entries
+        if (isset($validated['bidang_keahlian'])) {
+            $validated['bidang_keahlian'] = array_values(array_filter($validated['bidang_keahlian'], function($item) {
+                return !empty(trim($item));
+            }));
+        }
 
         // Update user data
         $user->nama = $validated['nama'];
