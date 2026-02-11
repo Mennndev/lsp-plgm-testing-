@@ -220,7 +220,7 @@ class DashboardTest extends TestCase
         $pengajuanList = $response->viewData('pengajuanList');
         $this->assertEquals('belum_dimulai', $pengajuanList->first()['status_penilaian']);
 
-        // Add partial assessment - should show proses status
+        // Add assessment - since there's only 1 KUK, this completes the assessment
         PengajuanAsesorAssessment::create([
             'pengajuan_skema_id' => $pengajuan->id,
             'kriteria_unjuk_kerja_id' => $kuk->id,
@@ -229,11 +229,11 @@ class DashboardTest extends TestCase
             'catatan' => 'Test'
         ]);
 
-        $responseProses = $this->actingAs($asesor)
+        $responseSelesai = $this->actingAs($asesor)
             ->get(route('asesor.dashboard'));
 
-        $responseProses->assertStatus(200);
-        $pengajuanListProses = $responseProses->viewData('pengajuanList');
-        $this->assertEquals('selesai', $pengajuanListProses->first()['status_penilaian']);
+        $responseSelesai->assertStatus(200);
+        $pengajuanListSelesai = $responseSelesai->viewData('pengajuanList');
+        $this->assertEquals('selesai', $pengajuanListSelesai->first()['status_penilaian']);
     }
 }

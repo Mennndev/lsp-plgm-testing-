@@ -84,7 +84,7 @@
                                 'belum_dimulai' => 'Belum Dinilai',
                                 'proses' => 'Sedang Dinilai',
                                 'selesai' => 'Selesai',
-                            ][$row['status_penilaian']] ?? 'Unknown';
+                            ][$row['status_penilaian']] ?? 'Tidak Diketahui';
                         @endphp
                         <tr>
                             <td>{{ $row['nama_asesi'] }}</td>
