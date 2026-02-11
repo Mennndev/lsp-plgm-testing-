@@ -23,11 +23,11 @@ class DashboardController extends Controller
 
         // Pre-load totalKuk counts grouped by program_pelatihan_id to avoid N+1
         $programIds = $assignedPengajuan->pluck('pengajuan.program_pelatihan_id')->filter()->unique();
-        $kukCountsByProgram = KriteriaUnjukKerja::select('unit_kompetensi.program_pelatihan_id', DB::raw('COUNT(*) as total'))
-            ->join('elemen_kompetensi', 'kriteria_unjuk_kerja.elemen_kompetensi_id', '=', 'elemen_kompetensi.id')
-            ->join('unit_kompetensi', 'elemen_kompetensi.unit_kompetensi_id', '=', 'unit_kompetensi.id')
-            ->whereIn('unit_kompetensi.program_pelatihan_id', $programIds)
-            ->groupBy('unit_kompetensi.program_pelatihan_id')
+        $kukCountsByProgram = KriteriaUnjukKerja::select('unit_kompetensis.program_pelatihan_id', DB::raw('COUNT(*) as total'))
+            ->join('elemen_kompetensis', 'kriteria_unjuk_kerja.elemen_kompetensi_id', '=', 'elemen_kompetensis.id')
+            ->join('unit_kompetensis', 'elemen_kompetensis.unit_kompetensi_id', '=', 'unit_kompetensis.id')
+            ->whereIn('unit_kompetensis.program_pelatihan_id', $programIds)
+            ->groupBy('unit_kompetensis.program_pelatihan_id')
             ->pluck('total', 'program_pelatihan_id');
 
         // Pre-load dinilai counts grouped by pengajuan_skema_id to avoid N+1
