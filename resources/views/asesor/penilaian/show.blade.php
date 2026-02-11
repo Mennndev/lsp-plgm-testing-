@@ -30,13 +30,23 @@
 @php
     $totalKUK = 0;
     $dinilaiKUK = 0;
+    
+    // Calculate total KUK
     foreach($pengajuan->program->units as $unit) {
         foreach($unit->elemenKompetensis as $elemen) {
             $totalKUK += $elemen->kriteriaUnjukKerja->count();
         }
     }
-    // Count already assessed KUK (this is a simplified calculation)
-    $persentase = $totalKUK > 0 ? 0 : 0; // You may need to adjust this based on actual data
+    
+    // Count already assessed KUK from PengajuanAsesorAssessment table
+    if ($totalKUK > 0) {
+        $dinilaiKUK = \App\Models\PengajuanAsesorAssessment::where('pengajuan_skema_id', $pengajuan->id)
+            ->where('asesor_id', Auth::id())
+            ->count();
+    }
+    
+    // Calculate percentage
+    $persentase = $totalKUK > 0 ? round(($dinilaiKUK / $totalKUK) * 100) : 0;
 @endphp
 <div class="card border-0 shadow-sm mb-4">
     <div class="card-body">

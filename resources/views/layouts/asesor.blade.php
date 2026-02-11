@@ -32,7 +32,7 @@
         </div>
 
         <ul class="sidebar-nav">
-            <li class="{{ request()->routeIs('asesor.dashboard') && !request()->has('status_penilaian') ? 'active' : '' }}">
+            <li class="{{ request()->routeIs('asesor.dashboard') && !request()->has('status_penilaian') && !request()->has('q') ? 'active' : '' }}">
                 <a href="{{ route('asesor.dashboard') }}">
                     <i class="bi bi-speedometer2"></i> Dashboard
                 </a>
@@ -57,7 +57,7 @@
             </li>
 
             <li>
-                <a href="#">
+                <a href="#" onclick="event.preventDefault();">
                     <i class="bi bi-person"></i> Profil Saya
                 </a>
             </li>

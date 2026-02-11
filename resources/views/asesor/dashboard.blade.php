@@ -117,7 +117,7 @@
                                 <span><strong>{{ $row['dinilai'] }}</strong> / {{ $row['total_kuk'] }} KUK</span>
                                 <span class="fw-semibold" style="color: #233C7E;">{{ $row['persentase'] }}%</span>
                             </div>
-                            <div class="progress" style="height: 6px;" role="progressbar" aria-label="progress penilaian" aria-valuenow="{{ $row['persentase'] }}" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress" style="height: 6px;" role="progressbar" aria-label="Persentase kemajuan penilaian" aria-valuenow="{{ $row['persentase'] }}" aria-valuemin="0" aria-valuemax="100">
                                 <div class="progress-bar" style="width: {{ $row['persentase'] }}%; background: #233C7E;"></div>
                             </div>
                             <span class="badge mt-2 {{ $statusClass }}">{{ $statusText }}</span>
