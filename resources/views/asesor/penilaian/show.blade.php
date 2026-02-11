@@ -35,8 +35,8 @@
                                             <div class="col-lg-4 col-md-5">
                                                 <select id="nilai_{{ $kuk->id }}" name="nilai[{{ $kuk->id }}]" class="form-select" required>
                                                     <option value="">-- Pilih --</option>
-                                                    <option value="kompeten" {{ old('nilai.' . $kuk->id) === 'kompeten' ? 'selected' : '' }}>Kompeten</option>
-                                                    <option value="belum_kompeten" {{ old('nilai.' . $kuk->id) === 'belum_kompeten' ? 'selected' : '' }}>Belum Kompeten</option>
+                                                    <option value="k" {{ old('nilai.' . $kuk->id) === 'kompeten' ? 'selected' : '' }}>Kompeten</option>
+                                                    <option value="bk" {{ old('nilai.' . $kuk->id) === 'belum_kompeten' ? 'selected' : '' }}>Belum Kompeten</option>
                                                 </select>
                                             </div>
                                             <div class="col-lg-8 col-md-7">
