@@ -207,6 +207,9 @@
 
 @push('scripts')
 <script>
+    // Configuration
+    const AUTO_DISMISS_TIMEOUT = 5000; // Auto-dismiss alerts after 5 seconds
+
     // Toggle password visibility
     document.getElementById('toggleCurrentPassword').addEventListener('click', function() {
         const passwordInput = document.getElementById('current_password');
@@ -273,14 +276,14 @@
     password.addEventListener('input', validatePassword);
     confirmPassword.addEventListener('input', validatePassword);
 
-    // Auto-dismiss alerts after 5 seconds
+    // Auto-dismiss alerts after configured timeout
     setTimeout(function() {
         const alerts = document.querySelectorAll('.alert');
         alerts.forEach(function(alert) {
             const bsAlert = new bootstrap.Alert(alert);
             bsAlert.close();
         });
-    }, 5000);
+    }, AUTO_DISMISS_TIMEOUT);
 </script>
 @endpush
 @endsection

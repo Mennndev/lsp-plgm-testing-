@@ -25,13 +25,11 @@ class PengaturanController extends Controller
         $request->validate([
             'current_password' => ['required', 'string'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'password_confirmation' => ['required', 'string'],
         ], [
             'current_password.required' => 'Password saat ini wajib diisi',
             'password.required' => 'Password baru wajib diisi',
             'password.min' => 'Password minimal 8 karakter',
             'password.confirmed' => 'Konfirmasi password tidak cocok',
-            'password_confirmation.required' => 'Konfirmasi password wajib diisi',
         ]);
 
         $user = $request->user();
@@ -52,6 +50,9 @@ class PengaturanController extends Controller
 
     /**
      * Update account preferences
+     * TODO: Implement persistence logic for preferences when user/preferences table schema is finalized
+     * For now, this endpoint validates input but does not persist changes as the table structure
+     * for storing preferences has not been determined yet.
      */
     public function updatePreferensi(Request $request)
     {
@@ -60,10 +61,13 @@ class PengaturanController extends Controller
             'bahasa' => ['nullable', 'string', 'in:id,en'],
         ]);
 
-        $user = $request->user();
-
-        // Store preferences in user table or separate preferences table
-        // For now, we'll just return success since the table structure may need modification
+        // TODO: Store preferences when schema is ready
+        // Example:
+        // $user = $request->user();
+        // $user->update([
+        //     'notifikasi_email' => $request->notifikasi_email,
+        //     'bahasa' => $request->bahasa,
+        // ]);
         
         return back()->with('success', 'Preferensi berhasil diperbarui');
     }
