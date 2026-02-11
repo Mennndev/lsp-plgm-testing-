@@ -25,6 +25,7 @@ use App\Http\Controllers\Asesor\DashboardController;
 use App\Http\Controllers\Asesor\PengajuanController;
 use App\Http\Controllers\Asesor\PenilaianController;
 use App\Http\Controllers\Asesor\ProfilController;
+use App\Http\Controllers\Asesor\PengaturanController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -240,6 +241,11 @@ Route::middleware(['auth', 'role:asesor'])->prefix('asesor')->name('asesor.')->g
     // Profil routes
     Route::get('/profil', [ProfilController::class, 'show'])->name('profil');
     Route::put('/profil', [ProfilController::class, 'update'])->name('profil.update');
+
+    // Pengaturan routes
+    Route::get('/pengaturan', [PengaturanController::class, 'show'])->name('pengaturan');
+    Route::put('/pengaturan/password', [PengaturanController::class, 'updatePassword'])->name('pengaturan.password');
+    Route::put('/pengaturan/preferensi', [PengaturanController::class, 'updatePreferensi'])->name('pengaturan.preferensi');
 
 });
 
