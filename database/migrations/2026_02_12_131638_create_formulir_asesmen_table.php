@@ -28,8 +28,11 @@ return new class extends Migration
             
             $table->timestamps();
             
-            // Unique constraint: one form per type per pengajuan per asesor
-            $table->unique(['pengajuan_skema_id', 'asesor_id', 'jenis_formulir']);
+            // Unique constraint with custom short name (MySQL limit 64 chars)
+            $table->unique(
+                ['pengajuan_skema_id', 'asesor_id', 'jenis_formulir'],
+                'formulir_asesmen_unique'
+            );
         });
     }
 
