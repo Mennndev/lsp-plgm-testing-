@@ -118,7 +118,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link js-scroll-trigger" href="{{ url('daftar') }}">Daftar</a>
+                        <a class="nav-link js-scroll-trigger" href="{{ url('pendaftaran') }}">Daftar</a>
                     </li>
                 </ul>
             </div>
