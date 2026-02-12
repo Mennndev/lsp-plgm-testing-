@@ -61,6 +61,13 @@
                 </a>
             </li>
 
+
+            <li class="{{ request()->is('admin/jadwal-asesmen*') ? 'active' : '' }}">
+                <a href="{{ route('admin.jadwal-asesmen.index') }}">
+                    <i class="bi bi-calendar2-week"></i> Jadwal Asesmen
+                </a>
+            </li>
+
             <li class="{{ request()->is('admin/pembayaran*') ? 'active' : '' }}">
                 <a href="{{ route('admin.pembayaran.index') }}">
                     <i class="bi bi-credit-card"></i> Pembayaran
