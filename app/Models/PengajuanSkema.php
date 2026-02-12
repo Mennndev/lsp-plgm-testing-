@@ -153,6 +153,11 @@ public function asesors()
     );
 }
 
+public function formulirAsesmen()
+{
+    return $this->hasMany(FormulirAsesmen::class, 'pengajuan_skema_id');
+}
+
 
 
 }

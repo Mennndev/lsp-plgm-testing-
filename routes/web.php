@@ -26,6 +26,7 @@ use App\Http\Controllers\Asesor\PengajuanController;
 use App\Http\Controllers\Asesor\PenilaianController;
 use App\Http\Controllers\Asesor\ProfilController;
 use App\Http\Controllers\Asesor\PengaturanController;
+use App\Http\Controllers\Asesor\FormulirController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -237,6 +238,16 @@ Route::middleware(['auth', 'role:asesor'])->prefix('asesor')->name('asesor.')->g
     Route::get('/pengajuan/{id}/penilaian', [PenilaianController::class, 'show'])
         ->name('pengajuan.penilaian');
     Route::post('/pengajuan/{id}', [PenilaianController::class, 'store'])->name('pengajuan.store');
+
+    // Formulir routes
+    Route::get('/pengajuan/{id}/formulir', [FormulirController::class, 'index'])
+        ->name('formulir.index');
+    Route::get('/pengajuan/{id}/formulir/{jenis}', [FormulirController::class, 'show'])
+        ->name('formulir.show');
+    Route::post('/pengajuan/{id}/formulir/{jenis}', [FormulirController::class, 'store'])
+        ->name('formulir.store');
+    Route::get('/pengajuan/{id}/formulir/{jenis}/cetak', [FormulirController::class, 'cetak'])
+        ->name('formulir.cetak');
 
     // Profil routes
     Route::get('/profil', [ProfilController::class, 'show'])->name('profil');
