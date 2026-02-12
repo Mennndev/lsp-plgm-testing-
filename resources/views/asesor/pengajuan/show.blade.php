@@ -115,6 +115,9 @@
     <a href="{{ route('asesor.pengajuan.penilaian', $pengajuan->id) }}" class="btn btn-asesor btn-primary-asesor">
         <i class="bi bi-clipboard-check"></i> Mulai Penilaian
     </a>
+    <a href="{{ route('asesor.formulir.index', $pengajuan->id) }}" class="btn btn-asesor" style="background: #D69F3A; color: #fff; border: none;">
+        <i class="bi bi-file-earmark-text"></i> Formulir Asesmen
+    </a>
     <a href="{{ route('asesor.dashboard') }}" class="btn btn-outline-secondary">
         <i class="bi bi-arrow-left"></i> Kembali
     </a>
