@@ -63,7 +63,8 @@ class PengajuanController extends Controller
     'pengajuanBuktiPortofolio',
     'pengajuanPersyaratanDasar',
     'pembayaran',
-    'approver'
+    'approver',
+    'jadwalAsesmen.asesor'
 ])->findOrFail($id);
 
 

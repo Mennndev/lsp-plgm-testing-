@@ -133,6 +133,11 @@ class PengajuanSkema extends Model
         return $this->hasOne(Pembayaran::class, 'pengajuan_skema_id');
     }
 
+    public function jadwalAsesmen(): HasOne
+    {
+        return $this->hasOne(JadwalAsesmen::class, 'pengajuan_skema_id');
+    }
+
     public function selfAssessments()
 {
     return $this->hasMany(PengajuanSelfAssessment::class);

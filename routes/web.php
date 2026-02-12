@@ -21,6 +21,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\Admin\AsesorController;
+use App\Http\Controllers\Admin\JadwalAsesmenController;
 use App\Http\Controllers\Asesor\DashboardController;
 use App\Http\Controllers\Asesor\PengajuanController;
 use App\Http\Controllers\Asesor\PenilaianController;
@@ -194,6 +195,17 @@ Route::prefix('admin')
                 ->name('pengajuan.approve');
             Route::post('/pengajuan/{id}/reject', [\App\Http\Controllers\Admin\PengajuanController::class, 'reject'])
                 ->name('pengajuan.reject');
+
+
+            // Jadwal Asesmen Management (Admin)
+            Route::get('/jadwal-asesmen', [JadwalAsesmenController::class, 'index'])
+                ->name('jadwal-asesmen.index');
+            Route::get('/jadwal-asesmen/pengajuan/{pengajuan}/form', [JadwalAsesmenController::class, 'formData'])
+                ->name('jadwal-asesmen.form');
+            Route::post('/jadwal-asesmen', [JadwalAsesmenController::class, 'upsert'])
+                ->name('jadwal-asesmen.upsert');
+            Route::patch('/jadwal-asesmen/{jadwalAsesmen}/status', [JadwalAsesmenController::class, 'setStatus'])
+                ->name('jadwal-asesmen.set-status');
 
             // Pembayaran Management (Admin)
             Route::get('/pembayaran', [\App\Http\Controllers\Admin\PembayaranController::class, 'index'])

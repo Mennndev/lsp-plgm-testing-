@@ -33,6 +33,19 @@
     </button>
 </form>
 
+<div class="mt-3 mb-4">
+    <a href="{{ route('admin.jadwal-asesmen.form', $pengajuan->id) }}" class="btn btn-outline-primary">
+        <i class="bi bi-calendar2-event"></i> Kelola Jadwal Asesmen
+    </a>
+
+    @if($pengajuan->jadwalAsesmen)
+        <div class="alert alert-info mt-3 mb-0">
+            Jadwal saat ini: <strong>{{ $pengajuan->jadwalAsesmen->tanggal_mulai->format('d/m/Y H:i') }}</strong>
+            ({{ strtoupper($pengajuan->jadwalAsesmen->mode_asesmen) }})
+            @if($pengajuan->jadwalAsesmen->asesor) - Asesor: {{ $pengajuan->jadwalAsesmen->asesor->nama ?? $pengajuan->jadwalAsesmen->asesor->name }} @endif
+        </div>
+    @endif
+</div>
 
     <!-- Alerts -->
     @if(session('success'))
