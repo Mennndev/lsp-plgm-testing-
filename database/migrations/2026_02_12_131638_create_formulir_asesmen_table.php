@@ -23,7 +23,7 @@ return new class extends Migration
                   ->cascadeOnDelete();
             
             $table->string('jenis_formulir'); // FR_IA_01, FR_IA_02, etc.
-            $table->text('data')->nullable(); // JSON data for form fields
+            $table->json('data')->nullable(); // JSON data for form fields
             $table->enum('status', ['draft', 'selesai'])->default('draft');
             
             $table->timestamps();
